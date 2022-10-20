@@ -1,4 +1,4 @@
-#p.a.: simplificar com um vetor para os divisores (1200, 400, 200, etc)
+#p.a.: simplificar com um vetor para os divisores (1200, 400, 200, etc). usar yields2decim
 #p.a.: melhorar nomenclatura (pq yields2?)
 yields2price<-data.frame(exp(-yields2df$M1/1200),
   exp(-yields2df$M3/400),exp(-yields2df$M6/200),
