@@ -29,3 +29,5 @@ extract scores as data frame
 #===============================
 pca_yields_scores<as.data.frame(pca_yields$scores)
 View(pca_yields_scores)
+library("writexl")
+write_xlsx(pca_yields_scores, "C:\\Rstudio_exports\\pca_yields_scores.xlsx")
