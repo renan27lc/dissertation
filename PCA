@@ -24,3 +24,6 @@ pca_yields<-princomp(yields2decim)
 f_draw_factor_loading(pca_yields$loadings[,1:5],
                       round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
                       "Yields level PCA - princomp()")
+#===============================
+turn to data frame
+#===============================
