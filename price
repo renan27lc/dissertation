@@ -9,4 +9,5 @@ yields_price<-data.frame(exp(-yields_df$M1/1200),
   exp(-yields_df$M39*0.0325),exp(-yields_df$M48*0.04),
   exp(-yields_df$M60*0.05),exp(-yields_df$M72*0.06))
 yields_price_rowcolumn<-rownames_to_column(yields_price)
+library("writexl")
 write_xlsx(yields_price_rowcolumn, "C:\\iCareFone_Transfer\\yields_price_rowcolumn.xlsx")
