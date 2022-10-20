@@ -28,3 +28,4 @@ f_draw_factor_loading(pca_yields$loadings[,1:5],
 extract scores as data frame
 #===============================
 pca_yields_scores<as.data.frame(pca_yields$scores)
+View(pca_yields_scores)
