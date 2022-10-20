@@ -1,0 +1,26 @@
+# https://www.r-bloggers.com/2022/05/understanding-pca-3-factors-of-the-yield-curve-using-r-code/
+f_draw_factor_loading<-function(m.loadings,var,title){
+    
+    x11(width=16/3,height=5);
+    matplot(mat,m.loadings,type="l",xaxt="n",lwd=5,lty=1,
+            main=title,col=rainbow(5),ylim=c(-0.6,0.6),
+            xlab="Maturity (month)",ylab="Factor loadings")
+    legend('bottomright',max(m.loadings),col=rainbow(5),lty=1,lwd=3,
+           legend=paste0(c("PC1","PC2","PC3","PC4","PC5"),var))
+    axis(1,mat,mat)
+}
+
+#===========================================================
+# Load data
+#===========================================================
+
+yields2decim<-(yields2df[,1:17]/100)
+mat<-c(1,3,6,9,12,15,18,21,24,27,30,33,36,39,48,60,72)
+#———————————————————–
+# Yield level PCA using princomp()
+#———————————————————–
+
+pca_yields<-princomp(yields2decim)
+f_draw_factor_loading(pca_yields$loadings[,1:5],
+                      round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
+                      "Yields level PCA - princomp()")
