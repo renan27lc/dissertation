@@ -1,4 +1,13 @@
-#p.a.: simplificar o acima com um vetor para os divisores (1200, 400, 200, etc)
-yields2price<-data.frame(exp(-yields2df$M1/1200),exp(-yields2df$M3/400),exp(-yields2df$M6/200),exp(-yields2df$M9*0.0075),exp(-yields2df$M12/100),exp(-yields2df$M15*0.0125),exp(-yields2df$M18*0.015),exp(-yields2df$M21*0.0175),exp(-yields2df$M24*0.02),exp(-yields2df$M27*0.0225),exp(-yields2df$M30*0.025),exp(-yields2df$M33*0.0275),exp(-yields2df$M36*0.03),exp(-yields2df$M39*0.0325),exp(-yields2df$M48*0.04),exp(-yields2df$M60*0.05),exp(-yields2df$M72*0.06))
+#p.a.: simplificar com um vetor para os divisores (1200, 400, 200, etc)
+#p.a.: melhorar nomenclatura (pq yields2?)
+yields2price<-data.frame(exp(-yields2df$M1/1200),
+  exp(-yields2df$M3/400),exp(-yields2df$M6/200),
+  exp(-yields2df$M9*0.0075),exp(-yields2df$M12/100),
+  exp(-yields2df$M15*0.0125),exp(-yields2df$M18*0.015),
+  exp(-yields2df$M21*0.0175),exp(-yields2df$M24*0.02),
+  exp(-yields2df$M27*0.0225),exp(-yields2df$M30*0.025),
+  exp(-yields2df$M33*0.0275),exp(-yields2df$M36*0.03),
+  exp(-yields2df$M39*0.0325),exp(-yields2df$M48*0.04),
+  exp(-yields2df$M60*0.05),exp(-yields2df$M72*0.06))
 yields2price_rowcolumn<-rownames_to_column(yields2price)
 write_xlsx(yields2price_rowcolumn, "C:\\iCareFone_Transfer\\yields2price_rowcolumn.xlsx")
