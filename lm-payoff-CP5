@@ -1,4 +1,24 @@
-lm_M12<-lm(payoff_pca_yields_for_reg$M12 ~ payoff_pca_yields_for_reg$CP1 + payoff_pca_yields_for_reg$CP2 + payoff_pca_yields_for_reg$CP3 + payoff_pca_yields_for_reg$CP4 + payoff_pca_yields_for_reg$CP5)
+lm_M3<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M6<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M9<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M12<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M15<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M18<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M21<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M24<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M27<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M30<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M33<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M36<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M39<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M48<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M60<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+lm_M72<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+
+
+#==================OLD==============
+
+
 lm_M18<-lm(payoff_pca_yields_for_reg$M18 ~ payoff_pca_yields_for_reg$CP1 + payoff_pca_yields_for_reg$CP2 + payoff_pca_yields_for_reg$CP3 + payoff_pca_yields_for_reg$CP4 + payoff_pca_yields_for_reg$CP5)
 lm_M24<-lm(payoff_pca_yields_for_reg$M24 ~ payoff_pca_yields_for_reg$CP1 + payoff_pca_yields_for_reg$CP2 + payoff_pca_yields_for_reg$CP3 + payoff_pca_yields_for_reg$CP4 + payoff_pca_yields_for_reg$CP5)
 lm_M36<-lm(payoff_pca_yields_for_reg$M36 ~ payoff_pca_yields_for_reg$CP1 + payoff_pca_yields_for_reg$CP2 + payoff_pca_yields_for_reg$CP3 + payoff_pca_yields_for_reg$CP4 + payoff_pca_yields_for_reg$CP5)
