@@ -1,4 +1,11 @@
-#p.a.: simplificar com um vetor para os divisores (1200, 400, 200, etc). usar yields_decim
+prices<-exp(-(sweep(yields_decim, MARGIN=2,mat_year, `*`)))
+write_xlsx(prices, "C:\\Rstudio_exports\\prices.xlsx")
+library("writexl")
+
+
+
+#================OLD CODE================
+
 yields_price<-data.frame(exp(-yields_df$M1/1200),
   exp(-yields_df$M3/400),exp(-yields_df$M6/200),
   exp(-yields_df$M9*0.0075),exp(-yields_df$M12/100),
