@@ -1,3 +1,7 @@
+payoff <- read_excel("G:/Meu Drive/Acadêmico - Mestrado/Mercado de Capitais/artigo mercap/planilhas PCA etc/payoff.xlsx")
+View(payoff)
+pca_month <- read_excel("G:/Meu Drive/Acadêmico - Mestrado/Mercado de Capitais/artigo mercap/planilhas PCA etc/pca_month.xlsx")
+View(pca_month)
 lm_M3<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
 lm_M6<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
 lm_M9<-lm(payoff$M12 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
