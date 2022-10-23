@@ -1,6 +1,7 @@
 prices<-exp(-(sweep(yields_decim, MARGIN=2,mat_year, `*`)))
-write_xlsx(prices, "C:\\Rstudio_exports\\prices.xlsx")
 library("writexl")
+write_xlsx(prices, "C:\\Rstudio_exports\\prices.xlsx")
+
 
 
 
