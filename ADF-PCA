@@ -2,9 +2,10 @@ library(urca)
 pc.df1<-as.data.frame(diff(as.matrix(pca_yields_scores, lag = 1)))
 
 adf.pc1.lv.none<-ur.df(pca_yields_scores$Comp.1,type="none",selectlags = c("AIC"))
+adf.pc1.lv.none<-ur.df(pca_yields_scores$Comp.1,type="drift",selectlags = c("AIC"))
+adf.pc1.lv.none<-ur.df(pca_yields_scores$Comp.1,type="trend",selectlags = c("AIC"))
 
 adf.pc1.df1.none<-ur.df(pc.df1$Comp.1, type=‘none’, selectlags = c(“AIC”))
-
 
 
 #=============================
