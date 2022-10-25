@@ -1,0 +1,16 @@
+library(urca)
+
+pca_1df<-as.data.frame(diff(as.matrix(pca_yields_scores, lag = 1)))
+
+pca_1.adf.1df.none<-ur.df(pca_1df$Comp.1, type=‘none’, selectlags = c(“AIC”))
+
+
+#=============================
+OLD
+#=============================
+pca1_1df<-diff(pca_yields_scores$Comp.1, lag = 1)
+pca2_1df<-diff(pca_yields_scores$Comp.2, lag = 1)
+pca3_1df<-diff(pca_yields_scores$Comp.3, lag = 1)
+pca4_1df<-diff(pca_yields_scores$Comp.4, lag = 1)
+pca5_1df<-diff(pca_yields_scores$Comp.5, lag = 1)
+
