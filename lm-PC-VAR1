@@ -1,3 +1,24 @@
+
+library("vars")
+var.pc<-VAR(pca_yields_scores[,1:5], p = 1, type = "none",ic = "SC")
+var.pc.df1<-VAR(pc.df1[,1:5], p = 1, type = "none",ic = "SC")
+VAR(as.data.frame(diff(as.matrix(pca_month[,2:6], lag = 1))), p = 1, type = "none",ic = "SC")
+
+
+#=============
+OLD
+#=============
+
+
+var.pc<-VAR(pca_yields_scores, p = 1, type = c("const", "trend", "both", "none"),
+season = NULL, exogen = NULL, lag.max = NULL,
+ic = c("AIC", "SC"))
+# SC = BIC
+
+# S3 method for varest
+print(x, digits = max(3, getOption("digits") - 3), ...)
+
+
 lm_PC1<-lm(pca_yields_scores[2:4104,1] ~ pca_yields_scores[1:4103,1])
 lm_PC2<-lm(pca_yields_scores[2:4104,2] ~ pca_yields_scores[1:4103,2])
 lm_PC3<-lm(pca_yields_scores[2:4104,3] ~ pca_yields_scores[1:4103,3])
@@ -15,13 +36,7 @@ lm_PC4_month<-(lm(as.matrix(pca_month[2:199, 5]) ~ as.matrix(pca_month[1:198,5])
 lm_PC5_month<-(lm(as.matrix(pca_month[2:199, 6]) ~ as.matrix(pca_month[1:198,6])))
 
 
-var.pc<-VAR(pca_yields_scores, p = 1, type = c("const", "trend", "both", "none"),
-season = NULL, exogen = NULL, lag.max = NULL,
-ic = c("AIC", "SC"))
-# SC = BIC
 
-# S3 method for varest
-print(x, digits = max(3, getOption("digits") - 3), ...)
 
 
 #=============
