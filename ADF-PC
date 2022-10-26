@@ -1,3 +1,4 @@
+#https://www.r-bloggers.com/2021/12/augmented-dickey-fuller-adf-test-in-r/#:~:text=The%20ADF%20Test%20is%20a,name%20of%20test%20statistics%20clear.
 library(urca)
 pc.df1<-as.data.frame(diff(as.matrix(pca_yields_scores, lag = 1)))
 
