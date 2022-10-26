@@ -4,6 +4,7 @@ write_xlsx(prices, "C:\\Rstudio_exports\\prices.xlsx")
 
 #P.A.: corrigir e rodar o códigho abaixo
 prices_month<-inner_join(prices_R, prices, by="player")
+#https://www.statology.org/vlookup-in-r/
 
 #P.A.: yields_list<-rename(yields_rowcolumn, DATA = rowname)
 
