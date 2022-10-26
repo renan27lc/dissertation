@@ -1,9 +1,11 @@
-prices<-exp(-(sweep(yields_decim, MARGIN=2,mat_year, `*`)))
+prices<-exp(-(sweep(yields_decim, MARGIN=2,mat/12, `*`)))
 library("writexl")
 write_xlsx(prices, "C:\\Rstudio_exports\\prices.xlsx")
 
+#P.A.: corrigir e rodar o códigho abaixo
+prices_month<-inner_join(prices_R, prices, by="player")
 
-
+#P.A.: yields_list<-rename(yields_rowcolumn, DATA = rowname)
 
 #================OLD CODE================
 
