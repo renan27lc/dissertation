@@ -1,0 +1,14 @@
+@ARTICLE{bmstr2021,
+  author = {Baumeister, Christiane and Moura, G.V. and Santos, A.A.P.},
+  title = {Measuring Market Expectations},
+  journal = {National Bureau of Economic Research Working Paper n. 29232},
+  year = {2021}
+}
+
+@ARTICLE{adrn2013,
+  author = {Adrian, Tobias and Richard K. Crump and Emanuel Moench},
+  title = {"Pricing the Term Structure
+with Linear Regressions},
+  journal = {Journal of Financial Economics 110(1): 110-138.},
+  year = {2013}
+}
