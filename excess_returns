@@ -5,7 +5,7 @@ library(readxl)
 
 
 
-
+returns_xs<-returns + yields_lastday_h[1:198,1]
 
 
 
