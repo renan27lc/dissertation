@@ -3,6 +3,19 @@
 library(tidyverse)
 library(readxl)
 
+
+
+
+
+
+
+
+
+
+#===========================   processo até compatibilizar datas ==================
+
+
+
 #explore the data using View(), names(), summary(), head() and tail()
 
 
