@@ -11,6 +11,19 @@ returns_xs<-returns + yields_lastday_h[1:198,1]
 
 
 
+#páginas de ajuda que ficaram abertas. vou conseguir criar esse returns_xs de novo
+# https://jules32.github.io/r-for-excel-users/vlookup.html
+# https://stackoverflow.com/questions/16557028/date-conversion-from-posixct-to-date-in-r
+# https://stackoverflow.com/questions/38594177/changing-date-time-format-in-r
+# https://www.neonscience.org/resources/learning-hub/tutorials/dc-convert-date-time-posix-r
+# https://epirhandbook.com/en/working-with-dates.html
+# https://stackoverflow.com/questions/18503177/r-apply-function-on-specific-dataframe-columns
+# https://stackoverflow.com/questions/40536953/error-with-r-dplyr-left-join
+
+
+
+
+
 
 #===========================   processo até compatibilizar datas ==================
 
