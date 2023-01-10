@@ -103,7 +103,7 @@ yields = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Mat
 yields
 yields_rowcolumn<-rownames_to_column(yields)
 yields_df<-as.data.frame(yields_rowcolumn)
-colnames(yields_df)[,1]<-"DATE"
+colnames(yields_df)[1]<-"DATE"
 
 
 ###############Not-run####################
