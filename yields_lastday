@@ -1,17 +1,17 @@
-> colnames(yields_rowcolumn)[1]<-"DATE"
+colnames(yields_rowcolumn)[1]<-"DATE"
 #check if this works > DATE<-(yields_rowcolumn$rowname) #check if this works
 
-> yields_df<-as.data.frame(yields_rowcolumn)
-> dates_asDate<-as.data.frame(as.Date(yields_df$DATE, "%d - %m - %Y"))
+yields_df<-as.data.frame(yields_rowcolumn)
+dates_asDate<-as.data.frame(as.Date(yields_df$DATE, "%d - %m - %Y"))
 # try this one if above doesn't work > dates_list_asDate<-as.Date(yields_df$DATE, "%d - %m - %Y")
 
-> yields_list_asDate<-bind_cols(dates_asDate,yields_df)
+yields_list_asDate<-bind_cols(dates_asDate,yields_df)
 # this seems useless here > yields_lastday<-yields_lastday[,-2] 
-> yields_list_asDate<-yields_list_asDate[,-2]
+yields_list_asDate<-yields_list_asDate[,-2]
 
-> yields_df_asDate<-as.data.frame(yields_list_asDate)
-> colnames(yields_df_asDate)[1]<-"DATE"
-> yields_lastday_df_asDate<-inner_join(last_days_asDate,yields_df_asDate, by = "DATE")
+yields_df_asDate<-as.data.frame(yields_list_asDate)
+colnames(yields_df_asDate)[1]<-"DATE"
+yields_lastday_df_asDate<-inner_join(last_days_asDate,yields_df_asDate, by = "DATE")
 
 #####----OLD----######
 
