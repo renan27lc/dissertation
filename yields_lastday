@@ -1,150 +1,36 @@
-[1] "character"
-> typeof(yields_list$DATA)
-[1] "character"
-> colnames(help)
-NULL
-> ?colnames
-> `colnames<-`(yields_list$DATA,"date")
-Error in `colnames<-`(yields_list$DATA, "date") : 
-  attempt to set 'colnames' on an object with less than two dimensions
-> colnames(yields_list)[1]<-"DATE"
-> RM(yields_rowcolumn)
-Error in RM(yields_rowcolumn) : could not find function "RM"
-> rm(yields_rowcolumn)
-> last_days_asDate<-as.Date(last_days_list)
-Error in as.Date.default(last_days_list) : 
-  do not know how to convert 'last_days_list' to class “Date”
-> typeof(last_days_list)
-[1] "list"
-> View(last_days_list)
-> colnames(last_days_list)[1]<-"DATE"
+colnames(yields_list)[1]<-"DATE"
+colnames(last_days_list)[1]<-"DATE"
 > last_days_df<-as.data.frame(last_days_list)
-> last_days_asDate<-as.Date(last_days_df)
-Error in as.Date.default(last_days_df) : 
-  do not know how to convert 'last_days_df' to class “Date”
-> View(as.character(last_days_list))
 > last_days_asDate<-as.Date(last_days_df$DATE)
-> VIew(last_days_asDate)
-Error in VIew(last_days_asDate) : could not find function "VIew"
 > last_days_asDate<-as.data.frame(last_days_asDate)
 > colnames(last_days_asDate)[1]<-"DATE"
-> ?as.Date.character
-> yields_list_asDate <- as.Date(yields_list, "%m - %d - %Y")
-Error in as.Date.default(yields_list, "%m - %d - %Y") : 
-  do not know how to convert 'yields_list' to class “Date”
-w "%m - %d - %Y")
-> mutate(yields_list[,1],as.Date)
-Error in UseMethod("mutate") : 
-  no applicable method for 'mutate' applied to an object of class "character"
-> mutate(yields_list[,1],as.Date())
-Error in UseMethod("mutate") : 
-  no applicable method for 'mutate' applied to an object of class "character"
-> mutate(yields_list[,1],as.Date(yields_list$DATE, "%d - %m - %Y"))
-Error in UseMethod("mutate") : 
-  no applicable method for 'mutate' applied to an object of class "character"
-> mutate(yields_list$DATE,as.Date(yields_list$DATE, "%d - %m - %Y"))
-Error in UseMethod("mutate") : 
-  no applicable method for 'mutate' applied to an object of class "character"
 > dates_list_asDate<-as.Date(yields_list$DATE, "%d - %m - %Y")
-> View(dates_list_asDate)
 > dates_list_asDate<-as.data.frame(as.Date(yields_list$DATE, "%d - %m - %Y"))
 > colnames(dates_list_asDate)[1]<-"DATE"
-
 > yields_list_asDate<-bind_cols(dates_list_asDate,yields_decim)
-> View(yields_list_asDate)
 > yields_decim<-yields_list_asDate
 > yields_lastday<-inner_join(last_days_asDate,yields_decim,by = "DATE")
-
-
-
 yields_list_asDate<-bind_cols(dates_asDate,yields_df)
 yields_lastday<-inner_join(last_days_asDate,yields_list_asDate,by = "DATE")
 
-
 #####----NEW----######
 
-> typeof(yields_rowcolumn)
-[1] "list"
-> typeof(yields_rowcolumn$rowname)
-[1] "character"
 > colnames(yields_rowcolumn[,"rowname"])<-"DATE"
-Error in `colnames<-`(`*tmp*`, value = "DATE") : 
-  attempt to set 'colnames' on an object with less than two dimensions
-> colnames(yields_rowcolumn[,1])<-"DATE"
-Error in `colnames<-`(`*tmp*`, value = "DATE") : 
-  attempt to set 'colnames' on an object with less than two dimensions
-> colnames(yields_rowcolumn)[,1]<-"DATE"
-Error in colnames(yields_rowcolumn)[, 1] <- "DATE" : 
-  incorrect number of subscripts on matrix
-> DATE<-(yields_rowcolumn$rowname)
 > DATE<-(yields_rowcolumn$rowname)
 > yields_df<-as.data.frame(yields_rowcolumn)
-> colnames(yields_df)[,1]<-"DATE"
-Error in colnames(yields_df)[, 1] <- "DATE" : 
-  incorrect number of subscripts on matrix
 > colnames(yields_df)[1]<-"DATE"
-> View(yields_df)
-> typeof(yields_df$DATE)
-[1] "character"
-> typeof(yields_df[1,1])
-[1] "character"
-> typeof(yields_df[1,2])
-[1] "double"
-> typeof(yields_df[2,1])
-[1] "character"
-> typeof(yields_df[2,2])
-[1] "double"
 > dates_list_asDate<-as.Date(yields_df$DATE, "%d - %m - %Y")
-> > colnames(dates_list_asDate)[1]<-"DATE"
-Error: unexpected '>' in ">"
-> dates_list_asDate<-as.Date(yields_df$DATE, "%d - %m - %Y")colnames(dates_list_asDate)[1]<-"DATE"
-Error: unexpected symbol in "dates_list_asDate<-as.Date(yields_df$DATE, "%d - %m - %Y")colnames"
-> 
-> dates_list_asDate<-as.Date(yields_df$DATE, "%d - %m - %Y")
-> colnames(dates_list_asDate)[1]<-"DATE"
-Error in `colnames<-`(`*tmp*`, value = "DATE") : 
-  attempt to set 'colnames' on an object with less than two dimensions
-> dates_list_asDate<-as.Date(yields_df$DATE, "%d - %m - %Y")
-> 
-> rm(dates_list_asDate)
-> dates_list_asDate<-as.Date(yields_df$DATE, "%d - %m - %Y")
-> 
-> View(dates_list_asDate)
+
 > dates_asDate<-as.data.frame(as.Date(yields_df$DATE, "%d - %m - %Y"))
-> 
-> View(dates_asDate)
-> colnames(yields_df)[,1]<-"DATE"
-Error in colnames(yields_df)[, 1] <- "DATE" : 
-  incorrect number of subscripts on matrix
 > colnames(dates_asDate)<-"DATE"
 > yields_list_asDate<-bind_cols(dates_asDate,yields_df)
 New names:
 • `DATE` -> `DATE...1`
 • `DATE` -> `DATE...2`
-> yields_lastday<-inner_join(dates_asDate,yields_df,by = "DATE")
-Error in `inner_join()`:
-! Can't join on `x$DATE` x `y$DATE` because of incompatible types.
-ℹ `x$DATE` is of type <date>>.
-ℹ `y$DATE` is of type <character>>.
-Run `rlang::last_error()` to see where the error occurred.
-> View(yields_list_asDate)
+
 > yields_lastday<-yields_lastday[,-2]
 > yields_list_asDate<-yields_list_asDate[,-2]
-> rename(yields_list_asDate$DATE...1,"DATE")
-Error in UseMethod("rename") : 
-  no applicable method for 'rename' applied to an object of class "Date"
-> colnames(yields_list_asDate)[,1]<-"DATE"
-Error in colnames(yields_list_asDate)[, 1] <- "DATE" : 
-  incorrect number of subscripts on matrix
->     typeof(yields_list_asDate)
-[1] "list"
+
 > yields_df<-as.data.frame(yields_list_asDate)
-> colnames(yields_df)[,1]<-"DATE"
-Error in colnames(yields_df)[, 1] <- "DATE" : 
-  incorrect number of subscripts on matrix
-> VIew(yields_df)
-Error in VIew(yields_df) : could not find function "VIew"
-> View(yields_df)
 > colnames(yields_df)[1]<-"DATE"
 > yields_lastday<-inner_join(last_days_asDate,yields_df,by = "DATE")
-> View(yields_lastday)
