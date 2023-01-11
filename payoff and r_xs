@@ -1,0 +1,320 @@
+library(dplyr)
+library(tibble)
+
+colnames(yields_rowcolumn)[1]<-"DATE"
+#check if this works > DATE<-(yields_rowcolumn$rowname) #check if this works
+
+yields_df<-as.data.frame(yields_rowcolumn)
+dates_asDate<-as.data.frame(as.Date(yields_df$DATE, "%d - %m - %Y"))
+# try this one if above doesn't work > dates_list_asDate<-as.Date(yields_df$DATE, "%d - %m - %Y")
+
+yields_list_asDate<-bind_cols(dates_asDate,yields_df)
+# this seems useless here > yields_lastday<-yields_lastday[,-2] 
+yields_list_asDate<-yields_list_asDate[,-2]
+
+yields_df_asDate<-as.data.frame(yields_list_asDate)
+colnames(yields_df_asDate)[1]<-"DATE"
+yields_lastday_df_asDate<-inner_join(last_days_asDate,yields_df_asDate, by = "DATE")
+
+yields_lastday_rwnms<-column_to_rownames(yields_lastday_df_asDate,var = "DATE")
+
+A<-yields_lastday_rwnms[1:198,2:24]
+B<-yields_lastday_rwnms[2:199,1:23]
+C<-yields_lastday_rwnms[1:198,1]
+
+Ah<-t(t(A)*Maturities[2:24])
+Bh_mns1<-t(t(B)*Maturities[1:23])
+
+payoff<-Ah - Bh_mns1
+
+rf<-yields_lastday_clmn_to_rwnms[1:198,1]
+
+r_xs<-payoff+rf
+
+
+#===================================================---OLD---=================================================
+
+
+
+
+
+
+
+
+> last_days_df<-as.data.frame(last_days_list)
+
+> last_days_asDate<-as.Date(last_days_df$DATE)
+> last_days_asDate<-as.data.frame(last_days_asDate)
+> dates_list_asDate<-as.Date(yields_list$DATE, "%d - %m - %Y")
+> dates_list_asDate<-as.data.frame(as.Date(yields_list$DATE, "%d - %m - %Y"))
+> yields_list_asDate<-bind_cols(dates_list_asDate,yields_decim)
+> yields_decim<-yields_list_asDate
+> yields_lastday<-inner_join(last_days_asDate,yields_decim,by = "DATE")
+yields_list_asDate<-bind_cols(dates_asDate,yields_df)
+yields_lastday<-inner_join(last_days_asDate,yields_list_asDate,by = "DATE")
+
+
+
+###########=====OLD excess_returns=====########
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#https://jules32.github.io/r-for-excel-users/vlookup.html
+
+library(tidyverse)
+library(readxl)
+
+
+
+returns_xs<-returns + yields_lastday_h[1:198,1]
+
+
+
+
+
+# páginas de ajuda que ficaram abertas. vou conseguir criar esse returns_xs de novo
+# https://jules32.github.io/r-for-excel-users/vlookup.html
+# https://stackoverflow.com/questions/16557028/date-conversion-from-posixct-to-date-in-r
+# https://stackoverflow.com/questions/38594177/changing-date-time-format-in-r
+# https://www.neonscience.org/resources/learning-hub/tutorials/dc-convert-date-time-posix-r
+# https://epirhandbook.com/en/working-with-dates.html
+# https://stackoverflow.com/questions/18503177/r-apply-function-on-specific-dataframe-columns
+# https://stackoverflow.com/questions/40536953/error-with-r-dplyr-left-join
+
+
+#===========================   processo até compatibilizar datas ==================
+
+
+
+#explore the data using View(), names(), summary(), head() and tail()
+
+
+yields_rowcolumn_asdate<-yields_rowcolumn[as.Date(yields_rowcolumn$date),]
+
+library(lubridate) #para manipular datas
+
+
+last_days_list_asdate<-as.Date(last_days_list$date)
+
+
+inner_join(yields_rowcolumn,)
+
+
+> 
+> last_days_list_asdate<-modify(last_days_list,as.character(last_days_list$date))
+> 
+> View(last_days_list_asdate)
+> class(last_days_list)
+[1] "data.frame"
+> View(last_days_list)
+> class(last_days_list[1,1])
+[1] "POSIXct" "POSIXt" 
+> last_days_list[1,1]
+[1] "2006-01-31 UTC"
+> class(yields_rowcolumn)
+[1] "data.frame"
+> yields_rowcolumn[1,1]
+[1] "02-01-2006"
+> last_days_list_asdate<-0
+> last_days_list_asdate<-as.date(last_days_list$date)
+Error in as.date(last_days_list$date) : could not find function "as.date"
+> last_days_list_asdate<-as.Date(last_days_list$date)
+> last_days_list_ascharacter<-as.character(last_days_list_asdate$date)
+Error in last_days_list_asdate$date : 
+  $ operator is invalid for atomic vectors
+> last_days_list_ascharacter<-as.character(last_days_list_asdate)
+> VIew(last_days_list_ascharacter)
+Error in VIew(last_days_list_ascharacter) : 
+  could not find function "VIew"
+> View(last_days_list_ascharacter)
+> last_days_list_asdf<-as.data.frame(last_days_list_asdate)
+> View(last_days_list_asdf)
+> class(last_days_list_asdf[1,1])
+[1] "Date"
+> last_days_list_asdate<-last_days_list_asdf
+> class(yields_rowcolumn[1,1])
+[1] "character"
+> yields_lastday<-inner_join(last_days_list_ascharacter,yields_rowcolumn)
+Error in UseMethod("inner_join") : 
+  no applicable method for 'inner_join' applied to an object of class "character"
+> yields_lastday<-inner_join(last_days_list_ascharacter,yields_rowcolumn_ascharact)
+Error in UseMethod("inner_join") : 
+  no applicable method for 'inner_join' applied to an object of class "character"
+> class(last_days_list_ascharacter)
+[1] "character"
+> last_days_list_ascharacter<-as.data.frame(last_days_list_ascharacter)
+> yields_lastday<-inner_join(last_days_list_ascharacter,yields_rowcolumn)
+Error in `inner_join()`:
+! `by` must be supplied when `x` and `y` have no common variables.
+ℹ use by = character()` to perform a cross-join.
+Run `rlang::last_error()` to see where the error occurred.
+> library(lubridate)
+
+Attaching package: ‘lubridate’
+
+The following objects are masked from ‘package:base’:
+
+    date, intersect, setdiff, union
+
+Warning message:
+package ‘lubridate’ was built under R version 4.2.1 
+> View(last_days_list_asdate)
+> class(last_days_list_asdate[1,1])
+[1] "Date"
+> last_days_list_DFasdate<-last_days_list_asdate
+> last_days_list_asdate<-as.Date(last_days_list$date)
+> last_days_list_asdate<-dmy(last_days_list$date)
+Warning message:
+All formats failed to parse. No formats found. 
+> 
+> last_days_list_asdate<-dmy(last_days_list$date)
+Warning message:
+All formats failed to parse. No formats found. 
+> last_days_list_asdate<-dmy(last_days_list_asdate)
+> last_days_list_asdate<-dmy(last_days_list_DFasdate)
+Warning message:
+All formats failed to parse. No formats found. 
+> View(last_days_list_DFasdate)
+> dmy(last_days_list_DFasdate)
+[1] NA
+Warning message:
+All formats failed to parse. No formats found. 
+> dmy(last_days_list_DFasdate[,])
+  [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+ [40] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+ [79] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+[118] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+[157] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+[196] NA NA NA NA
+Warning message:
+All formats failed to parse. No formats found. 
+> dmy(parse_date(last_days_list_DFasdate))
+Error in parse_vector(x, col_date(format), na = na, locale = locale, trim_ws = trim_ws) : 
+  is.character(x) is not TRUE
+> dmy(last_days_list_ascharacter)
+[1] NA
+Warning message:
+All formats failed to parse. No formats found. 
+> dmy(last_days_list_ascharacter)
+[1] NA
+Warning message:
+All formats failed to parse. No formats found. 
+> dmy(parse_date(last_days_list_ascharacter))
+Error in parse_vector(x, col_date(format), na = na, locale = locale, trim_ws = trim_ws) : 
+  is.character(x) is not TRUE
+> dmy(parse_date(last_days_list_DFasdate$last_days_list_asdate))
+Error in parse_vector(x, col_date(format), na = na, locale = locale, trim_ws = trim_ws) : 
+  is.character(x) is not TRUE
+> dmy(parse_date(last_days_list_ascharacter$last_days_list_ascharacter))
+  [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+ [40] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+ [79] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+[118] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+[157] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+[196] NA NA NA NA
+Warning message:
+All formats failed to parse. No formats found. 
+> ?dmy
+> class(last_days_list)
+[1] "data.frame"
+> class(last_days_list$date)
+[1] "POSIXct" "POSIXt" 
+> unclass(last_days_list])
+Error: unexpected ']' in "unclass(last_days_list]"
+> unclass(last_days_list)
+$date
+  [1] "2006-01-31 UTC" "2006-02-24 UTC" "2006-03-31 UTC" "2006-04-28 UTC" "2006-05-31 UTC" "2006-06-30 UTC" "2006-07-31 UTC"
+  [8] "2006-08-31 UTC" "2006-09-29 UTC" "2006-10-31 UTC" "2006-11-30 UTC" "2006-12-28 UTC" "2007-01-31 UTC" "2007-02-28 UTC"
+ [15] "2007-03-30 UTC" "2007-04-30 UTC" "2007-05-31 UTC" "2007-06-29 UTC" "2007-07-31 UTC" "2007-08-31 UTC" "2007-09-28 UTC"
+ [22] "2007-10-31 UTC" "2007-11-30 UTC" "2007-12-28 UTC" "2008-01-31 UTC" "2008-02-29 UTC" "2008-03-31 UTC" "2008-04-30 UTC"
+
+
+attr(,"row.names")
+  [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29
+ [30]  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57  58
+ [59]  59  60  61  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87
+ [88]  88  89  90  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116
+[117] 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145
+[146] 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174
+[175] 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199
+> class(last_days_list$date[1,1])
+Error in `[.default`(last_days_list$date, 1, 1) : 
+  incorrect number of dimensions
+> class(last_days_list[1,1])
+[1] "POSIXct" "POSIXt" 
+> class(last_days_list[1,2])
+[1] "NULL"
+> class(last_days_list[2,1])
+[1] "POSIXct" "POSIXt" 
+> class(last_days_list[2,2])
+[1] "NULL"
+> unclass(last_days_list[1,1])
+[1] 1138665600
+attr(,"tzone")
+[1] "UTC"
+> unclass(last_days_list[1,2])
+NULL
+> unclass(last_days_list[2,1])
+[1] 1140739200
+attr(,"tzone")
+[1] "UTC"
+> class(last_days_list_asdate)
+[1] "Date"
+> class(last_days_list_DFasdate$last_days_list_asdate)
+[1] "Date"
+> class(yields_rowcolumn$date)
+[1] "character"
+> yields_rowcolumn_asdate <- yields_rowcolumn %>% 
++     mutate(data = as.Date(data, format = "%d/%m/%Y"))
+Error in `mutate()`:
+! Problem while computing `data = as.Date(data, format = "%d/%m/%Y")`.
+Caused by error in `as.Date.default()`:
+! do not know how to convert 'data' to class “Date”
+Run `rlang::last_error()` to see where the error occurred.
+> yields_rowcolumn_asdate <- yields_rowcolumn %>% 
++     mutate(yields_rowcolumn$date = as.Date(yields_rowcolumn$date, format = "%d/%m/%Y"))
+Error: unexpected '=' in:
+"yields_rowcolumn_asdate <- yields_rowcolumn %>% 
+    mutate(yields_rowcolumn$date ="
+> yields_rowcolumn_asdate <- yields_rowcolumn %>% 
++     as.Date(yields_rowcolumn$date, format = "%d/%m/%Y"))
+Error: unexpected ')' in:
+"yields_rowcolumn_asdate <- yields_rowcolumn %>% 
+    as.Date(yields_rowcolumn$date, format = "%d/%m/%Y"))"
+> yields_rowcolumn_asdate <- yields_rowcolumn %>% 
++     mutate(yields_rowcolumn$date = as.Date(yields_rowcolumn$date, format = "%d/%m/%Y"))
+Error: unexpected '=' in:
+"yields_rowcolumn_asdate <- yields_rowcolumn %>% 
+    mutate(yields_rowcolumn$date ="
+> yields_rowcolumn$date = as.Date(yields_rowcolumn$date, format = "%d/%m/%Y")
+> yields_rowcolumn$date = as.Date(yields_rowcolumn$date, format = "%Y%m%d")
+> yields_rowcolumn$date = as.Date(yields_rowcolumn_ascharact$date, format = "%Y%m%d")
+> yields_rowcolumn$date = yields_rowcolumn_ascharact$date
+> yields_rowcolumn$date = dates_list_asdate
+> yields_rowcolumn$date = as.Date(dates_list$`yields_rowcolumn$rowname`)
+> yields_rowcolumn$date = as.Date(dates_list$`yields_rowcolumn$rowname`,format = "%Y-%m-%d")
+> yields_rowcolumn$date = as.Date(dates_list_asdate,format = "%Y-%m-%d")
+> yields_rowcolumn$date = as.Date(dates_list_asdate,format = "%d-%m-%Y")
+> yields_rowcolumn$date = as.Date(dates_list_asdate,format = "%d-%m-%y")
+> yields_rowcolumn$date = dates_list_asdate
+> yields_rowcolumn$date = dates_list$`yields_rowcolumn$rowname`
+> class(yields_rowcolumn[1,1])
+[1] "character"
+> yields_rowcolumn$date = as.Date(yields_rowcolumn$date,format = "%d-%m-%Y")
+> rename(last_days_list_DFasdate$last_days_list_asdate,"data")
+Error in UseMethod("rename") : 
+  no applicable method for 'rename' applied to an object of class "Date"
+> colnames(last_days_list_DFasdate)[1]<-"date"
+> yields_lastday<-inner_join(yields_rowcolumn,last_days_list_DFasdate,by="date")
+> View(yields_lastday)
