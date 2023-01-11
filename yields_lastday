@@ -1,3 +1,7 @@
+library(dplyr)
+library(tibble)
+
+
 colnames(yields_rowcolumn)[1]<-"DATE"
 #check if this works > DATE<-(yields_rowcolumn$rowname) #check if this works
 
@@ -12,6 +16,21 @@ yields_list_asDate<-yields_list_asDate[,-2]
 yields_df_asDate<-as.data.frame(yields_list_asDate)
 colnames(yields_df_asDate)[1]<-"DATE"
 yields_lastday_df_asDate<-inner_join(last_days_asDate,yields_df_asDate, by = "DATE")
+
+yields_lastday_rwnms<-column_to_rownames(yields_lastday_df_asDate,var = "DATE")
+
+A<-yields_lastday_rwnms[1:198,2:24]
+B<-yields_lastday_rwnms[2:199,1:23]
+C<-yields_lastday_rwnms[1:198,1]
+
+Ah<-t(t(A)*Maturities[2:24])
+Bh_mns1<-t(t(B)*Maturities[1:23])
+
+payoff<-Ah - Bh_mns1
+
+rf<-yields_lastday_clmn_to_rwnms[1:198,1]
+
+r_xs<-payoff+rf
 
 #####----OLD----######
 
