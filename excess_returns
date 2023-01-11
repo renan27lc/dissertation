@@ -1,22 +1,20 @@
 > library(tibble)
 
 
-> yields_lastday_clmn_to_rwnms<-column_to_rownames(yields_lastday,var = "DATE")
+yields_lastday_rwnms<-column_to_rownames(yields_lastday_df_asDate,var = "DATE")
 
-> A<-yields_lastday_clmn_to_rwnms[1:198,2:24]
-> B<-yields_lastday_clmn_to_rwnms[2:199,1:23]
-> C<-yields_lastday_clmn_to_rwnms[1:198,1]
+A<-yields_lastday_rwnms[1:198,2:24]
+B<-yields_lastday_rwnms[2:199,1:23]
+C<-yields_lastday_rwnms[1:198,1]
 
+Ah<-t(t(A)*Maturities[2:24])
+Bh_mns1<-t(t(B)*Maturities[1:23])
 
+payoff<-Ah - Bh_mns1
 
-> Ah<-t(t(A)*Maturities[2:24])
-> Bh_mns1<-t(t(B)*Maturities[1:23])
+rf<-yields_lastday_clmn_to_rwnms[1:198,1]
 
-> payoff<-Ah - Bh_mns1
-
-> rf<-yields_lastday_clmn_to_rwnms[1:198,1]
-
-> r_xs<-payoff+rf
+r_xs<-payoff+rf
 
 
 
