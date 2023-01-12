@@ -21,12 +21,21 @@ yields_lastday_rwnms<-column_to_rownames(yields_lastday_df_asDate,var = "DATE")
 
 A<-yields_lastday_rwnms[2:199, 1:23]
 B<-yields_lastday_rwnms[1:198, 2:24]
-C<-yields_lastday_rwnms[1:198,1]      #risk free
+C<-as.data.frame(yields_lastday_rwnms[1:198,1])      #risk free
 P<-Maturities[1:23]
 Q<-Maturities[2:24]
 
-payoff<- t(t(B)*Q) - t(t(A)*P)
+AP<-as.data.frame(t(t(A)*P))
+BQ<-as.data.frame(t(t(B)*Q))
+
+payoff<- BQ - AP
 r_xs<- payoff - C
+
+# https://www.tutorialspoint.com/how-to-create-a-matrix-with-equal-rows-in-r
+# usar esse site para solucionar problema de payoff(MxN) - C(Mx1)
+
+
+
 
 
 #===================================================---OLD---=================================================
