@@ -1,5 +1,4 @@
 
-
 reg_B1A6_M2<-lm(formula = ytm_fin$M2 ~ r_xp$M2)
 reg_B1A6_M3<-lm(formula = ytm_fin$M3 ~ r_xp$M3)
 reg_B1A6_M6<-lm(formula = ytm_fin$M6 ~ r_xp$M6)
