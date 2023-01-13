@@ -1,3 +1,25 @@
+https://rstudio-pubs-static.s3.amazonaws.com/331700_b54247d86d00454cbf452609ed51600d.html
+
+#library(pwt)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(broom)
+#library(pander)
+
+open_coefs <- nest(-P) %>%
+              mutate(model = map(data, ~lm(ytm_fin ~ ytm_ini + rf, data = .)),
+                     tidied = map(model, tidy)) %>%
+              unnest(tidied) %>%
+              filter(term == "ytm_fin") %>%
+              mutate(adjusted = p.adjust(p.value)) %>%
+              filter(adjusted < 0.05) %>%
+              arrange(desc(estimate))
+
+
+#========================OLD===================#
+
+
 > library(dplyr)
 
 Attaching package: ‘dplyr’
