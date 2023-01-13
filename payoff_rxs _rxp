@@ -29,9 +29,9 @@ P_rep<-t(as.data.frame(rep(P[1],198)))
 Q_rep<-t(as.data.frame(rep(Q[1],198)))
 C_rep<-as.data.frame(rep(C[1],23))
 
-rownames(P_Rep)<-rownames(A)
-rownames(Q_Rep)<-rownames(B)
-rownames(C_Rep)<-rownames(B)
+rownames(P_rep)<-rownames(A)
+rownames(Q_rep)<-rownames(B)
+rownames(C_rep)<-rownames(B)
 
 rf<-C_rep
 
@@ -40,7 +40,7 @@ ytm_ini<-as.data.frame(B*Q_rep)
 
 rownames(ytm_fin)<-rownames(A)
 rownames(ytm_ini)<-rownames(B)
-rownames(C_Rep)<-rownames(B)
+rownames(C_rep)<-rownames(B)
 
 payoff<- ytm_ini - ytm_fin
 r_xs<- payoff - rf
