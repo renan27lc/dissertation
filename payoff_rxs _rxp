@@ -47,10 +47,6 @@ r_xs<- payoff - rf
 
 r_xp<-ytm_ini+rf
 
-# https://www.tutorialspoint.com/how-to-create-a-matrix-with-equal-rows-in-r
-# usar esse site para solucionar problema de payoff(MxN) - C(Mx1)
-
-
 
 
 
