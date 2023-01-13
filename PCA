@@ -14,6 +14,30 @@ f_draw_factor_loading<-function(m.loadings,var,title){
 # Load data
 #===========================================================
 
+
+mat<-c(1:24)
+#———————————————————–
+# Yield level PCA using princomp()
+#———————————————————–
+
+pca_yields<-princomp(yields_rwnms)
+f_draw_factor_loading(pca_yields$loadings[,1:5],
+                      round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
+                      "Yields level PCA - princomp()")
+#===============================
+# extract scores as data frame
+#===============================
+pca_yields_scores<-as.data.frame(pca_yields$scores)
+View(pca_yields_scores)
+library("writexl")
+write_xlsx(pca_yields_scores, "C:\\Rstudio_exports\\pca_yields_scores.xlsx")
+
+
+#===========================================================
+# OLD
+#===========================================================
+
+
 yields_decim<-(yields_rowcolumn[,2:18]/100)
 mat<-c(1,3,6,9,12,15,18,21,24,27,30,33,36,39,48,60,72)
 #———————————————————–
