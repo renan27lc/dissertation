@@ -29,9 +29,24 @@ f_draw_factor_loading(pca_yields$loadings[,1:5],
 #===============================
 pca_yields_scores<-as.data.frame(pca_yields$scores)
 View(pca_yields_scores)
-library("writexl")
-write_xlsx(pca_yields_scores, "C:\\Rstudio_exports\\pca_yields_scores.xlsx")
 
+pca_yields_loadings<-as.data.frame(unclass(pca_yields$loadings))
+lines(Maturities,                    # Draw first time series
+       pca_yields_loadings$Comp.3,
+       type = "l",
+       col = 4)
+ lines(Maturities,                   # Draw first time series
+       pca_yields_loadings$Comp.4,
+       type = "l",
+       col = 5)
+ lines(Maturities,                   # Draw first time series
+       pca_yields_loadings$Comp.5,
+       type = "l",
+       col = 6)
+ legend("topright",                  # Add legend to plot
+        c("PC1", "PC2", "PC3", "PC4", "PC5"),
+        lty = 1,
+        col = 2:4)
 
 #===========================================================
 # OLD
