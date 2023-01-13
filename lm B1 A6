@@ -7,6 +7,8 @@ library(purrr)
 library(broom)
 #library(pander)
 
+#The code is written as sequence of dplyr pipes, but could be broken down into intermediate tibbles if desired. The “trick” is combining tidyr’s nest and purrr’s map functions. Nest will perform an operation similar to grouping and store the operation as a list; and map will apply a function, namely linear regression, to the list for each nested element. Broom’s tidy function will exctract coeffcients from the regression and this will allow the creation of a dataframe with intercepts and coefficients for each country.
+
 open_coefs <- nest(-P) %>%
               mutate(model = map(data, ~lm(ytm_fin ~ ytm_ini + rf, data = .)),
                      tidied = map(model, tidy)) %>%
