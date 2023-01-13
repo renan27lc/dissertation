@@ -16,7 +16,7 @@ yields_df_asDate<-as.data.frame(yields_list_asDate)
 colnames(yields_df_asDate)[1]<-"DATE"
 yields_lastday_df_asDate<-inner_join(last_days_asDate,yields_df_asDate, by = "DATE")
 
-
+yields_rwnms<-column_to_rownames(yields_df_asDate,var = "DATE")
 yields_lastday_rwnms<-column_to_rownames(yields_lastday_df_asDate,var = "DATE")
 
 A<-yields_lastday_rwnms[2:199, 1:23]
