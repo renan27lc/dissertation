@@ -1,0 +1,1 @@
+lm_M3<-lm(payoff$M3 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
