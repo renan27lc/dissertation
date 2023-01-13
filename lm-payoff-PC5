@@ -1,3 +1,13 @@
+
+
+
+
+#==================OLD==============
+
+
+
+
+
 payoff <- read_excel("G:/Meu Drive/Acadêmico - Mestrado/Mercado de Capitais/artigo mercap/planilhas PCA etc/payoff.xlsx")
 View(payoff)
 pca_month <- read_excel("G:/Meu Drive/Acadêmico - Mestrado/Mercado de Capitais/artigo mercap/planilhas PCA etc/pca_month.xlsx")
