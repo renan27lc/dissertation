@@ -22,8 +22,9 @@ yields_lastday_rwnms<-column_to_rownames(yields_lastday_df_asDate,var = "DATE")
 A<-yields_lastday_rwnms[2:199, 1:23]
 B<-yields_lastday_rwnms[1:198, 2:24]
 C<-as.data.frame(yields_lastday_rwnms[1:198,1])      #risk free
-P<-Maturities[1:23]
-Q<-Maturities[2:24]
+P<-as.data.frame(Maturities[1:23])
+Q<-as.data.frame(Maturities[2:24])
+
 
 P_rep<-t(as.data.frame(rep(P[1],198)))
 Q_rep<-t(as.data.frame(rep(Q[1],198)))
