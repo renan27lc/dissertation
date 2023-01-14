@@ -1,1 +1,13 @@
-lm_M3<-lm(payoff$M3 ~ pca_month$Comp.1 + pca_month$Comp.2 + pca_month$Comp.3 + pca_month$Comp.4 + pca_month$Comp.5)
+
+
+
+pca_yields_scores_clmn<-bind_cols(dates_asDate,pca_yields_scores_clmn)
+pca_yields_scores_clmn<-pca_yields_scores_clmn[,-2]
+colnames(pca_yields_scores_clmn)[1]<-"DATE"
+pca_yields_scores_lastday<-inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE")
+pca_yields_scores_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE"),var = "DATE")
+
+lm_M3<-lm(r_xs$M3 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] +    pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
+lm_M6<-lm(r_xs$M6 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
+lm_M9<-lm(r_xs$M9 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
+lm_M12<-lm(r_xs$M12 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
