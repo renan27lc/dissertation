@@ -1,3 +1,19 @@
+#https://www.rdocumentation.org/packages/vars/versions/1.5-6/topics/VAR
+library("vars")
+
+var.pc<-VAR(pca_yields_scores[,1:5], p = 1, type = "none",ic = "SC")
+var.pc.df1<-VAR(pc.df1[,1:5], p = 1, type = "none",ic = "SC")
+VAR(as.data.frame(diff(as.matrix(pca_month[,2:6], lag = 1))), p = 1, type = "none",ic = "SC")
+
+
+
+#=============
+OLD
+#=============
+
+
+
+
 
 #https://www.rdocumentation.org/packages/vars/versions/1.5-6/topics/VAR
 library("vars")
