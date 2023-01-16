@@ -1,0 +1,7 @@
+
+#matriz ^V (A14)
+res_var1_pc1<-as.data.frame(var1_pc_lastday$varresult$Comp.1$residuals)
+res_var1_pc2<-as.data.frame(var1_pc_lastday$varresult$Comp.2$residuals)
+res_var1_pc3<-as.data.frame(var1_pc_lastday$varresult$Comp.3$residuals)
+res_var1_pc4<-as.data.frame(var1_pc_lastday$varresult$Comp.4$residuals)
+res_var1_pc5<-as.data.frame(var1_pc_lastday$varresult$Comp.5$residuals)
