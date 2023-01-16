@@ -12,7 +12,7 @@ res_var1_pc3_mx<-as.matrix(var1_pc_lastday$varresult$Comp.3$residuals)
 res_var1_pc4_mx<-as.matrix(var1_pc_lastday$varresult$Comp.4$residuals)
 res_var1_pc5_mx<-as.matrix(var1_pc_lastday$varresult$Comp.5$residuals)
 
-
+#Covariance matrix of residuals - vars::VAR()
 cov11<-crossprod(res_var1_pc1_mx,res_var1_pc1_mx)/192 #degrees of freedom
 cov12<-crossprod(res_var1_pc1_mx,res_var1_pc2_mx)/192
 cov12<-crossprod(res_var1_pc1_mx,res_var1_pc2_mx)/192
