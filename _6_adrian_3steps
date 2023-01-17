@@ -19,3 +19,17 @@ cov12<-crossprod(res_var1_pc1_mx,res_var1_pc2_mx)/192
 cov12<-crossprod(res_var1_pc1_mx,res_var1_pc2_mx)/192
 
  
+#X_<-t((pca_yields_scores_lastday)[1:198,1:5])
+pca_yields_loadings_clmn<-bind_cols(dates_asDate,rownames_to_column(pca_yields_loadings))
+pca_yields_loadings_clmn<-pca_yields_loadings_clmn[,-2]
+colnames(pca_yields_loadings_clmn)[1]<-"Maturity"
+pca_yields_loadings_lastday<-inner_join(last_days_asDate,pca_yields_loadings_clmn, by = "DATE")
+pca_yields_loadings_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yields_loadings_clmn, by = "DATE"),var = "DATE")
+
+pca_yields_loadings_clmn<-bind_cols(dates_asDate,pca_yields_scores_clmn)
+pca_yields_scores_clmn<-pca_yields_scores_clmn[,-2]
+colnames(pca_yields_scores_clmn)[1]<-"DATE"
+pca_yields_scores_lastday<-inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE")
+pca_yields_scores_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE"),var = "DATE")
+
+# explorar:   summary(lm_pc5)$coef
