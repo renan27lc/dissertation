@@ -44,16 +44,25 @@ ytm_ini<-as.data.frame(A*P_rep)
 ytm_ini<-as.data.frame(B*Q_rep)
 
 rownames(ytm_fin)<-rownames(A)
-rownames(ytm_ini)<-rownames(B)
-rownames(rf)<-rownames(B)
 colnames(ytm_fin)<-colnames(A)
+rownames(ytm_ini)<-rownames(B)
 colnames(ytm_ini)<-colnames(B)
 colnames(rf)<-colnames(B)
+rownames(rf)<-rownames(B)
 
 payoff<- ytm_ini - ytm_fin
+rownames(payoff)<-rownames(ytm_fin)
+colnames(payoff)<-colnames(ytm_fin)
+
+
 r_xs<- payoff - rf
+rownames(r_xs)<-rownames(ytm_fin)
+colnames(r_xs)<-colnames(ytm_fin)
+
 
 r_xp<-ytm_ini+rf
+rownames(r_xp)<-rownames(ytm_ini)
+colnames(r_xp)<-colnames(ytm_ini)
 
 
 
