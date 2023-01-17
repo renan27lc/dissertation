@@ -33,3 +33,4 @@ pca_yields_scores_lastday<-inner_join(last_days_asDate,pca_yields_scores_clmn, b
 pca_yields_scores_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE"),var = "DATE")
 
 # explorar:   summary(lm_pc5)$coef
+# explorar:   pairs(ami_data)
