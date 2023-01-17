@@ -1,7 +1,7 @@
 
 
 
-pca_yields_scores_clmn<-bind_cols(dates_asDate,pca_yields_scores_clmn)
+pca_yields_scores_clmn<-bind_cols(dates_asDate,rownames_to_column(pca_yields_scores))
 pca_yields_scores_clmn<-pca_yields_scores_clmn[,-2]
 colnames(pca_yields_scores_clmn)[1]<-"DATE"
 pca_yields_scores_lastday<-inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE")
