@@ -34,21 +34,26 @@ pca_yields_scores_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yi
 
 # explorar:   summary(lm_pc5)$coef
 
-> X__transp<-as.data.frame(t(X_))
-> V_transp<-as.data.frame(t(V))
-> r_xs_6M<-cbind(r_xs)[c(1,3,6,12,18,23)]
-r_xs_6M<-cbind(r_xs)[c(2,3,6,12,18,23)]
+X__transp<-as.data.frame(t(X_))
+V_transp<-as.data.frame(t(V))
+#r_xs_6M<-cbind(r_xs)[c(2,3,6,12,18,23)]
+r_xs_6M<-cbind(r_xs)[c(1,3,6,9,12,18)]
 lm(r_xs_6M$M1 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5)
 summary(lm(r_xs_6M$M1 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5))
-summary(lm(r_xs_6M$M1 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
 summary(lm(r_xs_6M$M1 ~  X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
 summary(lm(r_xs_6M$M3 ~  X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
-summary(lm(r_xs_6M$M3 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
-summary(lm(r_xs_6M$M6 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
-summary(lm(r_xs_6M$M9 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
-summary(lm(r_xs_6M$M12 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
-summary(lm(r_xs_6M$M18 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
-summary(lm(r_xs_6M$M23 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
+
+lm_A14_M1<-lm(r_xs_6M$M1 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+lm_A14_M3<-lm(r_xs_6M$M3 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+lm_A14_M6<-lm(r_xs_6M$M6 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+lm_A14_M9<-lm(r_xs_6M$M9 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+lm_A14_M12<-lm(r_xs_6M$M12 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+lm_A14_M18<-lm(r_xs_6M$M18 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+#lm_A14_M23<-lm(r_xs_6M$M23 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+
+E_chapeu<-as.data.frame(cbind(lm_A14_M1$residuals,lm_A14_M3$residuals,lm_A14_M6$residuals,lm_A14_M9$residuals,lm_A14_M12$residuals,lm_A14_M18$residuals))
+sig2_chapeu<-sum(diag((crossprod(as.matrix((E_chapeu))))))/198*6
+
 
 
 
