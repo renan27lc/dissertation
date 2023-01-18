@@ -314,7 +314,83 @@ Error in solve.default(betabeta1 - 2 * betabeta3) :
 > solve(12)*12
      [,1]
 [1,]    1
-
+beta_hat<-cbind(c(beta1,beta3,beta6,beta9,beta12,beta18))
+> View(beta_hat)
+> beta_hat<-cbind(as.data.frame(c(beta1,beta3,beta6,beta9,beta12,beta18)))
+> c1<-as.data.frame(lm_A14_M1$coefficients[7:11])
+> c3<-as.data.frame(lm_A14_M3$coefficients[7:11])
+> c6<-as.data.frame(lm_A14_M6$coefficients[7:11])
+> c9<-as.data.frame(lm_A14_M9$coefficients[7:11])
+> c12<-as.data.frame(lm_A14_M12$coefficients[7:11])
+> c18<-as.data.frame(lm_A14_M18$coefficients[7:11])
+> c_hat<-cbind(as.data.frame(c(c1,c3,c6,c9,c12,c18)))
+> crossprod(beta_hat,beta_hat)
+Error in crossprod(x, y) : 
+  requires numeric/complex matrix/vector arguments
+> crossprod(as.matrix(beta_hat,beta_hat))
+Error in if (rownames.force %in% FALSE) NULL else if (rownames.force %in%  : 
+  the condition has length > 1
+> crossprod(as.matrix(beta_hat),as.matrix(beta_hat))
+                             lm_A14_M1.coefficients.2.6. lm_A14_M3.coefficients.2.6.
+lm_A14_M1.coefficients.2.6.                    1.2711515                   0.1606478
+lm_A14_M3.coefficients.2.6.                    0.1606478                   1.7629743
+lm_A14_M6.coefficients.2.6.                   -0.5349398                   2.1924569
+lm_A14_M9.coefficients.2.6.                   -0.3698182                   0.8785888
+lm_A14_M12.coefficients.2.6.                   0.1204936                  -0.8865006
+lm_A14_M18.coefficients.2.6.                   0.8559556                  -1.0686888
+                             lm_A14_M6.coefficients.2.6. lm_A14_M9.coefficients.2.6.
+lm_A14_M1.coefficients.2.6.                   -0.5349398                  -0.3698182
+lm_A14_M3.coefficients.2.6.                    2.1924569                   0.8785888
+lm_A14_M6.coefficients.2.6.                    6.1180354                   5.1192229
+lm_A14_M9.coefficients.2.6.                    5.1192229                   8.4873654
+lm_A14_M12.coefficients.2.6.                   1.1984692                   9.2895155
+lm_A14_M18.coefficients.2.6.                  -3.1316512                   2.6859807
+                             lm_A14_M12.coefficients.2.6. lm_A14_M18.coefficients.2.6.
+lm_A14_M1.coefficients.2.6.                     0.1204936                    0.8559556
+lm_A14_M3.coefficients.2.6.                    -0.8865006                   -1.0686888
+lm_A14_M6.coefficients.2.6.                     1.1984692                   -3.1316512
+lm_A14_M9.coefficients.2.6.                     9.2895155                    2.6859807
+lm_A14_M12.coefficients.2.6.                   17.3467222                   13.2097511
+lm_A14_M18.coefficients.2.6.                   13.2097511                   28.8019974
+> crossprod(t(beta_hat),t(beta_hat))
+          [,1]      [,2]      [,3]      [,4]      [,5]
+[1,] 24.771296 -9.734099 -8.736687  5.832534 -8.006772
+[2,] -9.734099 12.468048 -1.434009 -4.788363  9.538094
+[3,] -8.736687 -1.434009 12.604107 -2.994290 -0.549226
+[4,]  5.832534 -4.788363 -2.994290  4.866757 -5.003535
+[5,] -8.006772  9.538094 -0.549226 -5.003535  9.078038
+> solve(crossprod(t(beta_hat),t(beta_hat)))
+           [,1]        [,2]       [,3]        [,4]        [,5]
+[1,] 0.11327114  0.08490598 0.10836142  0.07429573  0.05820103
+[2,] 0.08490598  0.49093567 0.08837858 -0.02809736 -0.45106819
+[3,] 0.10836142  0.08837858 0.23861753  0.28046177  0.17173503
+[4,] 0.07429573 -0.02809736 0.28046177  0.86886094  0.59090707
+[5,] 0.05820103 -0.45106819 0.17173503  0.59090707  0.97149611
+> crossprod(beta_hat,c_hat)
+Error in crossprod(x, y) : 
+  requires numeric/complex matrix/vector arguments
+> crossprod(t(beta_hat),t(c_hat)
++ 
+> crossprod(t(beta_hat),t(c_hat))
+            [,1]      [,2]       [,3]      [,4]       [,5]
+[1,] -0.35311358 -6.706352 -27.718351 23.238838 -36.566821
+[2,]  0.17872211  2.711256  13.492559 -8.074886  26.499244
+[3,]  0.10519640  2.371131   7.919011 -6.365798   5.309014
+[4,] -0.09658886 -1.655844  -7.261183  4.869961  -9.751824
+[5,]  0.14459673  2.267420  10.985573 -7.130986  18.852153
+> crossprod(solve(crossprod(t(beta_hat),t(beta_hat))),crossprod(t(beta_hat),t(c_hat)))
+              [,1]         [,2]        [,3]       [,4]       [,5]
+[1,] -0.0121842344 -0.263551171 -1.03607833  1.2036633 -0.9440333
+[2,]  0.0045476215 -0.005036235  0.21917355  0.5259941  2.1442797
+[3,]  0.0003758589  0.003694991 -0.07140853  0.4267534  0.1489176
+[4,] -0.0002319447 -0.008284455 -0.03498604  0.1856353  0.6945494
+[5,]  0.0002985871  0.018268229  0.04242749 -0.1484123 -0.6170778
+> lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat),t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
+> View(lambda1_hat)
+> #============== lambda0_hat ============
+> lambda0_hat
+Error: object 'lambda0_hat' not found
+> 
 #======================PA==========================
 
 
