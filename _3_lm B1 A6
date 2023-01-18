@@ -4,6 +4,7 @@ lm_B1A6_M3<-lm(formula = ytm_fin$M3 ~ r_xp$M3)
 lm_B1A6_M6<-lm(formula = ytm_fin$M6 ~ r_xp$M6)
 lm_B1A6_M9<-lm(formula = ytm_fin$M9 ~ r_xp$M9)
 lm_B1A6_M12<-lm(formula = ytm_fin$M12 ~ r_xp$M12)
+lm_B1A6_M18<-lm(formula = ytm_fin$M18 ~ r_xp$M18)
 
 
 #========================OLD===================#
