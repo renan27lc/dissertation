@@ -171,6 +171,149 @@ Error in .data.frame(cbind(as.vector(betabeta1), as.vector(betabeta3),  :
   could not find function ".data.frame"
 > B_ast<-as.data.frame(cbind(as.vector(betabeta1),as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta18)))
 > 
+> # estimando parâmetros A14:
+> lm_A14_M1<-lm(r_xs_6M$M1 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> lm_A14_M3<-lm(r_xs_6M$M3 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> lm_A14_M6<-lm(r_xs_6M$M6 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> lm_A14_M9<-lm(r_xs_6M$M9 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> lm_A14_M12<-lm(r_xs_6M$M12 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> lm_A14_M18<-lm(r_xs_6M$M18 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> #lm_A14_M23<-lm(r_xs_6M$M23 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> 
+> E_hat<-as.data.frame(cbind(lm_A14_M1$residuals,lm_A14_M3$residuals,lm_A14_M6$residuals,lm_A14_M9$residuals,lm_A14_M12$residuals,lm_A14_M18$residuals))
+> sig2_hat<-sum(diag((crossprod(as.matrix((E_hat))))))/(192*6)
+> 
+> 
+> 
+> summary(lm_A14_M1)
+
+Call:
+lm(formula = r_xs_6M$M1 ~ V_transp$Comp.1 + V_transp$Comp.2 + 
+    V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + 
+    X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + 
+    X__transp$Comp.5)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-2.768e-03 -2.277e-04  4.395e-05  2.485e-04  9.115e-04 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)       4.252e-04  3.086e-05  13.782  < 2e-16 ***
+V_transp$Comp.1  -2.343e-01  4.473e-03 -52.374  < 2e-16 ***
+V_transp$Comp.2  -4.780e-01  1.122e-02 -42.609  < 2e-16 ***
+V_transp$Comp.3  -5.628e-01  2.051e-02 -27.445  < 2e-16 ***
+V_transp$Comp.4  -7.971e-01  2.105e-02 -37.873  < 2e-16 ***
+V_transp$Comp.5   1.886e-01  4.603e-02   4.096 6.25e-05 ***
+X__transp$Comp.1  6.344e-04  1.882e-04   3.371 0.000911 ***
+X__transp$Comp.2  7.277e-02  1.645e-03  44.247  < 2e-16 ***
+X__transp$Comp.3  2.143e-01  7.627e-03  28.094  < 2e-16 ***
+X__transp$Comp.4 -9.539e-01  1.666e-02 -57.249  < 2e-16 ***
+X__transp$Comp.5 -1.556e+00  3.951e-02 -39.379  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.0004325 on 187 degrees of freedom
+Multiple R-squared:  0.991,	Adjusted R-squared:  0.9905 
+F-statistic:  2064 on 10 and 187 DF,  p-value: < 2.2e-16
+
+> lm_A14_M1$coefficients["V_transp$Comp.1"]
+V_transp$Comp.1 
+     -0.2342672 
+> 
+> lm_A14_M1$coefficients["V_transp$Comp.1"]
+V_transp$Comp.1 
+     -0.2342672 
+> lm_A14_M1$coefficients
+     (Intercept)  V_transp$Comp.1  V_transp$Comp.2  V_transp$Comp.3  V_transp$Comp.4 
+    0.0004252340    -0.2342672200    -0.4780357650    -0.5628167550    -0.7971380481 
+ V_transp$Comp.5 X__transp$Comp.1 X__transp$Comp.2 X__transp$Comp.3 X__transp$Comp.4 
+    0.1885746067     0.0006343942     0.0727727320     0.2142813868    -0.9539453161 
+X__transp$Comp.5 
+   -1.5556830138 
+> beta1<-lm_A14_M1$coefficients[2:6]
+> View(beta1)
+> beta1<-as.data.frame(lm_A14_M1$coefficients[2:6])
+> beta3<-as.data.frame(lm_A14_M3$coefficients[2:6])
+> beta6<-as.data.frame(lm_A14_M6$coefficients[2:6])
+> beta9<-as.data.frame(lm_A14_M9$coefficients[2:6])
+> beta12<-as.data.frame(lm_A14_M12$coefficients[2:6])
+> beta18<-as.data.frame(lm_A14_M18$coefficients[2:6])
+> betabeta1<-crossprod(beta1)
+Error in crossprod(x, y) : 
+  requires numeric/complex matrix/vector arguments
+> betabeta1<-crossprod(beta1,beta1)
+Error in crossprod(x, y) : 
+  requires numeric/complex matrix/vector arguments
+> betabeta1<-crossprod(as.matrix(beta1),as.matrix(beta1))
+> View(betabeta1)
+> betabeta1<-crossprod(t(beta1),t(beta1))
+> 
+> 
+> betabeta3<-crossprod(t(lm_A14_M3$coefficients[2:6]),t(lm_A14_M3$coefficients[2:6]))
+> View(betabeta3)
+> View(betabeta1)
+> View(crossprod(t(lm_A14_M1$coefficients[2:6]),t(lm_A14_M1$coefficients[2:6]))
++ 
+> View(crossprod(t(lm_A14_M1$coefficients[2:6]),t(lm_A14_M1$coefficients[2:6])))
+> betabeta1<-(crossprod(t(lm_A14_M1$coefficients[2:6]),t(lm_A14_M1$coefficients[2:6])))
+> betabeta6<-(crossprod(t(lm_A14_M6$coefficients[2:6]),t(lm_A14_M6$coefficients[2:6])))
+> betabeta9<-(crossprod(t(lm_A14_M9$coefficients[2:6]),t(lm_A14_M9$coefficients[2:6])))
+> betabeta12<-(crossprod(t(lm_A14_M12$coefficients[2:6]),t(lm_A14_M12$coefficients[2:6])))
+> betabeta18<-(crossprod(t(lm_A14_M18$coefficients[2:6]),t(lm_A14_M18$coefficients[2:6])))
+> View(vec(betabeta1))
+Error in View : could not find function "vec"
+> View(vector(betabeta1))
+Error in View : invalid 'mode' argument
+> View(as.vector(betabeta1))
+> View(as.data.frame(as.vector(betabeta1)))
+> B_ast<-cbind(c(as.data.frame(as.vector(betabeta1),as.data.frame(as.vector(betabeta),as.data.frame(as.vector(betabeta6),as.data.frame(as.vector(betabeta9),as.data.frame(as.vector(betabeta12),as.data.frame(as.vector(betabeta18)))
++ 
+> B_ast<-cbind(c(as.data.frame(as.vector(betabeta1),as.data.frame(as.vector(betabeta),as.data.frame(as.vector(betabeta6),as.data.frame(as.vector(betabeta9),as.data.frame(as.vector(betabeta12),as.data.frame(as.vector(betabeta18))))
++ 
+> 
+> B_ast<-cbind(c(as.data.frame(as.vector(betabeta1)),as.data.frame(as.vector(betabeta)),as.data.frame(as.vector(betabeta6)),as.data.frame(as.vector(betabeta9)),as.data.frame(as.vector(betabeta12)),as.data.frame(as.vector(betabeta18))))
+Error in as.vector(betabeta) : object 'betabeta' not found
+> B_ast<-cbind(c(as.data.frame(as.vector(betabeta1)),as.data.frame(as.vector(betabeta3)),as.data.frame(as.vector(betabeta6)),as.data.frame(as.vector(betabeta9)),as.data.frame(as.vector(betabeta12)),as.data.frame(as.vector(betabeta18))))
+> View(B_ast)
+> B_ast<-cbind(c(as.data.frame(betabeta1),as.data.frame(betabeta3),as.data.frame(betabeta6),as.data.frame(betabeta9),as.data.frame(betabeta12),as.data.frame(betabeta18)))
+> B_ast<-cbind(as.data.frame(betabeta1),as.data.frame(betabeta3),as.data.frame(betabeta6),as.data.frame(betabeta9),as.data.frame(betabeta12),as.data.frame(betabeta18))
+> B_ast<-cbind(as.matrix(betabeta1),as.matrix(betabeta3),as.matrix(betabeta6),as.matrix(betabeta9),as.matrix(betabeta12),as.matrix(betabeta18))
+> B_ast<-cbind(as.vector.data.frame(betabeta1),as.vector.data.frame(betabeta3),as.vector.data.frame(betabeta6),as.vector.data.frame(betabeta9),as.vector.data.frame(betabeta12),as.vector.data.frame(betabeta18))
+> B_ast<-.data.frame(cbind(as.vector(betabeta1),as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta18))
++ 
+> B_ast<-.data.frame(cbind(as.vector(betabeta1),as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta18)))
+Error in .data.frame(cbind(as.vector(betabeta1), as.vector(betabeta3),  : 
+  could not find function ".data.frame"
+> B_ast<-as.data.frame(cbind(as.vector(betabeta1),as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta18)))
+> #===== agora calcular o vec(Sigma)
+> vec_Sigma<-as.data.frame(as.vector(Sigma_hat))
+> inv(B_ast)
+Error in inv(B_ast) : could not find function "inv"
+> library(matlib)
+Error in library(matlib) : there is no package called ‘matlib’
+> install.packages(matlib)
+Error in install.packages : object 'matlib' not found
+> solve(B_ast)
+Error in solve.default(B_ast) : 'a' (25 x 6) must be square
+> solve(betabeta1)
+Error in solve.default(betabeta1) : 
+  Lapack routine dgesv: system is exactly singular: U[3,3] = 0
+> solve(betabeta1-betabeta2)
+Error in solve(betabeta1 - betabeta2) : object 'betabeta2' not found
+> solve(betabeta1-betabeta3)
+Error in solve.default(betabeta1 - betabeta3) : 
+  system is computationally singular: reciprocal condition number = 1.5531e-18
+> solve(betabeta1-2*betabeta3)
+Error in solve.default(betabeta1 - 2 * betabeta3) : 
+  system is computationally singular: reciprocal condition number = 1.88423e-18
+> ?solve
+> solve(12)
+           [,1]
+[1,] 0.08333333
+> solve(12)*12
+     [,1]
+[1,]    1
 
 #======================PA==========================
 
