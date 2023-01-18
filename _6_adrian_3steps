@@ -1,24 +1,12 @@
 
-#df ^V (A14)
-
-var1_pc_lastday <- VAR(pca_yields_scores_lastday[,1:5], p = 1, type = "const",ic = "SC")
-
-X<-as.matrix(var1_pc_lastday$varresult$Comp.1$residuals)
-
 X_<-t((pca_yields_scores_lastday)[1:198,1:5])
 V<-t(residuals(var1_pc_lastday))
 it<-as.data.frame(rep(1, 198))
-View(V)
 r_xs_transp<-(t(r_xs))
 
-pairs(pca_yields_loadings_lastday)
-pca_yields_loadings_clmn<-bind_cols(dates_asDate,rownames_to_column(pca_yields_loadings))
-
-
-#Covariance matrix of residuals - vars::VAR()
+# Covariance matrix of residuals - vars::VAR()
 Sigma_hat<-crossprod(as.matrix(residuals(var1_pc_lastday)))/192
  
-#X_<-t((pca_yields_scores_lastday)[1:198,1:5])
 pca_yields_loadings_clmn<-bind_cols(dates_asDate,rownames_to_column(pca_yields_loadings))
 pca_yields_loadings_clmn<-pca_yields_loadings_clmn[,-2]
 colnames(pca_yields_loadings_clmn)[1]<-"Maturity"
@@ -49,14 +37,20 @@ E_hat<-as.data.frame(cbind(lm_A14_M1$residuals,lm_A14_M3$residuals,lm_A14_M6$res
 sig2_hat<-sum(diag((crossprod(as.matrix((E_hat))))))/(192*6)
 
 
+
+#======================PA==========================
+
+
+
 # PA: avaliar diferença do separado e junto
 # summary(lm(r_xs_6M$M1 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5))
 # summary(lm(r_xs_6M$M1 ~  X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
 # summary(lm_A14_M1)
 # ummary(lm(r_xs_6M$M3 ~  X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5))
 
-# PA: explorar summary(lm_pc5)$coef
+# PA: explorar:
+#summary(lm_pc5)$coef 
+#pairs(pca_yields_loadings_lastday)
+
 
 #======================OLD==========================
-
-
