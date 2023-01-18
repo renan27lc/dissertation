@@ -1,23 +1,8 @@
 
 #df ^V (A14)
-res_var1_pc1<-as.data.frame(var1_pc_lastday$varresult$Comp.1$residuals)
-res_var1_pc2<-as.data.frame(var1_pc_lastday$varresult$Comp.2$residuals)
-res_var1_pc3<-as.data.frame(var1_pc_lastday$varresult$Comp.3$residuals)
-res_var1_pc4<-as.data.frame(var1_pc_lastday$varresult$Comp.4$residuals)
-res_var1_pc5<-as.data.frame(var1_pc_lastday$varresult$Comp.5$residuals)
-
-res_var1_pc1_mx<-as.matrix(var1_pc_lastday$varresult$Comp.1$residuals)
-res_var1_pc2_mx<-as.matrix(var1_pc_lastday$varresult$Comp.2$residuals)
-res_var1_pc3_mx<-as.matrix(var1_pc_lastday$varresult$Comp.3$residuals)
-res_var1_pc4_mx<-as.matrix(var1_pc_lastday$varresult$Comp.4$residuals)
-res_var1_pc5_mx<-as.matrix(var1_pc_lastday$varresult$Comp.5$residuals)
-#PA tentar substituir por: residuals(var1_pc_lastday)
 
 #Covariance matrix of residuals - vars::VAR()
-cov11<-crossprod(res_var1_pc1_mx,res_var1_pc1_mx)/192 #degrees of freedom
-cov12<-crossprod(res_var1_pc1_mx,res_var1_pc2_mx)/192
-cov12<-crossprod(res_var1_pc1_mx,res_var1_pc2_mx)/192
-
+Sigma_hat<-crossprod(as.matrix(residuals(var1_pc_lastday)))/192
  
 #X_<-t((pca_yields_scores_lastday)[1:198,1:5])
 pca_yields_loadings_clmn<-bind_cols(dates_asDate,rownames_to_column(pca_yields_loadings))
