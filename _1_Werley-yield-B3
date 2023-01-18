@@ -90,6 +90,20 @@ yields
 
 
 
+#========================73M========================
+
+
+# Example
+Initial_Date = '2006/01/01' # Available from 2003/08/08. YYYY/MM/DD 
+Final_Date = '2022/08/08'
+73Maturities = c(1:73)
+
+yields73M = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=73Maturities)
+yields73M
+
+
+
+
 ###############artigo-mercap####################
 
 
