@@ -7,6 +7,7 @@ var1_pc_S5<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",season = 5, ic = 
 
 var1_pc_lastday <- VAR(pca_yields_scores_lastday[,1:5], p = 1, type = "const",ic = "SC")
 
+X<-as.matrix(var1_pc_lastday$varresult$Comp.1$residuals)
 
 # fiz isso para tratar o fato do var1_lastday ser I(1): VAR(as.data.frame(diff(as.matrix(pca_month[,2:6], lag = 1))), p = 1, type = "const",ic = "SC")
 
