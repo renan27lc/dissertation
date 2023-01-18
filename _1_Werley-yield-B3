@@ -45,7 +45,8 @@ Final_Date = '2022/08/08'
 Maturities = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24)
 
 yields = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
-yields
+
+plot(colMeans(yields))
 
 #======================== 73M ========================
 
@@ -54,8 +55,8 @@ Final_Date = '2022/08/08'
 73Maturities = c(1:73)
 
 yields73M = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=73Maturities)
-yields73M
 
+plot(colMeans(yields73M))
 
 #========================ORIGINAL WERLEY========================
 
