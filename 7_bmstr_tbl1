@@ -1,118 +1,23 @@
-
 lm_rxs_parameters<-t(data.frame(summary_lm_B1A6_M2$coefficients$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))
 
- lm_rxs_parameters<-t(data.frame(lm_B1A6_M2$coefficients,lm_B1A6_M3$coefficients,lm_B1A6_M6$coefficients,lm_B1A6_M9$coefficients,lm_B1A6_M12$coefficients,lm_B1A6_M18$coefficients))
+lm_rxs_parameters<-t(data.frame(lm_B1A6_M2$coefficients,lm_B1A6_M3$coefficients,lm_B1A6_M6$coefficients,lm_B1A6_M9$coefficients,lm_B1A6_M12$coefficients,lm_B1A6_M18$coefficients))
 
-
-> summary_lm_B1A6_M18<-summary(lm_B1A6_M18)
-> summary_lm_B1A6_M12<-summary(lm_B1A6_M12)
-> summary_lm_B1A6_M9<-summary(lm_B1A6_M9)
-> summary_lm_B1A6_M6<-summary(lm_B1A6_M6)
-> summary_lm_B1A6_M3<-summary(lm_B1A6_M3)
-> summary_lm_B1A6_M2<-summary(lm_B1A6_M2)
-> summary_lm_B1A6_M2$adj.r.squared
-[1] 0.986329
-> summary_lm_B1A6_M18$adj.r.squared
-[1] 0.9717548
-> lm_rxs_adjRsqr<-t(data.frame(summary_lm_B1A6_M2$adj.r.squared,summary_lm_B1A6_M3$adj.r.squared,summary_lm_B1A6_M6$adj.r.squared,summary_lm_B1A6_M9$adj.r.squared,summary_lm_B1A6_M12$adj.r.squared,summary_lm_B1A6_M18$adj.r.squared))
-> View(lm_rxs_adjRsqr)
-> View(cbind(lm_rxs_parameters,lm_rxs_adjRsqr)
-+ )
-> bmstr_tbl1<-cbind(lm_rxs_parameters,lm_rxs_adjRsqr)
-> colnames(bmstr_tbl1)[1]<-"intercept"
-> colnames(bmstr_tbl1)[2]<-"beta"
-> View(bmstr_tbl1)
-> colnames(bmstr_tbl1)[3]<-"R2"
-> colnames(bmstr_tbl1)[3]<-"R_squared"
-> 
-summary(lm_B1A6_M2)
-
-Call:
-lm(formula = ytm_fin$M2 ~ r_xp$M2)
-
-Residuals:
-       Min         1Q     Median         3Q        Max 
--0.0210483 -0.0047519 -0.0003636  0.0045322  0.0311641 
-
-Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept) 0.002346   0.001713   1.369    0.172    
-r_xp$M2     0.657930   0.005518 119.223   <2e-16 ***
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 0.008126 on 196 degrees of freedom
-Multiple R-squared:  0.9864,	Adjusted R-squared:  0.9863 
-F-statistic: 1.421e+04 on 1 and 196 DF,  p-value: < 2.2e-16
-
-> summary_lm_B1A6_M12$coefficients
-              Estimate Std. Error   t value      Pr(>|t|)
-(Intercept) 0.01987292 0.01378378  1.441761  1.509658e-01
-r_xp$M12    0.90831404 0.01009066 90.015329 2.178705e-161
-> t(data.frame(summary_lm_B1A6_M2$coefficients$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))
-Error in summary_lm_B1A6_M2$coefficients$coefficients : 
-  $ operator is invalid for atomic vectors
-> t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))
-             (Intercept)       r_xp$M2
-Estimate     0.002346370  6.579299e-01
-Std..Error   0.001713363  5.518493e-03
-t.value      1.369453063  1.192227e+02
-Pr...t..     0.172424728 7.080160e-185
-Estimate.1   0.003873556  7.394107e-01
-Std..Error.1 0.002686178  6.482833e-03
-t.value.1    1.442032656  1.140567e+02
-Pr...t...1   0.150889124 3.693234e-181
-Estimate.2   0.008613016  8.445914e-01
-Std..Error.2 0.005970165  8.198098e-03
-t.value.2    1.442676280  1.030228e+02
-Pr...t...2   0.150707842 1.220451e-172
-Estimate.3   0.013749726  8.864570e-01
-Std..Error.3 0.009642814  9.223590e-03
-t.value.3    1.425903865  9.610758e+01
-Pr...t...3   0.155486821 7.703409e-167
-Estimate.4   0.019872917  9.083140e-01
-Std..Error.4 0.013783783  1.009066e-02
-t.value.4    1.441760770  9.001533e+01
-Pr...t...4   0.150965754 2.178705e-161
-Estimate.5   0.035435591  9.298104e-01
-Std..Error.5 0.022804241  1.129336e-02
-t.value.5    1.553903580  8.233245e+01
-Pr...t...5   0.121820627 5.462462e-154
-> 
-> data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)
-              Estimate  Std..Error    t.value      Pr...t..  Estimate.1 Std..Error.1  t.value.1
-(Intercept) 0.00234637 0.001713363   1.369453  1.724247e-01 0.003873556  0.002686178   1.442033
-r_xp$M2     0.65792986 0.005518493 119.222742 7.080160e-185 0.739410697  0.006482833 114.056727
-               Pr...t...1  Estimate.2 Std..Error.2  t.value.2    Pr...t...2 Estimate.3
-(Intercept)  1.508891e-01 0.008613016  0.005970165   1.442676  1.507078e-01 0.01374973
-r_xp$M2     3.693234e-181 0.844591361  0.008198098 103.022848 1.220451e-172 0.88645697
-            Std..Error.3 t.value.3    Pr...t...3 Estimate.4 Std..Error.4 t.value.4    Pr...t...4
-(Intercept)  0.009642814  1.425904  1.554868e-01 0.01987292   0.01378378  1.441761  1.509658e-01
-r_xp$M2      0.009223590 96.107583 7.703409e-167 0.90831404   0.01009066 90.015329 2.178705e-161
-            Estimate.5 Std..Error.5 t.value.5    Pr...t...5
-(Intercept) 0.03543559   0.02280424  1.553904  1.218206e-01
-r_xp$M2     0.92981043   0.01129336 82.332452 5.462462e-154
-> 
-> View(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))
-> 
-> 
-> 
-> 
-> (data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[1,1]
-+ 
-+ 
-> (data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[1,1]
-[1] 0.00234637
-> 
-> (data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[1,seq(4,24,by=4)]
-             Pr...t.. Pr...t...1 Pr...t...2 Pr...t...3 Pr...t...4 Pr...t...5
-(Intercept) 0.1724247  0.1508891  0.1507078  0.1554868  0.1509658  0.1218206
-> 
-> (data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[2,seq(4,24,by=4)]
-            Pr...t..    Pr...t...1    Pr...t...2    Pr...t...3    Pr...t...4    Pr...t...5
-r_xp$M2 7.08016e-185 3.693234e-181 1.220451e-172 7.703409e-167 2.178705e-161 5.462462e-154
-> 
-> View(cbind(bmstr_tbl1,(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[2,seq(4,24,by=4)]))
-> View(cbind(bmstr_tbl1,t((data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[2,seq(4,24,by=4)])))
-> View(cbind(bmstr_tbl1[1],t((data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[2,seq(4,24,by=4)])))
-> 
+summary_lm_B1A6_M18<-summary(lm_B1A6_M18)
+summary_lm_B1A6_M12<-summary(lm_B1A6_M12)
+summary_lm_B1A6_M9<-summary(lm_B1A6_M9)
+summary_lm_B1A6_M6<-summary(lm_B1A6_M6)
+summary_lm_B1A6_M3<-summary(lm_B1A6_M3)
+summary_lm_B1A6_M2<-summary(lm_B1A6_M2)
+lm_rxs_adjRsqr<-t(data.frame(summary_lm_B1A6_M2$adj.r.squared,summary_lm_B1A6_M3$adj.r.squared,summary_lm_B1A6_M6$adj.r.squared,summary_lm_B1A6_M9$adj.r.squared,summary_lm_B1A6_M12$adj.r.squared,summary_lm_B1A6_M18$adj.r.squared))
+bmstr_tbl1<-cbind(lm_rxs_parameters,lm_rxs_adjRsqr)
+colnames(bmstr_tbl1)[1]<-"intercept"
+colnames(bmstr_tbl1)[2]<-"beta"
+colnames(bmstr_tbl1)[3]<-"R_squared"
+t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))
+ 
+data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)
+(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[1,seq(4,24,by=4)]
+(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[2,seq(4,24,by=4)]
+View(cbind(bmstr_tbl1,(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[2,seq(4,24,by=4)]))
+View(cbind(bmstr_tbl1,t((data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[2,seq(4,24,by=4)])))
+View(cbind(bmstr_tbl1[1],t((data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[2,seq(4,24,by=4)])))
