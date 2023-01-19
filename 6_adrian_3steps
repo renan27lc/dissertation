@@ -70,7 +70,7 @@ sig2_hat<-sum(diag((crossprod(as.matrix((E_hat))))))/(192*6)
 > i_6<-as.data.frame(rep(1, 6))
 > i_198<-as.data.frame(rep(1, 198))
 > sigmasq6_hat<-sigmasq_hat*i_6
-> lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix(Basc_Sigma/2))))
+>lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( a_hat + Basc_Sigma/2 + sigmasq6_hat))))
 
 #======================PA==========================
 
