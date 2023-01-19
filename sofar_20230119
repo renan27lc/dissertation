@@ -257,21 +257,21 @@ lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.ma
 #=============== View() summary() ==============
 
 #======== EXCESS RETURNS - EXPECTATION HIPOTHESIS ===========
-# summary(lm_B1A6_M2<-lm(formula = ytm_fin$M2 ~ r_xp$M2))
-# summary(lm_B1A6_M3<-lm(formula = ytm_fin$M3 ~ r_xp$M3))
-# summary(lm_B1A6_M6<-lm(formula = ytm_fin$M6 ~ r_xp$M6))
-# summary(lm_B1A6_M9<-lm(formula = ytm_fin$M9 ~ r_xp$M9))
-# summary(lm_B1A6_M12<-lm(formula = ytm_fin$M12 ~ r_xp$M12))
-# summary(lm_B1A6_M18<-lm(formula = ytm_fin$M18 ~ r_xp$M18))
+# summary(lm_B1A6_M2)
+# summary(lm_B1A6_M3)
+# summary(lm_B1A6_M6)
+# summary(lm_B1A6_M9)
+# summary(lm_B1A6_M12)
+# summary(lm_B1A6_M18)
 
 
 # ===================== LM() EXCESS RETURN ~ PCA ==========================
-# summary(lm_M1<-lm(r_xs$M1 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]))
-# summary(lm_M3<-lm(r_xs$M3 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] +    pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]))
-# summary(lm_M6<-lm(r_xs$M6 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]))
-# summary(lm_M9<-lm(r_xs$M9 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]))
-# summary(lm_M12<-lm(r_xs$M12 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]))
-# summary(lm_M18<-lm(r_xs$M18 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])) 
+# summary(lm_M1)
+# summary(lm_M3)
+# summary(lm_M6)
+# summary(lm_M9)
+# summary(lm_M12)
+# summary(lm_M18)
 
 # ===================== PRICES OF RISK PARAMETERS ==========================
 # View(lambda0_hat)
