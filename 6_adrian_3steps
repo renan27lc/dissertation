@@ -428,6 +428,74 @@ Error: unexpected ')' in "e(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.f
 > 
 > #========= sigmasq_hat =========
 
+325/25
+[1] 13
+> View(E_hat
++ )
+> View(E_est)
+> View(E_chapeu)
+> rm(E_chapeu)
+> rm(E_est)
+ws ]
+> crossprod(as.matrix(E_hat),as.matrix(E_hat))
+              V1            V2            V3            V4            V5            V6
+V1  3.498701e-05 -3.752388e-05  1.683023e-05  6.184546e-05  9.233633e-06 -4.888151e-05
+V2 -3.752388e-05  1.116343e-04 -4.706933e-05 -5.237525e-05 -1.443326e-06  8.132720e-05
+V3  1.683023e-05 -4.706933e-05  1.975100e-04 -1.347440e-04 -9.719517e-05  1.043752e-04
+V4  6.184546e-05 -5.237525e-05 -1.347440e-04  5.563223e-04  1.523650e-05 -1.949777e-04
+V5  9.233633e-06 -1.443326e-06 -9.719517e-05  1.523650e-05  6.303518e-04 -4.577090e-04
+V6 -4.888151e-05  8.132720e-05  1.043752e-04 -1.949777e-04 -4.577090e-04  1.088855e-03
+> tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))
+Error in tr(crossprod(as.matrix(E_hat), as.matrix(E_hat))) : 
+  could not find function "tr"
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+Warning message:
+package ‘dplyr’ was built under R version 4.2.2 
+> tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))
+Error in tr(crossprod(as.matrix(E_hat), as.matrix(E_hat))) : 
+  could not find function "tr"
+> library(psych)
+Error in library(psych) : there is no package called ‘psych’
+> library("psych")
+Error in library("psych") : there is no package called ‘psych’
+> install.packages("psych")
+Installing package into ‘C:/Users/Renan Lessa/AppData/Local/R/win-library/4.2’
+(as ‘lib’ is unspecified)
+also installing the dependency ‘mnormt’
+
+trying URL 'https://cran.rstudio.com/bin/windows/contrib/4.2/mnormt_2.1.1.zip'
+Content type 'application/zip' length 179981 bytes (175 KB)
+downloaded 175 KB
+
+trying URL 'https://cran.rstudio.com/bin/windows/contrib/4.2/psych_2.2.9.zip'
+Content type 'application/zip' length 3821119 bytes (3.6 MB)
+downloaded 3.6 MB
+
+package ‘mnormt’ successfully unpacked and MD5 sums checked
+package ‘psych’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+	C:\Users\Renan Lessa\AppData\Local\Temp\Rtmp4i7FEC\downloaded_packages
+> library("psych")
+Warning message:
+package ‘psych’ was built under R version 4.2.2 
+> tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))
+[1] 0.00261966
+> tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))/(6*198)
+[1] 2.205101e-06
+> sigmasq_hat<-tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))/(6*198)
+
 
 #======================PA==========================
 
