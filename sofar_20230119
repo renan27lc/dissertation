@@ -177,10 +177,12 @@ colnames(pca_yields_scores_clmn)[1]<-"DATE"
 pca_yields_scores_lastday<-inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE")
 pca_yields_scores_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE"),var = "DATE")
 
+lm_M1<-lm(r_xs$M1 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
 lm_M3<-lm(r_xs$M3 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] +    pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
 lm_M6<-lm(r_xs$M6 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
 lm_M9<-lm(r_xs$M9 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
 lm_M12<-lm(r_xs$M12 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
+lm_M18<-lm(r_xs$M18 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
 
 
 # ===================== ADRIAN 3 STEPS ==========================
@@ -243,18 +245,42 @@ c_hat<-cbind(as.data.frame(c(c1,c3,c6,c9,c12,c18)))
 lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat),t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
 
 #============== lambda0_hat ============
+
 Basc_Sigma<-crossprod(as.matrix(B_ast),as.matrix(vec_Sigma))
 betabeta_inv<- solve(crossprod(t(beta_hat),t(beta_hat)))
 betabeta<- crossprod(t(beta_hat),t(beta_hat))
 a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
 
-#========= sigmasq_hat =========
 install.packages("psych")
 library("psych")
 sigmasq_hat<-tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))/(6*198)
 
-#============= lambda0_hat =============
 i_6<-as.data.frame(rep(1, 6))
 i_198<-as.data.frame(rep(1, 198))
 sigmasq6_hat<-sigmasq_hat*i_6
 lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( a_hat + Basc_Sigma/2 + sigmasq6_hat))))
+
+
+#=============== View() summary() ==============
+
+#======== EXCESS RETURNS - EXPECTATION HIPOTHESIS ===========
+# summary(lm_B1A6_M2<-lm(formula = ytm_fin$M2 ~ r_xp$M2))
+# summary(lm_B1A6_M3<-lm(formula = ytm_fin$M3 ~ r_xp$M3))
+# summary(lm_B1A6_M6<-lm(formula = ytm_fin$M6 ~ r_xp$M6))
+# summary(lm_B1A6_M9<-lm(formula = ytm_fin$M9 ~ r_xp$M9))
+# summary(lm_B1A6_M12<-lm(formula = ytm_fin$M12 ~ r_xp$M12))
+# summary(lm_B1A6_M18<-lm(formula = ytm_fin$M18 ~ r_xp$M18))
+
+
+# ===================== LM() EXCESS RETURN ~ PCA ==========================
+# summary(lm_M1<-lm(r_xs$M1 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]))
+# summary(lm_M3<-lm(r_xs$M3 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] +    pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]))
+# summary(lm_M6<-lm(r_xs$M6 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]))
+# summary(lm_M9<-lm(r_xs$M9 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]))
+# summary(lm_M12<-lm(r_xs$M12 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]))
+# summary(lm_M18<-lm(r_xs$M18 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])) 
+
+# ===================== PRICES OF RISK PARAMETERS ==========================
+# View(lambda0_hat)
+# View(lambda1_hat)
+
