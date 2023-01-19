@@ -24,53 +24,53 @@ lm_A14_M18<-lm(r_xs_6M$M18 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3
 E_hat<-as.data.frame(cbind(lm_A14_M1$residuals,lm_A14_M3$residuals,lm_A14_M6$residuals,lm_A14_M9$residuals,lm_A14_M12$residuals,lm_A14_M18$residuals))
 sig2_hat<-sum(diag((crossprod(as.matrix((E_hat))))))/(192*6)
 
-> beta1<-as.data.frame(lm_A14_M1$coefficients[2:6])
-> beta3<-as.data.frame(lm_A14_M3$coefficients[2:6])
-> beta6<-as.data.frame(lm_A14_M6$coefficients[2:6])
-> beta9<-as.data.frame(lm_A14_M9$coefficients[2:6])
-> beta12<-as.data.frame(lm_A14_M12$coefficients[2:6])
-> beta18<-as.data.frame(lm_A14_M18$coefficients[2:6])
+beta1<-as.data.frame(lm_A14_M1$coefficients[2:6])
+beta3<-as.data.frame(lm_A14_M3$coefficients[2:6])
+beta6<-as.data.frame(lm_A14_M6$coefficients[2:6])
+beta9<-as.data.frame(lm_A14_M9$coefficients[2:6])
+beta12<-as.data.frame(lm_A14_M12$coefficients[2:6])
+beta18<-as.data.frame(lm_A14_M18$coefficients[2:6])
 
-> betabeta1<-(crossprod(t(lm_A14_M1$coefficients[2:6]),t(lm_A14_M1$coefficients[2:6])))
-> betabeta3<-crossprod(t(lm_A14_M3$coefficients[2:6]),t(lm_A14_M3$coefficients[2:6]))
-> betabeta6<-(crossprod(t(lm_A14_M6$coefficients[2:6]),t(lm_A14_M6$coefficients[2:6])))
-> betabeta9<-(crossprod(t(lm_A14_M9$coefficients[2:6]),t(lm_A14_M9$coefficients[2:6])))
-> betabeta12<-(crossprod(t(lm_A14_M12$coefficients[2:6]),t(lm_A14_M12$coefficients[2:6])))
-> betabeta18<-(crossprod(t(lm_A14_M18$coefficients[2:6]),t(lm_A14_M18$coefficients[2:6])))
+betabeta1<-(crossprod(t(lm_A14_M1$coefficients[2:6]),t(lm_A14_M1$coefficients[2:6])))
+betabeta3<-crossprod(t(lm_A14_M3$coefficients[2:6]),t(lm_A14_M3$coefficients[2:6]))
+betabeta6<-(crossprod(t(lm_A14_M6$coefficients[2:6]),t(lm_A14_M6$coefficients[2:6])))
+betabeta9<-(crossprod(t(lm_A14_M9$coefficients[2:6]),t(lm_A14_M9$coefficients[2:6])))
+betabeta12<-(crossprod(t(lm_A14_M12$coefficients[2:6]),t(lm_A14_M12$coefficients[2:6])))
+betabeta18<-(crossprod(t(lm_A14_M18$coefficients[2:6]),t(lm_A14_M18$coefficients[2:6])))
 
-> B_ast<-as.data.frame(cbind(as.vector(betabeta1),as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta18)))
+B_ast<-as.data.frame(cbind(as.vector(betabeta1),as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta18)))
 
-> #===== agora calcular o vec(Sigma)
+#===== agora calcular o vec(Sigma)
 
-> vec_Sigma<-as.data.frame(as.vector(Sigma_hat))
+vec_Sigma<-as.data.frame(as.vector(Sigma_hat))
 
-> beta_hat<-cbind(as.data.frame(c(beta1,beta3,beta6,beta9,beta12,beta18)))
+beta_hat<-cbind(as.data.frame(c(beta1,beta3,beta6,beta9,beta12,beta18)))
 
-> c1<-as.data.frame(lm_A14_M1$coefficients[7:11])
-> c3<-as.data.frame(lm_A14_M3$coefficients[7:11])
-> c6<-as.data.frame(lm_A14_M6$coefficients[7:11])
-> c9<-as.data.frame(lm_A14_M9$coefficients[7:11])
-> c12<-as.data.frame(lm_A14_M12$coefficients[7:11])
-> c18<-as.data.frame(lm_A14_M18$coefficients[7:11])
-> c_hat<-cbind(as.data.frame(c(c1,c3,c6,c9,c12,c18)))
-> lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat),t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
+c1<-as.data.frame(lm_A14_M1$coefficients[7:11])
+c3<-as.data.frame(lm_A14_M3$coefficients[7:11])
+c6<-as.data.frame(lm_A14_M6$coefficients[7:11])
+c9<-as.data.frame(lm_A14_M9$coefficients[7:11])
+c12<-as.data.frame(lm_A14_M12$coefficients[7:11])
+c18<-as.data.frame(lm_A14_M18$coefficients[7:11])
+c_hat<-cbind(as.data.frame(c(c1,c3,c6,c9,c12,c18)))
+lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat),t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
 
-> #============== lambda0_hat ============
-> Basc_Sigma<-crossprod(as.matrix(B_ast),as.matrix(vec_Sigma))
-> betabeta_inv<- solve(crossprod(t(beta_hat),t(beta_hat)))
-> betabeta<- crossprod(t(beta_hat),t(beta_hat))
-> a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+#============== lambda0_hat ============
+Basc_Sigma<-crossprod(as.matrix(B_ast),as.matrix(vec_Sigma))
+betabeta_inv<- solve(crossprod(t(beta_hat),t(beta_hat)))
+betabeta<- crossprod(t(beta_hat),t(beta_hat))
+a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
 
-> #========= sigmasq_hat =========
-> install.packages("psych")
-> library("psych")
-> sigmasq_hat<-tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))/(6*198)
+#========= sigmasq_hat =========
+install.packages("psych")
+library("psych")
+sigmasq_hat<-tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))/(6*198)
 
- #============= lambda0_hat =============
-> i_6<-as.data.frame(rep(1, 6))
-> i_198<-as.data.frame(rep(1, 198))
-> sigmasq6_hat<-sigmasq_hat*i_6
->lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( a_hat + Basc_Sigma/2 + sigmasq6_hat))))
+#============= lambda0_hat =============
+i_6<-as.data.frame(rep(1, 6))
+i_198<-as.data.frame(rep(1, 198))
+sigmasq6_hat<-sigmasq_hat*i_6
+lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( a_hat + Basc_Sigma/2 + sigmasq6_hat))))
 
 #======================PA==========================
 
