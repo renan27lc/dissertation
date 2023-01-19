@@ -47,20 +47,17 @@ yields = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Mat
 
 plot(colMeans(yields))
 
-#======================== EXCESS RETURNS ========================
+#======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
 
 library(dplyr)
 library(tibble)
 
 colnames(yields_rowcolumn)[1]<-"DATE"
-#check if this works > DATE<-(yields_rowcolumn$rowname) #check if this works
 
 yields_df<-as.data.frame(yields_rowcolumn)
 dates_asDate<-as.data.frame(as.Date(yields_df$DATE, "%d - %m - %Y"))
-# try this one if above doesn't work > dates_list_asDate<-as.Date(yields_df$DATE, "%d - %m - %Y")
 
 yields_list_asDate<-bind_cols(dates_asDate,yields_df)
-# this seems useless here > yields_lastday<-yields_lastday[,-2] 
 yields_list_asDate<-yields_list_asDate[,-2]
 
 yields_df_asDate<-as.data.frame(yields_list_asDate)
@@ -101,19 +98,17 @@ colnames(ytm_ini)<-colnames(B)
 colnames(rf)<-colnames(B)
 rownames(rf)<-rownames(B)
 
+r_xp<-ytm_ini+rf      # expected returns
+rownames(r_xp)<-rownames(ytm_ini)
+colnames(r_xp)<-colnames(ytm_ini)
+
 payoff<- ytm_ini - ytm_fin
 rownames(payoff)<-rownames(ytm_fin)
 colnames(payoff)<-colnames(ytm_fin)
 
-
-r_xs<- payoff - rf
+r_xs<- payoff - rf       # excess returns
 rownames(r_xs)<-rownames(ytm_fin)
 colnames(r_xs)<-colnames(ytm_fin)
-
-
-r_xp<-ytm_ini+rf
-rownames(r_xp)<-rownames(ytm_ini)
-colnames(r_xp)<-colnames(ytm_ini)
 
 lm_B1A6_M2<-lm(formula = ytm_fin$M2 ~ r_xp$M2)
 lm_B1A6_M3<-lm(formula = ytm_fin$M3 ~ r_xp$M3)
@@ -199,9 +194,8 @@ Sigma_hat<-crossprod(as.matrix(residuals(var1_pc_lastday)))/192
 X__transp<-as.data.frame(t(X_))
 V_transp<-as.data.frame(t(V))
 r_xs_6M<-cbind(r_xs)[c(1,3,6,9,12,18)]
-#r_xs_6M<-cbind(r_xs)[c(2,3,6,12,18,23)]
 
-# estimando parâmetros A14:
+# estimando parâmetros Adrian (14):
 lm_A14_M1<-lm(r_xs_6M$M1 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
 lm_A14_M3<-lm(r_xs_6M$M3 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
 lm_A14_M6<-lm(r_xs_6M$M6 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
@@ -229,9 +223,7 @@ betabeta18<-(crossprod(t(lm_A14_M18$coefficients[2:6]),t(lm_A14_M18$coefficients
 
 B_ast<-as.data.frame(cbind(as.vector(betabeta1),as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta18)))
 
-#===== agora calcular o vec(Sigma)
-
-vec_Sigma<-as.data.frame(as.vector(Sigma_hat))
+#============== lambda0_hat ============
 
 beta_hat<-cbind(as.data.frame(c(beta1,beta3,beta6,beta9,beta12,beta18)))
 
@@ -246,6 +238,7 @@ lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat),t(beta_hat))),c
 
 #============== lambda0_hat ============
 
+vec_Sigma<-as.data.frame(as.vector(Sigma_hat))
 Basc_Sigma<-crossprod(as.matrix(B_ast),as.matrix(vec_Sigma))
 betabeta_inv<- solve(crossprod(t(beta_hat),t(beta_hat)))
 betabeta<- crossprod(t(beta_hat),t(beta_hat))
