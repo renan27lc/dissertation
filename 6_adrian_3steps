@@ -496,6 +496,57 @@ package ‘psych’ was built under R version 4.2.2
 [1] 2.205101e-06
 > sigmasq_hat<-tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))/(6*198)
 
+ #============= lambda0_hat =============
+> View(Basc_Sigma/2)
+> i_n<-as.data.frame(rep(1, 6))
+> i_t<-it
+> sigmasq6_hat<-sigmasq_hat*i_n
+> View(sigmasq6_hat)
+> View(a)
+Error in View : object 'a' not found
+> View(a_hat)
+> a_hat + Basc_Sigma/2 + sigmasq6_hat
+                                     V1
+lm_A14_M1.coefficients.1.  0.0004313691
+lm_A14_M3.coefficients.1.  0.0015536253
+lm_A14_M6.coefficients.1.  0.0035196038
+lm_A14_M9.coefficients.1.  0.0055716166
+lm_A14_M12.coefficients.1. 0.0084730247
+lm_A14_M18.coefficients.1. 0.0156466738
+> View(beta_hat)
+> crossprod(beta_hat,Basc_Sigma/2)
+Error in crossprod(x, y) : 
+  requires numeric/complex matrix/vector arguments
+> crossprod(as.matrix(beta_hat),as.matrix(Basc_Sigma/2))
+Error in crossprod(as.matrix(beta_hat), as.matrix(Basc_Sigma/2)) : 
+  non-conformable arguments
+> crossprod(as.matrix(beta_hat),t(Basc_Sigma/2))
+Error in crossprod(as.matrix(beta_hat), t(Basc_Sigma/2)) : 
+  non-conformable arguments
+> crossprod(as.matrix(beta_hat),t(Basc_Sigma/2))
+Error in crossprod(as.matrix(beta_hat), t(Basc_Sigma/2)) : 
+  non-conformable arguments
+> crossprod((beta_hat),t(Basc_Sigma/2))
+Error in crossprod(x, y) : 
+  requires numeric/complex matrix/vector arguments
+> crossprod(t(beta_hat),t(Basc_Sigma/2))
+Error in crossprod(t(beta_hat), t(Basc_Sigma/2)) : 
+  non-conformable arguments
+> crossprod(t(beta_hat),as.matrix(Basc_Sigma/2))
+     as.vector(Sigma_hat)
+[1,]         -0.017887910
+[2,]          0.012120476
+[3,]          0.001979666
+[4,]         -0.005120855
+[5,]          0.009471381
+> crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix(Basc_Sigma/2)))
+     as.vector(Sigma_hat)
+[1,]        -6.117774e-04
+[2,]         4.781872e-04
+[3,]        -2.044223e-04
+[4,]         3.306703e-05
+[5,]         7.182392e-06
+> lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix(Basc_Sigma/2))))
 
 #======================PA==========================
 
