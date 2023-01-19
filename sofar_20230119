@@ -254,7 +254,14 @@ sigmasq6_hat<-sigmasq_hat*i_6
 lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( a_hat + Basc_Sigma/2 + sigmasq6_hat))))
 
 
-#=============== View() summary() ==============
+
+#------------------------------------------------
+
+#=============== VIEW() SUMMARY() ==============
+
+#------------------------------------------------
+
+
 
 #======== EXCESS RETURNS - EXPECTATION HIPOTHESIS ===========
 # summary(lm_B1A6_M2)
@@ -263,7 +270,6 @@ lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.ma
 # summary(lm_B1A6_M9)
 # summary(lm_B1A6_M12)
 # summary(lm_B1A6_M18)
-
 
 # ===================== LM() EXCESS RETURN ~ PCA ==========================
 # summary(lm_M1)
@@ -276,4 +282,3 @@ lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.ma
 # ===================== PRICES OF RISK PARAMETERS ==========================
 # View(lambda0_hat)
 # View(lambda1_hat)
-
