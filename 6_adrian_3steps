@@ -390,7 +390,45 @@ Error in crossprod(x, y) :
 > #============== lambda0_hat ============
 > lambda0_hat
 Error: object 'lambda0_hat' not found
+
+> lambda0_hat
+Error: object 'lambda0_hat' not found
+> Basc_Sigma<-crossprod(t(B_ast),t(vec_Sigma))
+Error in crossprod(t(B_ast), t(vec_Sigma)) : non-conformable arguments
+> Basc_Sigma<-crossprod(t(B_ast),(vec_Sigma))
+Error in crossprod(x, y) : 
+  requires numeric/complex matrix/vector arguments
+> Basc_Sigma<-crossprod(t(B_ast),as.matrix(vec_Sigma))
+Error in crossprod(t(B_ast), as.matrix(vec_Sigma)) : 
+  non-conformable arguments
+> Basc_Sigma<-crossprod(as.matrix(B_ast),t(vec_Sigma))
+Error in crossprod(as.matrix(B_ast), t(vec_Sigma)) : 
+  non-conformable arguments
+> Basc_Sigma<-crossprod(as.matrix(B_ast),as.matrix(vec_Sigma))
+> View(Basc_Sigma)
+> solve(crossprod(t(beta_hat),t(beta_hat)))
+           [,1]        [,2]       [,3]        [,4]        [,5]
+[1,] 0.11327114  0.08490598 0.10836142  0.07429573  0.05820103
+[2,] 0.08490598  0.49093567 0.08837858 -0.02809736 -0.45106819
+[3,] 0.10836142  0.08837858 0.23861753  0.28046177  0.17173503
+[4,] 0.07429573 -0.02809736 0.28046177  0.86886094  0.59090707
+[5,] 0.05820103 -0.45106819 0.17173503  0.59090707  0.97149611
+> solve(crossprod(as.matrix(beta_hat),as.matrix(beta_hat)))
+Error in solve.default(crossprod(as.matrix(beta_hat), as.matrix(beta_hat))) : 
+  system is computationally singular: reciprocal condition number = 1.948e-17
+> betabeta_inv<- solve(crossprod(t(beta_hat),t(beta_hat)))
+> betabeta<- crossprod(t(beta_hat),t(beta_hat))
+> a_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))
+> View(a_hat)
+> a_hat<-cbindas.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+Error: unexpected ')' in "e(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12"
+> a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
 > 
+> a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+> 
+> #========= sigmasq_hat =========
+
+
 #======================PA==========================
 
 
