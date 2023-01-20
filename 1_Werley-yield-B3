@@ -13,7 +13,7 @@ yieldsbr = function(Initial_Date,Final_Date,Maturities){
  suppressMessages(library(httr))
  suppressMessages(library(functional))
 
- dates = format(seq(as.Date(Initial_Date), as.Date(Final_Date), 'day'), format="%Y-%m-%d", tz="UTC")
+ dates = format(seq(as.Date(Initial_Date), as.Date(Final_Date), 'day'), format="%d-%m-%Y", tz="UTC")
  mat = matrix(NA,length(dates),length(Maturities))
  # Scraping
  for(i in 1:length(dates)){
@@ -45,7 +45,7 @@ yieldsbr = function(Initial_Date,Final_Date,Maturities){
 
 Initial_Date = '2006/01/01' # Available from 2003/08/08. YYYY/MM/DD 
 Final_Date = '2022/08/08'
-Maturities = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24)
+Maturities = c(1:49)
 
 yields = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
 yields
