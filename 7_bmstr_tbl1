@@ -44,8 +44,23 @@ colnames(lambdas)<-c("lmbd_0","lmbd_1.1","lmbd_1.2","lmbd_1.3","lmbd_1.4","lmbd_
 
 View(lambdas)
 
+# ===================== TABLES IN .PDF ==========================
 
 
+#install.packages("gridExtra")
+#library("gridExtra")
+
+#pdf("lmB1A6_tbl1.pdf", height=4, width=12)
+#grid.table(lmB1A6_tbl1)
+#dev.off()
+
+#pdf("lm_rxs_pc5_tbl1.pdf", height=4, width=24)
+#grid.table(lm_rxs_pc5_tbl1)
+#dev.off()
+
+#pdf("lambdas.pdf", height=4, width=12)
+#grid.table(lambdas)
+#dev.off()
 
 
 
