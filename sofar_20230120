@@ -60,7 +60,11 @@ Maturities = c(1:24)
 
 yields = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
 
-plot(colMeans(yields))
+yields_rowcolumn<-rownames_to_column(as.data.frame(yields))
+yields_df<-as.data.frame(yields_rowcolumn)
+colnames(yields_df)[1]<-"DATE"
+
+#plot(colMeans(yields))
 
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
 
