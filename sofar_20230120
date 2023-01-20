@@ -16,6 +16,11 @@ library(broom)
 
 # ===================== DOWNLOAD DATA ==========================
 
+# Author: Werley Cordeiro
+# werleycordeiro@gmail.com
+# https://github.com/werleycordeiro/Brazil_Yield_Curve/blob/master/DI-Pre.R
+
+
 # Function
 yieldsbr = function(Initial_Date,Final_Date,Maturities){
  # Packages
@@ -59,12 +64,13 @@ Final_Date = '2022/08/08'
 Maturities = c(1:49)
 
 yields = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
+yields
 
 yields_rowcolumn<-rownames_to_column(as.data.frame(yields))
 yields_df<-as.data.frame(yields_rowcolumn)
 colnames(yields_df)[1]<-"DATE"
 
-#plot(colMeans(yields))
+plot(colMeans(yields))
 
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
 
