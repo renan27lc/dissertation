@@ -1,13 +1,5 @@
 #======== EXCESS RETURNS - EXPECTATION HIPOTHESIS ===========
-# summary(lm_B1A6_M2)
-# summary(lm_B1A6_M3)
-# summary(lm_B1A6_M6)
-# summary(lm_B1A6_M9)
-# summary(lm_B1A6_M12)
-# summary(lm_B1A6_M18)
 
-
-lm_rxs_parameters<-t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))
 
 summary_lm_B1A6_M18<-summary(lm_B1A6_M18)
 summary_lm_B1A6_M12<-summary(lm_B1A6_M12)
@@ -15,6 +7,13 @@ summary_lm_B1A6_M9<-summary(lm_B1A6_M9)
 summary_lm_B1A6_M6<-summary(lm_B1A6_M6)
 summary_lm_B1A6_M3<-summary(lm_B1A6_M3)
 summary_lm_B1A6_M2<-summary(lm_B1A6_M2)
+
+lmB1A6_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(4,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$adj.r.squared,summary_lm_B1A6_M3$adj.r.squared,summary_lm_B1A6_M6$adj.r.squared,summary_lm_B1A6_M9$adj.r.squared,summary_lm_B1A6_M12$adj.r.squared,summary_lm_B1A6_M18$adj.r.squared))))
+row.names(lmB1A6_tbl1)<-c("M2","M3","M6","M9","M12","M18")
+colnames(lmB1A6_tbl1)<-c("Intercept","P_value","Beta","P_value","R_squared")
+
+--------------- OLD ---------------
+lm_rxs_parameters<-t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))
 
 lm_rxs_adjRsqr<-t(data.frame(summary_lm_B1A6_M2$adj.r.squared,summary_lm_B1A6_M3$adj.r.squared,summary_lm_B1A6_M6$adj.r.squared,summary_lm_B1A6_M9$adj.r.squared,summary_lm_B1A6_M12$adj.r.squared,summary_lm_B1A6_M18$adj.r.squared))
 
@@ -28,14 +27,11 @@ row.names(lmB1A6_tbl1)<-c("M2","M3","M6","M9","M12","M18")
 colnames(lmB1A6_tbl1)<-c("Intercept","P_value","Beta","P_value","R_squared")
 
 
+lmB1A6_intercept_pvalue<-as.data.frame(cbind(t((data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[1,seq(1,24,by=4)])),t((data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))[1,seq(4,24,by=4)]))
+
 
 # ===================== LM() EXCESS RETURN ~ PCA ==========================
-# summary(lm_M1)
-# summary(lm_M3)
-# summary(lm_M6)
-# summary(lm_M9)
-# summary(lm_M12)
-# summary(lm_M18)
+
 
 summary_lm_M18<-summary(lm_M18)
 summary_lm_M12<-summary(lm_M12)
@@ -43,6 +39,11 @@ summary_lm_M9<-summary(lm_M9)
 summary_lm_M6<-summary(lm_M6)
 summary_lm_M3<-summary(lm_M3)
 summary_lm_M1<-summary(lm_M1)
+
+lm_rxs_pc5_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[2,seq(4,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients))))
+row.names(lm_rxs_pc5_tbl1)<-c("M1","M3","M6","M9","M12","M18")
+colnames(lm_rxs_pc5_tbl1)<-c("Intercept","P_value","Beta","P_value","R_squared")
+
 
 lm_rxspc_parameters<-t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients))
 
@@ -52,7 +53,9 @@ lm_rxspc_param_r2<-as.data.frame(cbind(lm_rxs_parameters,lm_rxs_adjRsqr))
 colnames(lm_rxspc_param_r2)<-c("Intercept","Beta","R_squared")
 
 lm_rxspc_intercept_pvalue<-(cbind(lm_rxspc_param_r2[1],t((data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients))[1,seq(4,24,by=4)])))
+
 lm_rxspc_beta_pvalue<-(cbind(lm_rxspc_param_r2[2],t((data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients))[2,seq(4,24,by=4)])))
+
 lm_rxspc_tbl1<-as.data.frame(cbind(lm_rxspc_intercept_pvalue,lm_rxspc_beta_pvalue,lm_rxspc_param_r2[3]))
 row.names(lm_rxspc_tbl1)<-c("M1","M3","M6","M9","M12","M18")
 colnames(lm_rxspc_tbl1)<-c("Intercept","P_value","Beta","P_value","R_squared")
