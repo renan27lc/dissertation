@@ -1,3 +1,18 @@
+# ===================== PACKAGES AND LIBRARIES ==========================
+
+install.packages("dplyr")
+library(dplyr)
+library(tibble)
+
+library(tidyverse)
+
+library(lubridate)
+
+#library(pwt)
+library(tidyr)
+library(purrr)
+library(broom)
+#library(pander)
 
 # ===================== DOWNLOAD DATA ==========================
 
@@ -49,8 +64,6 @@ plot(colMeans(yields))
 
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
 
-library(dplyr)
-library(tibble)
 
 colnames(yields_rowcolumn)[1]<-"DATE"
 
@@ -255,30 +268,75 @@ lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.ma
 
 
 
-#------------------------------------------------
 
-#=============== VIEW() SUMMARY() ==============
 
 #------------------------------------------------
 
+#=============== VIEW() SUMMARY() #PDF ==============
+
+#------------------------------------------------
 
 
 #======== EXCESS RETURNS - EXPECTATION HIPOTHESIS ===========
-# summary(lm_B1A6_M2)
-# summary(lm_B1A6_M3)
-# summary(lm_B1A6_M6)
-# summary(lm_B1A6_M9)
-# summary(lm_B1A6_M12)
-# summary(lm_B1A6_M18)
+
+
+summary_lm_B1A6_M18<-summary(lm_B1A6_M18)
+summary_lm_B1A6_M12<-summary(lm_B1A6_M12)
+summary_lm_B1A6_M9<-summary(lm_B1A6_M9)
+summary_lm_B1A6_M6<-summary(lm_B1A6_M6)
+summary_lm_B1A6_M3<-summary(lm_B1A6_M3)
+summary_lm_B1A6_M2<-summary(lm_B1A6_M2)
+
+lmB1A6_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(4,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$adj.r.squared,summary_lm_B1A6_M3$adj.r.squared,summary_lm_B1A6_M6$adj.r.squared,summary_lm_B1A6_M9$adj.r.squared,summary_lm_B1A6_M12$adj.r.squared,summary_lm_B1A6_M18$adj.r.squared))))
+row.names(lmB1A6_tbl1)<-c("M2","M3","M6","M9","M12","M18")
+colnames(lmB1A6_tbl1)<-c("Intercept","P_value","Beta","P_value","R_squared")
+
+View(lmB1A6_tbl1)
 
 # ===================== LM() EXCESS RETURN ~ PCA ==========================
-# summary(lm_M1)
-# summary(lm_M3)
-# summary(lm_M6)
-# summary(lm_M9)
-# summary(lm_M12)
-# summary(lm_M18)
+
+
+summary_lm_M18<-summary(lm_M18)
+summary_lm_M12<-summary(lm_M12)
+summary_lm_M9<-summary(lm_M9)
+summary_lm_M6<-summary(lm_M6)
+summary_lm_M3<-summary(lm_M3)
+summary_lm_M1<-summary(lm_M1)
+
+lm_rxs_pc5_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_M1$coefficients ,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[2,seq(4,24,by=4)]),
+t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[3,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[3,seq(4,24,by=4)]),
+t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[4,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[4,seq(4,24,by=4)]),
+t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[5,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[5,seq(4,24,by=4)]),
+t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[6,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[6,seq(4,24,by=4)]), t(data.frame(summary_lm_M1$adj.r.squared,summary_lm_M3$adj.r.squared,summary_lm_M6$adj.r.squared,summary_lm_M9$adj.r.squared,summary_lm_M12$adj.r.squared,summary_lm_M18$adj.r.squared))))
+colnames(lm_rxs_pc5_tbl1)<-c("Intercept","P_value","Beta_PC1","P_value","Beta_PC2","P_value","Beta_PC3","P_value","Beta_PC4","P_value","Beta_PC5","P_value","R_squared")
+row.names(lm_rxs_pc5_tbl1)<-c("M2","M3","M6","M9","M12","M18")
+
+View(lm_rxs_pc5_tbl1)
+
 
 # ===================== PRICES OF RISK PARAMETERS ==========================
-# View(lambda0_hat)
-# View(lambda1_hat)
+
+
+lambdas<-as.data.frame(c(lambda0_hat,lambda1_hat))
+rownames(lambdas)<-c("PC1","PC2","PC3","PC4","PC5")
+colnames(lambdas)<-c("lmbd_0","lmbd_1.1","lmbd_1.2","lmbd_1.3","lmbd_1.4","lmbd_1.5")
+
+View(lambdas)
+
+# ===================== TABLES IN .PDF ==========================
+
+
+#install.packages("gridExtra")
+#library("gridExtra")
+
+#pdf("lmB1A6_tbl1.pdf", height=4, width=12)
+#grid.table(lmB1A6_tbl1)
+#dev.off()
+
+#pdf("lm_rxs_pc5_tbl1.pdf", height=4, width=24)
+#grid.table(lm_rxs_pc5_tbl1)
+#dev.off()
+
+#pdf("lambdas.pdf", height=4, width=12)
+#grid.table(lambdas)
+#dev.off()
