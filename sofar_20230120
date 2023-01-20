@@ -31,7 +31,7 @@ yieldsbr = function(Initial_Date,Final_Date,Maturities){
  suppressMessages(library(httr))
  suppressMessages(library(functional))
 
- dates = format(seq(as.Date(Initial_Date), as.Date(Final_Date), 'day'), format="%Y-%m-%d", tz="UTC")
+ dates = format(seq(as.Date(Initial_Date), as.Date(Final_Date), 'day'), format="%d-%m-%Y", tz="UTC")
  mat = matrix(NA,length(dates),length(Maturities))
  # Scraping
  for(i in 1:length(dates)){
