@@ -42,7 +42,7 @@ lambdas<-as.data.frame(c(lambda0_hat,lambda1_hat))
 rownames(lambdas)<-c("PC1","PC2","PC3","PC4","PC5")
 colnames(lambdas)<-c("lmbd_0","lmbd_1.1","lmbd_1.2","lmbd_1.3","lmbd_1.4","lmbd_1.5")
 
-lambdas
+View(lambdas)
 
 
 
