@@ -161,7 +161,7 @@ f_draw_factor_loading<-function(m.loadings,var,title){
 }
 
 
-mat<-c(1:24)
+mat<-c(1:25)
 
 
 pca_yields<-princomp(yields_rwnms)
@@ -212,6 +212,16 @@ lm_M18<-lm(r_xs$M18 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_sc
 
 # ===================== ADRIAN 3 STEPS ==========================
 
+#https://www.rdocumentation.org/packages/vars/versions/1.5-6/topics/VAR
+
+library("vars")
+
+var1_pc<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",ic = "SC")
+var1_pc_S5<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",season = 5, ic = "SC")
+
+var1_pc_lastday <- VAR(pca_yields_scores_lastday[,1:5], p = 1, type = "const",ic = "SC")
+
+X<-as.matrix(var1_pc_lastday$varresult$Comp.1$residuals)
 
 X_<-t((pca_yields_scores_lastday)[1:198,1:5])
 V<-t(residuals(var1_pc_lastday))
