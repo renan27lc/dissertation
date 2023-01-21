@@ -161,7 +161,7 @@ f_draw_factor_loading<-function(m.loadings,var,title){
 }
 
 
-mat<-c(1:25)
+mat<-mat
 
 
 pca_yields<-princomp(yields_rwnms)
