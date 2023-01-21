@@ -1,0 +1,16 @@
+# ===================== PCA ==========================
+> 
+> f_draw_factor_loading<-function(m.loadings,var,title){
++     
++     x11(width=16/3,height=5);
++     matplot(mat,m.loadings,type="l",xaxt="n",lwd=5,lty=1,
++             main=title,col=rainbow(5),ylim=c(-0.6,0.6),
++             xlab="Maturity (month)",ylab="Factor loadings")
++     legend('bottomright',max(m.loadings),col=rainbow(5),lty=1,lwd=3,
++            legend=paste0(c("PC1","PC2","PC3","PC4","PC5"),var))
++     axis(1,mat,mat)
++ }
+> 
+> 
+> mat<-mat
+Error: object 'mat' not found
