@@ -118,7 +118,7 @@ colnames(C_rep)<-colnames(B)
 
 rf<-C_rep
 
-ytm_ini<-as.data.frame(A*P_rep)
+ytm_fin<-as.data.frame(A*P_rep)
 ytm_ini<-as.data.frame(B*Q_rep)
 
 rownames(ytm_fin)<-rownames(A)
