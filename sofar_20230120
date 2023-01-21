@@ -61,7 +61,7 @@ yieldsbr = function(Initial_Date,Final_Date,Maturities){
 
 Initial_Date = '2006/01/01' # Available from 2003/08/08. YYYY/MM/DD 
 Final_Date = '2022/08/08'
-Maturities = c(1:49)
+Maturities = c(1:25)
 
 yields = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
 yields
