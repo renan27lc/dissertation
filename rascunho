@@ -1,1 +1,13 @@
 a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+
+
+
+last_days_asDate<-as.Date(last_days_asDate$DATE)
+last_days_asDate_df<-as.data.frame(last_days_asDate)
+last_days_asDate_df<-as.data.frame(as.Date(last_days_asDate_df$last_days_asDate))
+
+
+last_days_asDate<-as.Date(last_days_asDate$DATE)
+last_days_asDate<-as.data.frame(last_days_asDate)
+last_days_asDate<-as.data.frame(as.Date(last_days_asDate$last_days_asDate))
+colnames(last_days_asDate)[1]<-"DATE"
