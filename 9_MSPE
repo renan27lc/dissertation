@@ -16,4 +16,5 @@ X__transp<-as.data.frame(as.matrix(pca_yields_scores_lastday)[1:198,1:5])
 
 E_rxs<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
 
-mean(as.matrix(r_xs_6M-E_rxs)^2)
+MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs)^2)
+MSPE_adrian3steps
