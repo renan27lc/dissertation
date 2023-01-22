@@ -216,23 +216,23 @@ lm_M18<-lm(r_xs$M18 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_sc
 
 library("vars")
 
-var1_pc<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",ic = "SC")
-var1_pc_S5<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",season = 5, ic = "SC")
+#var1_pc<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",ic = "SC")
+#var1_pc_S5<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",season = 5, ic = "SC")
 
 var1_pc_lastday <- VAR(pca_yields_scores_lastday[,1:5], p = 1, type = "const",ic = "SC")
 
-X<-as.matrix(var1_pc_lastday$varresult$Comp.1$residuals)
+#X<-as.matrix(var1_pc_lastday$varresult$Comp.1$residuals)
 
-X_<-t((pca_yields_scores_lastday)[1:198,1:5])
-V<-t(residuals(var1_pc_lastday))
-it<-as.data.frame(rep(1, 198))
-r_xs_transp<-(t(r_xs))
+#X_<-t((pca_yields_scores_lastday)[1:198,1:5])
+#V<-t(residuals(var1_pc_lastday))
+#it<-as.data.frame(rep(1, 198))
+#r_xs_transp<-(t(r_xs))
 
 # Covariance matrix of residuals - vars::VAR()
 Sigma_hat<-crossprod(as.matrix(residuals(var1_pc_lastday)))/192
 
-X__transp<-as.data.frame(t(X_))
-V_transp<-as.data.frame(t(V))
+X__transp<-as.data.frame(as.matrix(pca_yields_scores_lastday)[1:198,1:5])
+V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
 r_xs_6M<-cbind(r_xs)[c(1,3,6,9,12,18)]
 
 # estimando parâmetros Adrian (14):
