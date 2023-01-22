@@ -294,6 +294,23 @@ sigmasq6_hat<-sigmasq_hat*i_6
 lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( a_hat + Basc_Sigma/2 + sigmasq6_hat))))
 
 
+#=============== MSPE ADRIAN 3 STEPS ==============
+
+#based on A14
+a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+i_198<-as.data.frame(rep(1, 198))
+
+beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[2:6]),as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
+V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
+
+c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[7:11]),as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
+X__transp<-as.data.frame(as.matrix(pca_yields_scores_lastday)[1:198,1:5])
+
+E_rxs<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
+
+MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs)^2)
+MSPE_adrian3steps
+
 
 
 
