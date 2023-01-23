@@ -140,20 +140,20 @@ r_xs<- r_h1mo - rf       # excess returns
 rownames(r_xs)<-rownames(ytm_fin)
 colnames(r_xs)<-colnames(ytm_fin)
 
-lm_B1A6_M2<-lm(formula = ytm_fin$M2 ~ r_xp$M2)
-lm_B1A6_M3<-lm(formula = ytm_fin$M3 ~ r_xp$M3)
-lm_B1A6_M6<-lm(formula = ytm_fin$M6 ~ r_xp$M6)
-lm_B1A6_M9<-lm(formula = ytm_fin$M9 ~ r_xp$M9)
-lm_B1A6_M12<-lm(formula = ytm_fin$M12 ~ r_xp$M12)
-lm_B1A6_M18<-lm(formula = ytm_fin$M18 ~ r_xp$M18)
+lm_B1A6_M2<-lm(formula = ytm_fin$M1 ~ r_xp$M2)
+lm_B1A6_M3<-lm(formula = ytm_fin$M2 ~ r_xp$M3)
+lm_B1A6_M6<-lm(formula = ytm_fin$M5 ~ r_xp$M6)
+lm_B1A6_M9<-lm(formula = ytm_fin$M8 ~ r_xp$M9)
+lm_B1A6_M12<-lm(formula = ytm_fin$M11 ~ r_xp$M12)
+lm_B1A6_M18<-lm(formula = ytm_fin$M17 ~ r_xp$M18)
 
 # ou summary(lm(r_h1mo$M2 ~ rf$M2))?
-#lm_B1A6_M2<-lm(formula = r_h1mo$M2 ~ rf$M2)
+#lm_B1A6_M2<-lm(formula = r_h1mo$M1 ~ rf$M2)
 #lm_B1A6_M3<-lm(formula = r_h1mo$M2 ~ rf$M3)
-#lm_B1A6_M6<-lm(formula = r_h1mo$M2 ~ rf$M6)
-#lm_B1A6_M9<-lm(formula = r_h1mo$M2 ~ rf$M9)
-#lm_B1A6_M12<-lm(formula = r_h1mo$M2 ~ rf$M12)
-#lm_B1A6_M18<-lm(formula = r_h1mo$M2 ~ rf$M18)
+#lm_B1A6_M6<-lm(formula = r_h1mo$M5 ~ rf$M6)
+#lm_B1A6_M9<-lm(formula = r_h1mo$M8 ~ rf$M9)
+#lm_B1A6_M12<-lm(formula = r_h1mo$M11 ~ rf$M12)
+#lm_B1A6_M18<-lm(formula = r_h1mo$M17 ~ rf$M18)
 
 # ===================== PCA ==========================
 
