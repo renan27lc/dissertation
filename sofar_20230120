@@ -116,7 +116,7 @@ colnames(Q_rep)<-colnames(B)
 colnames(C_rep)<-colnames(B)
 
 
-rf<-C_rep
+rf<- C_rep
 
 ytm_fin<-as.data.frame(A*P_rep)
 ytm_ini<-as.data.frame(B*Q_rep)
@@ -128,15 +128,15 @@ colnames(ytm_ini)<-colnames(B)
 colnames(rf)<-colnames(B)
 rownames(rf)<-rownames(B)
 
-r_xp<-ytm_ini+rf      # expected returns
-rownames(r_xp)<-rownames(ytm_ini)
-colnames(r_xp)<-colnames(ytm_ini)
+#r_xp<-ytm_ini+rf      # expected returns. aqui na expectation hypothesis, r_xp=rf, não)
+#rownames(r_xp)<-rownames(ytm_ini)
+#colnames(r_xp)<-colnames(ytm_ini)
 
 r_h1mo<- ytm_ini - ytm_fin
-rownames(payoff)<-rownames(ytm_fin)
-colnames(payoff)<-colnames(ytm_fin)
+rownames(r_h1mo)<-rownames(ytm_fin)
+colnames(r_h1mo)<-colnames(ytm_fin)
 
-r_xs<- payoff - rf       # excess returns
+r_xs<- r_h1mo - rf       # excess returns
 rownames(r_xs)<-rownames(ytm_fin)
 colnames(r_xs)<-colnames(ytm_fin)
 
@@ -146,6 +146,14 @@ lm_B1A6_M6<-lm(formula = ytm_fin$M6 ~ r_xp$M6)
 lm_B1A6_M9<-lm(formula = ytm_fin$M9 ~ r_xp$M9)
 lm_B1A6_M12<-lm(formula = ytm_fin$M12 ~ r_xp$M12)
 lm_B1A6_M18<-lm(formula = ytm_fin$M18 ~ r_xp$M18)
+
+# ou summary(lm(r_h1mo$M2 ~ rf$M2))?
+#lm_B1A6_M2<-lm(formula = r_h1mo$M2 ~ rf$M2)
+#lm_B1A6_M3<-lm(formula = r_h1mo$M2 ~ rf$M3)
+#lm_B1A6_M6<-lm(formula = r_h1mo$M2 ~ rf$M6)
+#lm_B1A6_M9<-lm(formula = r_h1mo$M2 ~ rf$M9)
+#lm_B1A6_M12<-lm(formula = r_h1mo$M2 ~ rf$M12)
+#lm_B1A6_M18<-lm(formula = r_h1mo$M2 ~ rf$M18)
 
 # ===================== PCA ==========================
 
