@@ -1,5 +1,33 @@
 
+#r_xp<-ytm_ini+rf      # expected returns. aqui na expectation hypothesis, r_xp=rf, não)
+#rownames(r_xp)<-rownames(ytm_ini)
+#colnames(r_xp)<-colnames(ytm_ini)
 
+r_h1mo<- ytm_ini - ytm_fin
+
+r_h1mo_6M<-cbind(r_h1mo[,1],r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,18])
+
+ytm_fin[,1] ~ ytm_ini+rf[,1]        #A1B6
+ytm_ini - ytm_fin[,1] ~ rf[,1]      #r_h1mo
+#pq ytm_ini não tem [,1]
+#qual a diferença entre a primeira e a segunda?
+
+#verificar 6M de todas essas listas
+
+lm_B1A6_M2<-lm(formula = ytm_fin[,1] ~ r_xp[,1])
+lm_B1A6_M3<-lm(formula = ytm_fin[,2] ~ r_xp[,2])
+lm_B1A6_M6<-lm(formula = ytm_fin[,6] ~ r_xp[,6])
+lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ r_xp[,9])
+lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ r_xp[,12])
+lm_B1A6_M18<-lm(formula = ytm_fin[,18] ~ r_xp[,18])
+
+
+lm_r1h1mo_M1<-lm(formula = r_h1mo[,1] ~ rf[,1])
+lm_r1h1mo_M2<-lm(formula = r_h1mo[,2] ~ rf[,2])
+lm_r1h1mo_M6<-lm(formula = r_h1mo[,6] ~ rf[,6])
+lm_r1h1mo_M9<-lm(formula = r_h1mo[,9] ~ rf[,9])
+lm_r1h1mo_M12<-lm(formula = r_h1mo[,12] ~ rf[,12])
+lm_r1h1mo_M18<-lm(formula = r_h1mo[,18] ~ rf[,18])
 #=============== A1B6 ==============
 
 lm_B1A6_M2_coef<-as.data.frame(t(lm_B1A6_M2$coefficients))
@@ -23,16 +51,15 @@ PC5_t<-as.data.frame(pca_yields_scores_lastday[1:198,1:5]))
 
 lm_r1h1mo_alpha_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1mo_M1$coefficients[1]),as.data.frame(lm_r1h1mo_M2$coefficients[1]),as.data.frame(lm_r1h1mo_M6$coefficients[1]),as.data.frame(lm_r1h1mo_M9$coefficients[1]),as.data.frame(lm_r1h1mo_M12$coefficients[1]),as.data.frame(lm_r1h1mo_M18$coefficients[1]))))))
 i_198<-as.data.frame(rep(1, 198))
+#P.A.: tentar reduzir esses as.data.frame(), etc
 
 lm_r1h1mo_beta_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1mo_M1$coefficients[2]),as.data.frame(lm_r1h1mo_M2$coefficients[2]),as.data.frame(lm_r1h1mo_M6$coefficients[2]),as.data.frame(lm_r1h1mo_M9$coefficients[2]),as.data.frame(lm_r1h1mo_M12$coefficients[2]),as.data.frame(lm_r1h1mo_M18$coefficients[2]))))
 PC5_t<-as.data.frame(pca_yields_scores_lastday[1:198,1:5])
 
-
-
-#pq esse aqui deu diferente do de cima?
 E_r1h1mo<- as.matrix(t(crossprod(t(lm_r1h1mo_alpha_hat),t(i_198))) + t(crossprod(t(lm_r1h1mo_beta_hat),t(rf[,1]))))
 lm_r1h1mo_MSPE_<-mean(as.matrix(r_h1mo_6M-E_r1h1mo))^2 # ou <-mean(as.matrix(r_h1mo_6M-E_r1h1mo)^2)?
 lm_r1h1mo_MSPE_
+
 
 #alternativa
 #lm_r1h1mo_PE<-as.matrix(r_h1mo_6M - as.matrix(t(crossprod(t(lm_r1h1mo_alpha_hat),t(i_198))) + t(crossprod(t(lm_r1h1mo_beta_hat),t(rf[,1])))))
