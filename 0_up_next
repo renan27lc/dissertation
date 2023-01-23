@@ -1,1 +1,997 @@
 
+2006-05-31  0.244734222 -0.150171556 -0.418243414 -0.0700839968 -0.1648084869 -0.0726384764  0.0411432904  3.323404e-03 -0.0144855733 -0.1592824398
+2006-06-30 -0.224703217  0.140746912  0.386306273  0.0632677869  0.1474177317  0.0651756634 -0.0371817256 -4.001698e-03  0.0134962917  0.1418180350
+             2019-06-28    2019-07-31    2019-08-30   2019-09-30   2019-10-31    2019-11-29    2019-12-30    2020-01-31    2020-02-28   2020-03-31
+2006-02-24  0.114029493  0.0799081231  4.883013e-03  0.130255600  0.099150323 -0.0526667983  0.0312932654  0.0481442325  0.0703809850  0.205374938
+2006-03-31  0.055951161  0.0407906677  4.053723e-03  0.065218495  0.049210457 -0.0247077048  0.0157819073  0.0237147462  0.0344776529  0.104841931
+2006-04-28  0.003929869  0.0033403107  8.289935e-04  0.004963115  0.003618313 -0.0013220080  0.0012500471  0.0016588731  0.0023796695  0.008626313
+2006-05-31 -0.173299246 -0.1139835676 -1.802080e-04 -0.192160083 -0.147742706  0.0849433140 -0.0454067245 -0.0725228161 -0.1072837488 -0.294227890
+2006-06-30  0.158361814  0.1083420844  4.156110e-03  0.178926261  0.136680682 -0.0750810081  0.0427186672  0.0666810520  0.0979448193  0.278927238
+             2020-04-30    2020-05-29    2020-06-30    2020-07-31    2020-08-31    2020-09-30    2020-10-30    2020-11-30   2020-12-30   2021-01-29
+2006-02-24  0.103514007  0.1084618810  0.0527185125  0.0471136713 -0.0465343650 -3.616367e-02 -7.167293e-02  0.0422600505  0.120826691 -0.107428250
+2006-03-31  0.052577992  0.0551578338  0.0267267808  0.0230149008 -0.0235807536 -1.673752e-02 -3.263080e-02  0.0210091408  0.059927718 -0.052791697
+2006-04-28  0.004268819  0.0044351284  0.0021689785  0.0015428303 -0.0018872814 -7.842495e-04 -1.375900e-03  0.0015345255  0.004427906 -0.003735912
+2006-05-31 -0.149396435 -0.1555922242 -0.0759873163 -0.0716837765  0.0678659628  5.964883e-02  1.198049e-01 -0.0631568171 -0.180921729  0.163206437
+2006-06-30  0.140755265  0.1475340468  0.0717577097  0.0655434695 -0.0636533932 -5.206724e-02 -1.036874e-01  0.0583899826  0.166731093 -0.149148351
+             2021-02-26   2021-03-31    2021-04-30   2021-05-31   2021-06-30   2021-07-30   2021-08-31   2021-09-30   2021-10-29   2021-11-30    2021-12-30
+2006-02-24 -0.110202593 -0.189115025  2.988979e-02 -0.097009768 -0.111200475 -0.158327727 -0.128293067 -0.140125181 -0.652951724  0.110365616  6.583485e-02
+2006-03-31 -0.054351173 -0.096316927  1.370577e-02 -0.048861490 -0.057694772 -0.080294195 -0.063922575 -0.069793431 -0.326599106  0.054288044  3.044223e-02
+2006-04-28 -0.003848720 -0.007859114  5.879957e-04 -0.003836484 -0.005100585 -0.006494000 -0.004758547 -0.005225767 -0.024873441  0.003805026  1.498908e-03
+2006-05-31  0.165649255  0.271775112 -4.976916e-02  0.142147521  0.155814110  0.229169878  0.190577983  0.208251191  0.966349841 -0.168231262 -1.082244e-01
+2006-06-30 -0.152543740 -0.257128084  4.325666e-02 -0.132763476 -0.149621761 -0.215662153 -0.176624128 -0.192893143 -0.897643735  0.153522199  9.445807e-02
+              2022-01-31    2022-02-25    2022-03-31    2022-04-29    2022-05-31   2022-06-30    2022-07-29
+2006-02-24 -0.0972465086 -0.0283818537 -0.0332957464 -0.0734436576 -0.0772655566 -0.103239447  0.0173611848
+2006-03-31 -0.0476155860 -0.0135710062 -0.0182500762 -0.0357041444 -0.0394373931 -0.051099420  0.0083756888
+2006-04-28 -0.0032482296 -0.0008709786 -0.0018669880 -0.0023638331 -0.0032846494 -0.003704897  0.0005330143
+2006-05-31  0.1464455652  0.0445792348  0.0421245440  0.1120756643  0.1111084761  0.154706014 -0.0273098799
+2006-06-30 -0.1346936718 -0.0399442568 -0.0432753976 -0.1022508301 -0.1050204180 -0.142665608  0.0244966591
+ [ reached getOption("max.print") -- omitted 193 rows ]
+> crossprod(as.matrix(r_xs),as.matrix(r_xs))
+             M1          M2          M3          M4          M5          M6          M7         M8         M9        M10        M11        M12        M13
+M1  0.003946335 0.003509921 0.004450927 0.005468698 0.006514658 0.008032831 0.009578336 0.01106749 0.01243630 0.01409284 0.01552234 0.01709044 0.01852719
+M2  0.003509921 0.006214275 0.007832642 0.010372546 0.012978333 0.016275817 0.019724825 0.02307947 0.02623893 0.03005664 0.03353171 0.03721309 0.04062225
+M3  0.004450927 0.007832642 0.011032664 0.015268475 0.019804492 0.025353271 0.031172125 0.03689095 0.04240373 0.04886686 0.05487777 0.06113733 0.06703975
+M4  0.005468698 0.010372546 0.015268475 0.022101168 0.029355813 0.037928121 0.046952109 0.05591614 0.06482825 0.07514191 0.08479860 0.09481532 0.10432288
+M5  0.006514658 0.012978333 0.019804492 0.029355813 0.040002299 0.052269402 0.065295186 0.07827160 0.09143180 0.10664062 0.12092790 0.13565845 0.14982233
+M6  0.008032831 0.016275817 0.025353271 0.037928121 0.052269402 0.069354300 0.087297667 0.10520819 0.12339731 0.14439283 0.16428968 0.18476036 0.20448235
+M7  0.009578336 0.019724825 0.031172125 0.046952109 0.065295186 0.087297667 0.110881032 0.13436309 0.15798624 0.18533258 0.21142674 0.23822888 0.26403825
+M8  0.011067494 0.023079471 0.036890949 0.055916141 0.078271596 0.105208193 0.134363091 0.16389692 0.19321357 0.22699155 0.25936918 0.29277870 0.32496363
+M9  0.012436305 0.026238926 0.042403734 0.064828248 0.091431798 0.123397308 0.157986238 0.19321357 0.22900434 0.26972024 0.30879664 0.34922219 0.38821034
+M10 0.014092842 0.030056635 0.048866858 0.075141905 0.106640617 0.144392826 0.185332578 0.22699155 0.26972024 0.31894233 0.36589826 0.41441687 0.46132323
+M11 0.015522337 0.033531705 0.054877772 0.084798597 0.120927902 0.164289681 0.211426738 0.25936918 0.30879664 0.36589826 0.42083036 0.47732804 0.53191012
+M12 0.017090444 0.037213093 0.061137328 0.094815319 0.135658455 0.184760359 0.238228879 0.29277870 0.34922219 0.41441687 0.47732804 0.54269878 0.60539466
+M13 0.018527189 0.040622249 0.067039754 0.104322880 0.149822329 0.204482350 0.264038253 0.32496363 0.38821034 0.46132323 0.53191012 0.60539466 0.67661932
+M14 0.020147355 0.044133010 0.073042422 0.114060753 0.164250130 0.224513250 0.290155452 0.35743634 0.42763327 0.50897983 0.58742166 0.66911552 0.74853446
+M15 0.021717517 0.047575669 0.079035734 0.123767914 0.178620253 0.244572346 0.316392008 0.38997794 0.46710956 0.55661455 0.64300071 0.73304414 0.82047341
+M16 0.023090112 0.051013539 0.085189124 0.133781524 0.193593400 0.265568834 0.344080353 0.42456657 0.50920059 0.60735288 0.70227232 0.80135062 0.89775306
+M17 0.024360118 0.054164750 0.090830491 0.143057974 0.207545627 0.285197366 0.370018521 0.45722535 0.54901634 0.65552097 0.75862954 0.86647967 0.97165161
+M18 0.025760574 0.057371547 0.096483722 0.152324749 0.221533690 0.304858263 0.395879069 0.48963426 0.58856624 0.70353294 0.81491872 0.93151006 1.04545845
+M19 0.027040272 0.060374200 0.101935586 0.161406096 0.235366028 0.324451974 0.421758066 0.52216873 0.62834208 0.75196812 0.87181041 0.99733469 1.12013161
+M20 0.028154906 0.063296178 0.107284359 0.170346098 0.249035829 0.343856575 0.447490726 0.55455138 0.66792551 0.80014067 0.92838845 1.06277724 1.19433545
+M21 0.029116281 0.066040143 0.112375250 0.178978126 0.262252326 0.362585439 0.472251590 0.58573856 0.70614581 0.84672805 0.98307626 1.12615866 1.26637496
+M22 0.030128375 0.068546623 0.117074725 0.186996801 0.274644725 0.380283361 0.495616916 0.61521394 0.74236970 0.89096566 1.03509917 1.18651070 1.33506174
+M23 0.031248476 0.071119445 0.121849684 0.195116713 0.287174378 0.398253038 0.519429422 0.64534374 0.77935997 0.93614154 1.08827254 1.24824015 1.40536850
+           M14        M15        M16        M17        M18        M19        M20        M21        M22        M23
+M1  0.02014735 0.02171752 0.02309011 0.02436012 0.02576057 0.02704027 0.02815491 0.02911628 0.03012838 0.03124848
+M2  0.04413301 0.04757567 0.05101354 0.05416475 0.05737155 0.06037420 0.06329618 0.06604014 0.06854662 0.07111945
+M3  0.07304242 0.07903573 0.08518912 0.09083049 0.09648372 0.10193559 0.10728436 0.11237525 0.11707472 0.12184968
+M4  0.11406075 0.12376791 0.13378152 0.14305797 0.15232475 0.16140610 0.17034610 0.17897813 0.18699680 0.19511671
+M5  0.16425013 0.17862025 0.19359340 0.20754563 0.22153369 0.23536603 0.24903583 0.26225233 0.27464472 0.28717438
+M6  0.22451325 0.24457235 0.26556883 0.28519737 0.30485826 0.32445197 0.34385657 0.36258544 0.38028336 0.39825304
+M7  0.29015545 0.31639201 0.34408035 0.37001852 0.39587907 0.42175807 0.44749073 0.47225159 0.49561692 0.51942942
+M8  0.35743634 0.38997794 0.42456657 0.45722535 0.48963426 0.52216873 0.55455138 0.58573856 0.61521394 0.64534374
+M9  0.42763327 0.46710956 0.50920059 0.54901634 0.58856624 0.62834208 0.66792551 0.70614581 0.74236970 0.77935997
+M10 0.50897983 0.55661455 0.60735288 0.65552097 0.70353294 0.75196812 0.80014067 0.84672805 0.89096566 0.93614154
+M11 0.58742166 0.64300071 0.70227232 0.75862954 0.81491872 0.87181041 0.92838845 0.98307626 1.03509917 1.08827254
+M12 0.66911552 0.73304414 0.80135062 0.86647967 0.93151006 0.99733469 1.06277724 1.12615866 1.18651070 1.24824015
+M13 0.74853446 0.82047341 0.89775306 0.97165161 1.04545845 1.12013161 1.19433545 1.26637496 1.33506174 1.40536850
+M14 0.82976139 0.91072761 0.99726431 1.08019630 1.16330744 1.24746469 1.33101544 1.41234327 1.49006186 1.56963055
+M15 0.91072761 1.00163731 1.09772936 1.18954882 1.28168951 1.37541584 1.46863026 1.55945348 1.64633550 1.73514446
+M16 0.99726431 1.09772936 1.20515758 1.30716879 1.40950028 1.51363638 1.61734095 1.71857189 1.81545272 1.91455318
+M17 1.08019630 1.18954882 1.30716879 1.41984411 1.53276576 1.64756079 1.76165636 1.87329089 1.98025672 2.08969863
+M18 1.16330744 1.28168951 1.40950028 1.53276576 1.65708272 1.78313176 1.90797723 2.03034250 2.14795413 2.26833266
+M19 1.24746469 1.37541584 1.51363638 1.64756079 1.78313176 1.92113640 2.05744475 2.19114715 2.31992581 2.45170197
+M20 1.33101544 1.46863026 1.61734095 1.76165636 1.90797723 2.05744475 2.20540541 2.35044884 2.49026756 2.63340300
+M21 1.41234327 1.55945348 1.71857189 1.87329089 2.03034250 2.19114715 2.35044884 2.50720496 2.65827429 2.81281450
+M22 1.49006186 1.64633550 1.81545272 1.98025672 2.14795413 2.31992581 2.49026756 2.65827429 2.82094406 2.98715866
+M23 1.56963055 1.73514446 1.91455318 2.08969863 2.26833266 2.45170197 2.63340300 2.81281450 2.98715866 3.16579860
+> log(1)
+[1] 0
+> rf<- -C_rep
+> 
+> ytm_fin<-as.data.frame(A*P_rep)
+> ytm_ini<-as.data.frame(B*Q_rep)
+> 
+> rownames(ytm_fin)<-rownames(A)
+> colnames(ytm_fin)<-colnames(A)
+> rownames(ytm_ini)<-rownames(B)
+> colnames(ytm_ini)<-colnames(B)
+> colnames(rf)<-colnames(B)
+> rownames(rf)<-rownames(B)
+> 
+> r_xp<-ytm_ini+rf      # expected returns
+> rownames(r_xp)<-rownames(ytm_ini)
+> colnames(r_xp)<-colnames(ytm_ini)
+> 
+> r_h1mo<- ytm_ini - ytm_fin
+> rownames(r_1mo)<-rownames(ytm_fin)
+Error in rownames(r_1mo) <- rownames(ytm_fin) : object 'r_1mo' not found
+> rf<- -C_rep
+> 
+> ytm_fin<-as.data.frame(A*P_rep)
+> ytm_ini<-as.data.frame(B*Q_rep)
+> 
+> rownames(ytm_fin)<-rownames(A)
+> colnames(ytm_fin)<-colnames(A)
+> rownames(ytm_ini)<-rownames(B)
+> colnames(ytm_ini)<-colnames(B)
+> colnames(rf)<-colnames(B)
+> rownames(rf)<-rownames(B)
+> 
+> r_xp<-ytm_ini+rf      # expected returns
+> rownames(r_xp)<-rownames(ytm_ini)
+> colnames(r_xp)<-colnames(ytm_ini)
+> 
+> r_h1mo<- ytm_ini - ytm_fin
+> rownames(r_1mo)<-rownames(ytm_fin)
+Error in rownames(r_1mo) <- rownames(ytm_fin) : object 'r_1mo' not found
+> 
+> rf<- -C_rep
+> 
+> ytm_fin<-as.data.frame(A*P_rep)
+> ytm_ini<-as.data.frame(B*Q_rep)
+> 
+> rownames(ytm_fin)<-rownames(A)
+> colnames(ytm_fin)<-colnames(A)
+> rownames(ytm_ini)<-rownames(B)
+> colnames(ytm_ini)<-colnames(B)
+> colnames(rf)<-colnames(B)
+> rownames(rf)<-rownames(B)
+> 
+> r_xp<-ytm_ini+rf      # expected returns
+> rownames(r_xp)<-rownames(ytm_ini)
+> colnames(r_xp)<-colnames(ytm_ini)
+> 
+> r_h1mo<- ytm_ini - ytm_fin
+> rownames(r_h1mo)<-rownames(ytm_fin)
+> colnames(r_h1mo)<-colnames(ytm_fin)
+> 
+> r_xs<- r_h1mo - rf       # excess returns
+> rownames(r_xs)<-rownames(ytm_fin)
+> colnames(r_xs)<-colnames(ytm_fin)
+> 
+> lm_B1A6_M2<-lm(formula = ytm_fin$M2 ~ r_xp$M2)
+> lm_B1A6_M3<-lm(formula = ytm_fin$M3 ~ r_xp$M3)
+> lm_B1A6_M6<-lm(formula = ytm_fin$M6 ~ r_xp$M6)
+> lm_B1A6_M9<-lm(formula = ytm_fin$M9 ~ r_xp$M9)
+> lm_B1A6_M12<-lm(formula = ytm_fin$M12 ~ r_xp$M12)
+> lm_B1A6_M18<-lm(formula = ytm_fin$M18 ~ r_xp$M18)
+> 
+> # ===================== PCA ==========================
+> 
+> f_draw_factor_loading<-function(m.loadings,var,title){
++     
++     x11(width=16/3,height=5);
++     matplot(mat,m.loadings,type="l",xaxt="n",lwd=5,lty=1,
++             main=title,col=rainbow(5),ylim=c(-0.6,0.6),
++             xlab="Maturity (month)",ylab="Factor loadings")
++     legend('bottomright',max(m.loadings),col=rainbow(5),lty=1,lwd=3,
++            legend=paste0(c("PC1","PC2","PC3","PC4","PC5"),var))
++     axis(1,mat,mat)
++ }
+> 
+> 
+> mat<-Maturities
+> 
+> 
+> pca_yields<-princomp(yields_rwnms)
+> f_draw_factor_loading(pca_yields$loadings[,1:5],
++                       round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
++                       "Yields level PCA - princomp()")
+> 
+> 
+> pca_yields_scores<-as.data.frame(pca_yields$scores)
+> 
+> pca_yields_loadings<-as.data.frame(unclass(pca_yields$loadings))
+> 
+> 
+> lines(Maturities,                    # Draw first time series
++       pca_yields_loadings$Comp.3,
++       type = "l",
++       col = 4)
+> lines(Maturities,                   # Draw first time series
++       pca_yields_loadings$Comp.4,
++       type = "l",
++       col = 5)
+> lines(Maturities,                   # Draw first time series
++       pca_yields_loadings$Comp.5,
++       type = "l",
++       col = 6)
+> legend("topright",                  # Add legend to plot
++        c("PC1", "PC2", "PC3", "PC4", "PC5"),
++        lty = 1,
++        col = 2:4)
+> 
+> 
+> # ===================== LM() EXCESS RETURN ~ PCA ==========================
+> 
+> 
+> pca_yields_scores_clmn<-cbind(dates_asDate,rownames_to_column(pca_yields_scores))
+> pca_yields_scores_clmn<-pca_yields_scores_clmn[,-2]
+> colnames(pca_yields_scores_clmn)[1]<-"DATE"
+> pca_yields_scores_lastday<-inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE")
+> pca_yields_scores_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE"),var = "DATE")
+> 
+> lm_M1<-lm(r_xs$M1 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
+> lm_M3<-lm(r_xs$M3 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] +    pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
+> lm_M6<-lm(r_xs$M6 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
+> lm_M9<-lm(r_xs$M9 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
+> lm_M12<-lm(r_xs$M12 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
+> lm_M18<-lm(r_xs$M18 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
+> 
+> 
+> # ===================== ADRIAN 3 STEPS ==========================
+> 
+> #https://www.rdocumentation.org/packages/vars/versions/1.5-6/topics/VAR
+> 
+> library("vars")
+> 
+> #var1_pc<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",ic = "SC")
+> #var1_pc_S5<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",season = 5, ic = "SC")
+> 
+> var1_pc_lastday <- VAR(pca_yields_scores_lastday[,1:5], p = 1, type = "const",ic = "SC")
+> 
+> #X<-as.matrix(var1_pc_lastday$varresult$Comp.1$residuals)
+> 
+> #X_<-t((pca_yields_scores_lastday)[1:198,1:5])
+> #V<-t(residuals(var1_pc_lastday))
+> #it<-as.data.frame(rep(1, 198))
+> #r_xs_transp<-(t(r_xs))
+> 
+> # Covariance matrix of residuals - vars::VAR()
+> Sigma_hat<-crossprod(as.matrix(residuals(var1_pc_lastday)))/192
+> 
+> X__transp<-as.data.frame(as.matrix(pca_yields_scores_lastday)[1:198,1:5])
+> V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
+> r_xs_6M<-cbind(r_xs)[c(1,3,6,9,12,18)]
+> 
+> # estimando parâmetros Adrian (14):
+> lm_A14_M1<-lm(r_xs_6M$M1 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> lm_A14_M3<-lm(r_xs_6M$M3 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> lm_A14_M6<-lm(r_xs_6M$M6 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> lm_A14_M9<-lm(r_xs_6M$M9 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> lm_A14_M12<-lm(r_xs_6M$M12 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> lm_A14_M18<-lm(r_xs_6M$M18 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> #lm_A14_M23<-lm(r_xs_6M$M23 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+> 
+> E_hat<-as.data.frame(cbind(lm_A14_M1$residuals,lm_A14_M3$residuals,lm_A14_M6$residuals,lm_A14_M9$residuals,lm_A14_M12$residuals,lm_A14_M18$residuals))
+> sig2_hat<-sum(diag((crossprod(as.matrix((E_hat))))))/(192*6)
+> 
+> #beta1<-as.data.frame(lm_A14_M1$coefficients[2:6])
+> #beta3<-as.data.frame(lm_A14_M3$coefficients[2:6])
+> #beta6<-as.data.frame(lm_A14_M6$coefficients[2:6])
+> #beta9<-as.data.frame(lm_A14_M9$coefficients[2:6])
+> #beta12<-as.data.frame(lm_A14_M12$coefficients[2:6])
+> #beta18<-as.data.frame(lm_A14_M18$coefficients[2:6])
+> 
+> betabeta1<-(crossprod(t(lm_A14_M1$coefficients[2:6]),t(lm_A14_M1$coefficients[2:6])))
+> betabeta3<-crossprod(t(lm_A14_M3$coefficients[2:6]),t(lm_A14_M3$coefficients[2:6]))
+> betabeta6<-(crossprod(t(lm_A14_M6$coefficients[2:6]),t(lm_A14_M6$coefficients[2:6])))
+> betabeta9<-(crossprod(t(lm_A14_M9$coefficients[2:6]),t(lm_A14_M9$coefficients[2:6])))
+> betabeta12<-(crossprod(t(lm_A14_M12$coefficients[2:6]),t(lm_A14_M12$coefficients[2:6])))
+> betabeta18<-(crossprod(t(lm_A14_M18$coefficients[2:6]),t(lm_A14_M18$coefficients[2:6])))
+> 
+> B_ast<-as.data.frame(cbind(as.vector(betabeta1),as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta18)))
+> 
+> #============== lambda0_hat ============
+> 
+> beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[2:6]),as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
+> 
+> #c1<-as.data.frame(lm_A14_M1$coefficients[7:11])
+> #c3<-as.data.frame(lm_A14_M3$coefficients[7:11])
+> #c6<-as.data.frame(lm_A14_M6$coefficients[7:11])
+> #c9<-as.data.frame(lm_A14_M9$coefficients[7:11])
+> #c12<-as.data.frame(lm_A14_M12$coefficients[7:11])
+> #c18<-as.data.frame(lm_A14_M18$coefficients[7:11])
+> c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[7:11]),as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
+> lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat),t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
+> 
+> #============== lambda0_hat ============
+> 
+> vec_Sigma<-as.data.frame(as.vector(Sigma_hat))
+> Basc_Sigma<-crossprod(as.matrix(B_ast),as.matrix(vec_Sigma))
+> betabeta_inv<- solve(crossprod(t(beta_hat),t(beta_hat)))
+> betabeta<- crossprod(t(beta_hat),t(beta_hat))
+> a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+> 
+> install.packages("psych")
+Error in install.packages : Updating loaded packages
+> library("psych")
+> sigmasq_hat<-tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))/(6*198)
+> 
+> i_6<-as.data.frame(rep(1, 6))
+> i_198<-as.data.frame(rep(1, 198))
+> sigmasq6_hat<-sigmasq_hat*i_6
+> lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( a_hat + Basc_Sigma/2 + sigmasq6_hat))))
+> 
+> 
+> #=============== MSPE ADRIAN 3 STEPS ==============
+> 
+> #based on A14
+> a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+> i_198<-as.data.frame(rep(1, 198))
+> 
+> beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[2:6]),as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
+> V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
+> 
+> c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[7:11]),as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
+> X__transp<-as.data.frame(as.matrix(pca_yields_scores_lastday)[1:198,1:5])
+> 
+> E_rxs<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
+> 
+> MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs)^2)
+> MSPE_adrian3steps
+[1] 4.530115e-06
+> 
+> 
+> 
+> 
+> #------------------------------------------------
+> 
+> #=============== VIEW() SUMMARY() #PDF ==============
+> 
+> #------------------------------------------------
+> 
+> 
+> #======== EXCESS RETURNS - EXPECTATION HIPOTHESIS ===========
+> 
+> 
+> summary_lm_B1A6_M18<-summary(lm_B1A6_M18)
+> summary_lm_B1A6_M12<-summary(lm_B1A6_M12)
+> summary_lm_B1A6_M9<-summary(lm_B1A6_M9)
+> summary_lm_B1A6_M6<-summary(lm_B1A6_M6)
+> summary_lm_B1A6_M3<-summary(lm_B1A6_M3)
+> summary_lm_B1A6_M2<-summary(lm_B1A6_M2)
+> 
+> lmB1A6_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(4,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$adj.r.squared,summary_lm_B1A6_M3$adj.r.squared,summary_lm_B1A6_M6$adj.r.squared,summary_lm_B1A6_M9$adj.r.squared,summary_lm_B1A6_M12$adj.r.squared,summary_lm_B1A6_M18$adj.r.squared))))
+> row.names(lmB1A6_tbl1)<-c("M2","M3","M6","M9","M12","M18")
+> colnames(lmB1A6_tbl1)<-c("Intercept","P_value","Beta","P_value","R_squared")
+> 
+> View(lmB1A6_tbl1)
+> 
+> # ===================== LM() EXCESS RETURN ~ PCA ==========================
+> 
+> 
+> summary_lm_M18<-summary(lm_M18)
+> summary_lm_M12<-summary(lm_M12)
+> summary_lm_M9<-summary(lm_M9)
+> summary_lm_M6<-summary(lm_M6)
+> summary_lm_M3<-summary(lm_M3)
+> summary_lm_M1<-summary(lm_M1)
+> 
+> lm_rxs_pc5_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_M1$coefficients ,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[2,seq(4,24,by=4)]),
++                                      t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[3,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[3,seq(4,24,by=4)]),
++                                      t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[4,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[4,seq(4,24,by=4)]),
++                                      t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[5,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[5,seq(4,24,by=4)]),
++                                      t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[6,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[6,seq(4,24,by=4)]), t(data.frame(summary_lm_M1$adj.r.squared,summary_lm_M3$adj.r.squared,summary_lm_M6$adj.r.squared,summary_lm_M9$adj.r.squared,summary_lm_M12$adj.r.squared,summary_lm_M18$adj.r.squared))))
+> colnames(lm_rxs_pc5_tbl1)<-c("Intercept","P_value","Beta_PC1","P_value","Beta_PC2","P_value","Beta_PC3","P_value","Beta_PC4","P_value","Beta_PC5","P_value","R_squared")
+> row.names(lm_rxs_pc5_tbl1)<-c("M2","M3","M6","M9","M12","M18")
+> 
+> View(lm_rxs_pc5_tbl1)
+> 
+> 
+> # ===================== PRICES OF RISK PARAMETERS ==========================
+> 
+> 
+> lambdas<-as.data.frame(c(lambda0_hat,lambda1_hat))
+> rownames(lambdas)<-c("PC1","PC2","PC3","PC4","PC5")
+> colnames(lambdas)<-c("lmbd_0","lmbd_1.1","lmbd_1.2","lmbd_1.3","lmbd_1.4","lmbd_1.5")
+> 
+> View(lambdas)
+> 
+> # ===================== TABLES IN .PDF ==========================
+> 
+> 
+> #install.packages("gridExtra")
+> #library("gridExtra")
+> 
+> #pdf("lmB1A6_tbl1.pdf", height=4, width=12)
+> #grid.table(lmB1A6_tbl1)
+> #dev.off()
+> 
+> #pdf("lm_rxs_pc5_tbl1.pdf", height=4, width=24)
+> #grid.table(lm_rxs_pc5_tbl1)
+> #dev.off()
+> 
+> #pdf("lambdas.pdf", height=4, width=12)
+> #grid.table(lambdas)
+> #dev.off()
+> install.packages("psych")
+Warning in install.packages :
+  package ‘psych’ is in use and will not be installed
+> View(r_h1mo)
+> lm(rf ~ r_h1mo)
+Error in model.frame.default(formula = rf ~ r_h1mo, drop.unused.levels = TRUE) : 
+  tipo inválido (list) para variável 'rf'
+> lm(as.data.frame(rf) ~ r_h1mo)
+Error in model.frame.default(formula = as.data.frame(rf) ~ r_h1mo, drop.unused.levels = TRUE) : 
+  tipo inválido (list) para variável 'as.data.frame(rf)'
+> lm(rf$M2 ~ r_h1mo$M1)
+
+Call:
+lm(formula = rf$M2 ~ r_h1mo$M1)
+
+Coefficients:
+(Intercept)    r_h1mo$M1  
+  -0.002158    -0.972859  
+
+> 
+> summarylm(rf$M2 ~ r_h1mo$M1))
+Error: unexpected ')' in "summarylm(rf$M2 ~ r_h1mo$M1))"
+> summary(lm(rf$M2 ~ r_h1mo$M1))
+
+Call:
+lm(formula = rf$M2 ~ r_h1mo$M1)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.035306 -0.001767 -0.000276  0.001884  0.020999 
+
+Coefficients:
+              Estimate Std. Error  t value Pr(>|t|)    
+(Intercept) -0.0021579  0.0009052   -2.384   0.0181 *  
+r_h1mo$M1   -0.9728589  0.0086981 -111.847   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.004352 on 196 degrees of freedom
+Multiple R-squared:  0.9846,	Adjusted R-squared:  0.9845 
+F-statistic: 1.251e+04 on 1 and 196 DF,  p-value: < 2.2e-16
+
+> summary(lm(rf$M2 ~ r_h1mo$M2))
+
+Call:
+lm(formula = rf$M2 ~ r_h1mo$M2)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0227258 -0.0031706 -0.0000912  0.0028518  0.0282193 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.003484   0.001095  -3.182   0.0017 ** 
+r_h1mo$M2   -0.955227   0.010465 -91.277   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.005313 on 196 degrees of freedom
+Multiple R-squared:  0.977,	Adjusted R-squared:  0.9769 
+F-statistic:  8332 on 1 and 196 DF,  p-value: < 2.2e-16
+
+> lag(rf$M2)
+  [1]          NA -0.15546671 -0.15968673 -0.16612144 -0.14426575 -0.15057014 -0.15068452 -0.13352443 -0.16375165 -0.14008902 -0.12773704 -0.13146137
+ [13] -0.13118509 -0.13706763 -0.12766385 -0.12617550 -0.11624438 -0.12157198 -0.11781116 -0.11390543 -0.11270380 -0.11094723 -0.11140367 -0.11127983
+ [25] -0.11118136 -0.11098798 -0.11110732 -0.11193992 -0.11584239 -0.12018287 -0.12233281 -0.12870938 -0.13269148 -0.13620000 -0.13688597 -0.13545859
+ [37] -0.13403244 -0.12648289 -0.11998079 -0.11127021 -0.10140849 -0.09733923 -0.09018683 -0.08618943 -0.08588547 -0.08642323 -0.08629194 -0.08651587
+ [49] -0.08631340 -0.08638989 -0.08717441 -0.08582845 -0.09273886 -0.09749259 -0.10272503 -0.10627428 -0.10653617 -0.10641738 -0.10649709 -0.10700902
+ [61] -0.10761620 -0.11103058 -0.11550110 -0.11715368 -0.11889938 -0.12049704 -0.12201318 -0.12399409 -0.12296980 -0.11642773 -0.11409701 -0.10864533
+ [73] -0.10692556 -0.10320270 -0.09919442 -0.09276728 -0.08740562 -0.08321044 -0.08078629 -0.07794851 -0.07350738 -0.07287047 -0.07099710 -0.07093192
+ [85] -0.06966006 -0.06990030 -0.07037488 -0.07022149 -0.07257927 -0.07718606 -0.08093698 -0.08286234 -0.08736272 -0.09139552 -0.09374022 -0.09779543
+ [97] -0.09962681 -0.10406479 -0.10574236 -0.10754616 -0.10808973 -0.10809605 -0.10808925 -0.10811459 -0.10810279 -0.10839510 -0.11072568 -0.11472580
+[109] -0.11772946 -0.12086422 -0.12471079 -0.12630768 -0.13119017 -0.13513184 -0.13673208 -0.14139618 -0.14179735 -0.14280362 -0.14180208 -0.14148168
+[121] -0.14341351 -0.14139403 -0.14160266 -0.14141236 -0.14130229 -0.14109694 -0.14119887 -0.14130083 -0.14130831 -0.14030060 -0.13879718 -0.13607945
+[133] -0.13304789 -0.12802878 -0.12129774 -0.11626436 -0.11126292 -0.10224264 -0.10036774 -0.09141649 -0.08425156 -0.08017474 -0.07381544 -0.07028765
+[145] -0.06901372 -0.06724993 -0.06589146 -0.06390973 -0.06308538 -0.06430874 -0.06407718 -0.06410057 -0.06449251 -0.06410622 -0.06409522 -0.06409535
+[157] -0.06404891 -0.06400000 -0.06399829 -0.06417087 -0.06409798 -0.06399992 -0.06400389 -0.06008359 -0.05751211 -0.05390766 -0.04901364 -0.04658077
+[169] -0.04411147 -0.04258681 -0.04140018 -0.03641869 -0.03168155 -0.02647780 -0.02150806 -0.01978698 -0.01909736 -0.01909722 -0.01909278 -0.01919752
+[181] -0.01920951 -0.01898385 -0.02112032 -0.02661913 -0.03246331 -0.03741751 -0.04152282 -0.04994032 -0.05433900 -0.06255480 -0.07646255 -0.08718429
+[193] -0.09151179 -0.10419328 -0.11136740 -0.11652424 -0.12449368 -0.12884389
+> summary(lm(lag(rf$M2) ~ r_h1mo$M2))
+
+Call:
+lm(formula = lag(rf$M2) ~ r_h1mo$M2)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0218040 -0.0021882 -0.0002645  0.0019859  0.0153179 
+
+Coefficients:
+              Estimate Std. Error  t value Pr(>|t|)    
+(Intercept) -0.0024671  0.0009191   -2.684   0.0079 ** 
+r_h1mo$M2   -0.9676839  0.0088246 -109.657   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.004427 on 195 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.984,	Adjusted R-squared:  0.984 
+F-statistic: 1.202e+04 on 1 and 195 DF,  p-value: < 2.2e-16
+
+> summary(lm(rf$M2 ~ lag(r_h1mo$M2)))
+
+Call:
+lm(formula = rf$M2 ~ lag(r_h1mo$M2))
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0311699 -0.0052190 -0.0000915  0.0048792  0.0213399 
+
+Coefficients:
+                Estimate Std. Error t value Pr(>|t|)    
+(Intercept)    -0.005221   0.001639  -3.185  0.00169 ** 
+lag(r_h1mo$M2) -0.936022   0.015688 -59.664  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.00795 on 195 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.9481,	Adjusted R-squared:  0.9478 
+F-statistic:  3560 on 1 and 195 DF,  p-value: < 2.2e-16
+
+> summary(lm(r_h1mo$M2 ~ rf$M2))
+
+Call:
+lm(formula = r_h1mo$M2 ~ rf$M2)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0221921 -0.0030446 -0.0000699  0.0024031  0.0304135 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.001306   0.001158  -1.128    0.261    
+rf$M2       -1.022810   0.011206 -91.277   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.005498 on 196 degrees of freedom
+Multiple R-squared:  0.977,	Adjusted R-squared:  0.9769 
+F-statistic:  8332 on 1 and 196 DF,  p-value: < 2.2e-16
+
+> summary(lm(r_h1mo$M2 ~ lag(rf$M2)))
+
+Call:
+lm(formula = r_h1mo$M2 ~ lag(rf$M2))
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0214336 -0.0020535 -0.0002443  0.0015149  0.0167915 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.0009477  0.0009570   -0.99    0.323    
+lag(rf$M2)  -1.0169045  0.0092735 -109.66   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.004539 on 195 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.984,	Adjusted R-squared:  0.984 
+F-statistic: 1.202e+04 on 1 and 195 DF,  p-value: < 2.2e-16
+
+> summary(lm(lag(r_h1mo$M2) ~ rf$M2))
+
+Call:
+lm(formula = lag(r_h1mo$M2) ~ rf$M2)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.034440 -0.004831 -0.000090  0.004450  0.023590 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.0001953  0.0017491  -0.112    0.911    
+rf$M2       -1.0128671  0.0169763 -59.664   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.00827 on 195 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.9481,	Adjusted R-squared:  0.9478 
+F-statistic:  3560 on 1 and 195 DF,  p-value: < 2.2e-16
+
+> summary(lm_B1A6_M2)
+
+Call:
+lm(formula = ytm_fin$M2 ~ r_xp$M2)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.041201 -0.003504  0.000297  0.004552  0.067462 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 0.004154   0.001931   2.152   0.0326 *  
+r_xp$M2     1.949958   0.018588 104.906   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.009217 on 196 degrees of freedom
+Multiple R-squared:  0.9825,	Adjusted R-squared:  0.9824 
+F-statistic: 1.101e+04 on 1 and 196 DF,  p-value: < 2.2e-16
+
+> lm(r_h1mo$M2 ~ rf$M2)
+
+Call:
+lm(formula = r_h1mo$M2 ~ rf$M2)
+
+Coefficients:
+(Intercept)        rf$M2  
+  -0.001306    -1.022810  
+
+> lm_B1A6_M2<-lm(formula = r_h1mo$M2 ~ rf$M2)
+> lm_B1A6_M3<-lm(formula = r_h1mo$M2 ~ rf$M3)
+> lm_B1A6_M6<-lm(formula = r_h1mo$M2 ~ rf$M6)
+> lm_B1A6_M9<-lm(formula = r_h1mo$M2 ~ rf$M9)
+> lm_B1A6_M12<-lm(formula = r_h1mo$M2 ~ rf$M12)
+> lm_B1A6_M18<-lm(formula = r_h1mo$M2 ~ rf$M18)
+> c(lm_B1A6_M2$coefficients,lm_B1A6_M3$coefficients,lm_B1A6_M6$coefficients,lm_B1A6_M9$coefficients,lm_B1A6_M12$coefficients,lm_B1A6_M18$coefficients)
+ (Intercept)        rf$M2  (Intercept)        rf$M3  (Intercept)        rf$M6  (Intercept)        rf$M9  (Intercept)       rf$M12  (Intercept)       rf$M18 
+-0.001305917 -1.022810249 -0.001305917 -1.022810249 -0.001305917 -1.022810249 -0.001305917 -1.022810249 -0.001305917 -1.022810249 -0.001305917 -1.022810249 
+> lm_B1A6_M2$coefficients + lm_B1A6_M3$coefficients*rf
+                     M2           M3           M4           M5           M6           M7           M8           M9          M10          M11          M12
+2006-01-31 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891
+2006-02-24 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022
+2006-03-31 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976
+2006-04-28 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765
+2006-05-31 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285
+2006-06-30 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573
+2006-07-31 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545
+2006-08-31 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380
+2006-09-29 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973
+2006-10-31 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496
+2006-11-30 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240
+2006-12-28 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793
+2007-01-31 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918
+2007-02-28 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358
+2007-03-30 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142
+2007-04-30 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306
+2007-05-31 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154
+2007-06-29 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784
+2007-07-31 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166
+2007-08-31 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644
+2007-09-28 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029
+2007-10-31 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431
+2007-11-30 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595
+2007-12-28 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813
+2008-01-31 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976
+2008-02-29 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542
+2008-03-31 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733
+2008-04-30 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469
+2008-05-30 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968
+2008-06-30 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992
+2008-07-31 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833
+2008-08-29 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040
+2008-09-30 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051
+2008-10-31 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879
+2008-11-28 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020
+2008-12-30 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493
+2009-01-30 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741
+2009-02-27 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668
+2009-03-31 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608
+2009-04-30 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610
+2009-05-29 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800
+2009-06-30 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235
+2009-07-31 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361
+                    M13          M14          M15          M16          M17          M18          M19          M20          M21          M22          M23
+2006-01-31 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891 -0.001102891
+2006-02-24 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022 -0.859481022
+2006-03-31 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976 -0.001088976
+2006-04-28 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765 -0.875253765
+2006-05-31 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285 -0.001109285
+2006-06-30 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573 -0.868688573
+2006-07-31 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545 -0.001131545
+2006-08-31 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380 -0.855323380
+2006-09-29 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973 -0.001122973
+2006-10-31 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496 -0.892159496
+2006-11-30 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240 -0.001134240
+2006-12-28 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793 -0.888632793
+2007-01-31 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918 -0.001126918
+2007-02-28 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358 -0.892234358
+2007-03-30 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142 -0.001141142
+2007-04-30 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306 -0.903914306
+2007-05-31 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154 -0.001147154
+2007-06-29 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784 -0.902311784
+2007-07-31 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166 -0.001157166
+2007-08-31 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644 -0.907535644
+2007-09-28 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029 -0.001161029
+2007-10-31 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431 -0.908865431
+2007-11-30 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595 -0.001160595
+2007-12-28 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813 -0.909092813
+2008-01-31 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976 -0.001160976
+2008-02-29 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542 -0.909168542
+2008-03-31 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733 -0.001159733
+2008-04-30 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469 -0.904325469
+2008-05-30 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968 -0.001148968
+2008-06-30 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992 -0.897686992
+2008-07-31 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833 -0.001137833
+2008-08-29 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040 -0.887092040
+2008-09-30 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051 -0.001128051
+2008-10-31 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879 -0.882801879
+2008-11-28 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020 -0.001129020
+2008-12-30 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493 -0.885720493
+2009-01-30 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741 -0.001140741
+2009-02-27 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668 -0.900092668
+2009-03-31 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608 -0.001160608
+2009-04-30 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610 -0.919088610
+2009-05-29 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800 -0.001178800
+2009-06-30 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235 -0.930566235
+2009-07-31 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361 -0.001193361
+                    M24
+2006-01-31 -0.001102891
+2006-02-24 -0.859481022
+2006-03-31 -0.001088976
+2006-04-28 -0.875253765
+2006-05-31 -0.001109285
+2006-06-30 -0.868688573
+2006-07-31 -0.001131545
+2006-08-31 -0.855323380
+2006-09-29 -0.001122973
+2006-10-31 -0.892159496
+2006-11-30 -0.001134240
+2006-12-28 -0.888632793
+2007-01-31 -0.001126918
+2007-02-28 -0.892234358
+2007-03-30 -0.001141142
+2007-04-30 -0.903914306
+2007-05-31 -0.001147154
+2007-06-29 -0.902311784
+2007-07-31 -0.001157166
+2007-08-31 -0.907535644
+2007-09-28 -0.001161029
+2007-10-31 -0.908865431
+2007-11-30 -0.001160595
+2007-12-28 -0.909092813
+2008-01-31 -0.001160976
+2008-02-29 -0.909168542
+2008-03-31 -0.001159733
+2008-04-30 -0.904325469
+2008-05-30 -0.001148968
+2008-06-30 -0.897686992
+2008-07-31 -0.001137833
+2008-08-29 -0.887092040
+2008-09-30 -0.001128051
+2008-10-31 -0.882801879
+2008-11-28 -0.001129020
+2008-12-30 -0.885720493
+2009-01-30 -0.001140741
+2009-02-27 -0.900092668
+2009-03-31 -0.001160608
+2009-04-30 -0.919088610
+2009-05-29 -0.001178800
+2009-06-30 -0.930566235
+2009-07-31 -0.001193361
+ [ reached 'max' / getOption("max.print") -- omitted 155 rows ]
+> summary(lm_B1A6_M2)
+
+Call:
+lm(formula = r_h1mo$M2 ~ rf$M2)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0221921 -0.0030446 -0.0000699  0.0024031  0.0304135 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.001306   0.001158  -1.128    0.261    
+rf$M2       -1.022810   0.011206 -91.277   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.005498 on 196 degrees of freedom
+Multiple R-squared:  0.977,	Adjusted R-squared:  0.9769 
+F-statistic:  8332 on 1 and 196 DF,  p-value: < 2.2e-16
+
+> sumb1a6m2<-summary(lm_B1A6_M2)
+> lm_B1A6_M2$coefficients
+ (Intercept)        rf$M2 
+-0.001305917 -1.022810249 
+> as.data.frame(lm_B1A6_M2$coefficients)
+            lm_B1A6_M2$coefficients
+(Intercept)            -0.001305917
+rf$M2                  -1.022810249
+> lm_B1A6_M2_coef<-as.data.frame(lm_B1A6_M2$coefficients)
+> 
+> rownames_to_column(lm_B1A6_M2_coef)
+      rowname lm_B1A6_M2$coefficients
+1 (Intercept)            -0.001305917
+2       rf$M2            -1.022810249
+> lm_B1A6_M2_coef<-rownames_to_column(lm_B1A6_M2_coef)
+> 
+> lm_B1A6_M2_coef<-as.data.frame(lm_B1A6_M2$coefficients)
+> lm_B1A6_M2_coef<-rownames_to_column(t(lm_B1A6_M2_coef))
+Error in rownames_to_column(t(lm_B1A6_M2_coef)) : 
+  is.data.frame(df) is not TRUE
+> lm_B1A6_M2_coef<-rownames_to_column(as.data.frame(t(lm_B1A6_M2_coef)))
+> lm_B1A6_M2_coef<-as.data.frame(lm_B1A6_M2$coefficients)
+> lm_B1A6_M2_coef<-as.data.frame(t(lm_B1A6_M2_coef))
+> 
+> lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf
+                   M2         M3         M4         M5         M6         M7         M8         M9        M10        M11        M12        M13        M14
+2006-01-31 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702
+2006-02-24 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331
+2006-03-31 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480
+2006-04-28 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057
+2006-05-31 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876
+2006-06-30 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576
+2006-07-31 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424
+2006-08-31 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095
+2006-09-29 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857
+2006-10-31 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484
+2006-11-30 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412
+2006-12-28 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154
+2007-01-31 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826
+2007-02-28 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997
+2007-03-30 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768
+2007-04-30 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003
+2007-05-31 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915
+2007-06-29 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255
+2007-07-31 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772
+2007-08-31 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869
+2007-09-28 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205
+2007-10-31 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890
+2007-11-30 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224
+2007-12-28 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152
+2008-01-31 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373
+2008-02-29 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579
+2008-03-31 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738
+2008-04-30 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886
+2008-05-30 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835
+2008-06-30 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734
+2008-07-31 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935
+2008-08-29 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229
+2008-09-30 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084
+2008-10-31 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245
+2008-11-28 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251
+2008-12-30 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384
+2009-01-30 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207
+2009-02-27 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166
+2009-03-31 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239
+2009-04-30 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572
+2009-05-29 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364
+2009-06-30 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810
+2009-07-31 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952
+                  M15        M16        M17        M18        M19        M20        M21        M22        M23        M24
+2006-01-31 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702 0.15770702
+2006-02-24 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331 0.16202331
+2006-03-31 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480 0.16860480
+2006-04-28 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057 0.14625057
+2006-05-31 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876 0.15269876
+2006-06-30 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576 0.15281576
+2006-07-31 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424 0.13526424
+2006-08-31 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095 0.16618095
+2006-09-29 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857 0.14197857
+2006-10-31 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484 0.12934484
+2006-11-30 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412 0.13315412
+2006-12-28 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154 0.13287154
+2007-01-31 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826 0.13888826
+2007-02-28 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997 0.12926997
+2007-03-30 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768 0.12774768
+2007-04-30 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003 0.11759003
+2007-05-31 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915 0.12303915
+2007-06-29 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255 0.11919255
+2007-07-31 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772 0.11519772
+2007-08-31 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869 0.11396869
+2007-09-28 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205 0.11217205
+2007-10-31 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890 0.11263890
+2007-11-30 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224 0.11251224
+2007-12-28 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152 0.11241152
+2008-01-31 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373 0.11221373
+2008-02-29 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579 0.11233579
+2008-03-31 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738 0.11318738
+2008-04-30 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886 0.11717886
+2008-05-30 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835 0.12161835
+2008-06-30 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734 0.12381734
+2008-07-31 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935 0.13033935
+2008-08-29 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229 0.13441229
+2008-09-30 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084 0.13800084
+2008-10-31 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245 0.13870245
+2008-11-28 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251 0.13724251
+2008-12-30 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384 0.13578384
+2009-01-30 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207 0.12806207
+2009-02-27 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166 0.12141166
+2009-03-31 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239 0.11250239
+2009-04-30 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572 0.10241572
+2009-05-29 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364 0.09825364
+2009-06-30 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810 0.09093810
+2009-07-31 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952 0.08684952
+ [ reached 'max' / getOption("max.print") -- omitted 155 rows ]
+> mean(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf)^2
+[1] NA
+Warning message:
+In mean.default(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2` *  :
+  argumento não é numérico nem lógico: retornando NA
+> mean(as.data.frame(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf)^2
++ 
+> mean(as.data.frame(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf))^2
+[1] NA
+Warning message:
+In mean.default(as.data.frame(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` +  :
+  argumento não é numérico nem lógico: retornando NA
+> r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf
+                  M1        M2        M3        M4        M5        M6        M7        M8        M9       M10       M11       M12       M13       M14
+2006-02-24 0.3394898 0.3359373 0.3386151 0.3387194 0.3406488 0.3455442 0.3515984 0.3581521 0.3641226 0.3698526 0.3755743 0.3820124 0.3884965 0.3953672
+2006-03-31 0.3308025 0.3385737 0.3395413 0.3421793 0.3449416 0.3489305 0.3508649 0.3523833 0.3558814 0.3609158 0.3646556 0.3677762 0.3716810 0.3740784
+2006-04-28 0.3479887 0.3383474 0.3389108 0.3392447 0.3378682 0.3392419 0.3412698 0.3433165 0.3437284 0.3438917 0.3451072 0.3448697 0.3440326 0.3448196
+2006-05-31 0.3094388 0.3056889 0.3021215 0.2963332 0.2908112 0.2878721 0.2800419 0.2704530 0.2632540 0.2549512 0.2452055 0.2362511 0.2264217 0.2167286
+2006-06-30 0.3099390 0.3149636 0.3211672 0.3268288 0.3308178 0.3379748 0.3456430 0.3516976 0.3575252 0.3641644 0.3713515 0.3789849 0.3851057 0.3925582
+2006-07-31 0.3210432 0.3104719 0.3114123 0.3129104 0.3141113 0.3176361 0.3206223 0.3229051 0.3262537 0.3291079 0.3312666 0.3342053 0.3383550 0.3428479
+2006-08-31 0.2650607 0.3035538 0.2946215 0.2998742 0.3026763 0.3060827 0.3111210 0.3163098 0.3220888 0.3283974 0.3344563 0.3411136 0.3483122 0.3549130
+2006-09-29 0.2986035 0.3127816 0.3155076 0.3186665 0.3234686 0.3283372 0.3327534 0.3369158 0.3411644 0.3460338 0.3514010 0.3575248 0.3623408 0.3659057
+2006-10-31 0.2954534 0.2887289 0.2922357 0.2950363 0.2988338 0.3042102 0.3091123 0.3139828 0.3197891 0.3258966 0.3304748 0.3357969 0.3442807 0.3538177
+2006-11-30 0.2712155 0.2722727 0.2731986 0.2742162 0.2748402 0.2762970 0.2785088 0.2803294 0.2815299 0.2833553 0.2864709 0.2900355 0.2928382 0.2956309
+2006-12-28 0.2674684 0.2683168 0.2697617 0.2720892 0.2754368 0.2787884 0.2822352 0.2857154 0.2895354 0.2930968 0.2962697 0.2996473 0.3037539 0.3091457
+2007-01-31 0.2593208 0.2674047 0.2660570 0.2645550 0.2637975 0.2631958 0.2623988 0.2622594 0.2626982 0.2630421 0.2627856 0.2614865 0.2613045 0.2609738
+2007-02-28 0.2706888 0.2721878 0.2729137 0.2728600 0.2734262 0.2757856 0.2791355 0.2816681 0.2835416 0.2859903 0.2900185 0.2926949 0.2950908 0.2970667
+2007-03-30 0.2592000 0.2608660 0.2646989 0.2653075 0.2657044 0.2666804 0.2668630 0.2666369 0.2675232 0.2696907 0.2715086 0.2729926 0.2751482 0.2790066
+2007-04-30 0.2637763 0.2547400 0.2564801 0.2569442 0.2602664 0.2635812 0.2680213 0.2743417 0.2805818 0.2863531 0.2909771 0.2992075 0.3070820 0.3139449
+2007-05-31 0.2444650 0.2470116 0.2505587 0.2501067 0.2497732 0.2546436 0.2582844 0.2597674 0.2613406 0.2653236 0.2675113 0.2692224 0.2704425 0.2716696
+2007-06-29 0.2478701 0.2496822 0.2514194 0.2549718 0.2554881 0.2560083 0.2565140 0.2571620 0.2591535 0.2615904 0.2630898 0.2651949 0.2674772 0.2682281
+2007-07-31 0.2413589 0.2421146 0.2429894 0.2430282 0.2419100 0.2415504 0.2417403 0.2399394 0.2353223 0.2305961 0.2258756 0.2209669 0.2159074 0.2111912
+2007-08-31 0.2323462 0.2329933 0.2314936 0.2298427 0.2273831 0.2236964 0.2193867 0.2148091 0.2103453 0.2058598 0.2003151 0.1942089 0.1882866 0.1830521
+2007-09-28 0.2293456 0.2304543 0.2314487 0.2330588 0.2352625 0.2376214 0.2400946 0.2424226 0.2439569 0.2453278 0.2472777 0.2488000 0.2493147 0.2521776
+2007-10-31 0.2248447 0.2238140 0.2226852 0.2211256 0.2198917 0.2189483 0.2176544 0.2164595 0.2151095 0.2144733 0.2140741 0.2130852 0.2112233 0.2099720
+2007-11-30 0.2266387 0.2260607 0.2257371 0.2255382 0.2238870 0.2208780 0.2182219 0.2166314 0.2143257 0.2116709 0.2082482 0.2055595 0.2023700 0.1992272
+2007-12-28 0.2267876 0.2273511 0.2270101 0.2270763 0.2266314 0.2243579 0.2224395 0.2211170 0.2181341 0.2113121 0.2048482 0.1991520 0.1927379 0.1838812
+2008-01-31 0.2266154 0.2270007 0.2277864 0.2298399 0.2313249 0.2313432 0.2316026 0.2287950 0.2292690 0.2306765 0.2319442 0.2318318 0.2324551 0.2361731
+2008-02-29 0.2265548 0.2275175 0.2288807 0.2316810 0.2349321 0.2359272 0.2385495 0.2430206 0.2476348 0.2512986 0.2533242 0.2579203 0.2618572 0.2657532
+2008-03-31 0.2255365 0.2233853 0.2215843 0.2170860 0.2097457 0.2032037 0.1976071 0.1916092 0.1842519 0.1740343 0.1662700 0.1584088 0.1497985 0.1381978
+2008-04-30 0.2259722 0.2229355 0.2198647 0.2191025 0.2188467 0.2149271 0.2100304 0.2032578 0.2011218 0.1972044 0.1946481 0.1906823 0.1851052 0.1806408
+2008-05-30 0.2333515 0.2331345 0.2336328 0.2316190 0.2307299 0.2270555 0.2218136 0.2187544 0.2164478 0.2124229 0.2054683 0.1997897 0.1962381 0.1886245
+2008-06-30 0.2436658 0.2420936 0.2418997 0.2397989 0.2355313 0.2334027 0.2306387 0.2284401 0.2248476 0.2140239 0.2080112 0.2022243 0.1942070 0.1845658
+2008-07-31 0.2446430 0.2419718 0.2397714 0.2396750 0.2404283 0.2365056 0.2325295 0.2251816 0.2257693 0.2273741 0.2264967 0.2274141 0.2312660 0.2358493
+2008-08-29 0.2593273 0.2587263 0.2594742 0.2575460 0.2584101 0.2565290 0.2568084 0.2605435 0.2638908 0.2667444 0.2713867 0.2758329 0.2808423 0.2844390
+2008-09-30 0.2678289 0.2659840 0.2653023 0.2659352 0.2665171 0.2690324 0.2723712 0.2744466 0.2778185 0.2820480 0.2852956 0.2898851 0.2945389 0.2981656
+2008-10-31 0.2781100 0.2822580 0.2864250 0.2861142 0.2842150 0.2801611 0.2765158 0.2668908 0.2551480 0.2424869 0.2316733 0.2164248 0.2019710 0.1866917
+2008-11-28 0.2805078 0.2827295 0.2893454 0.2962658 0.3051308 0.3125104 0.3224912 0.3343130 0.3469752 0.3570073 0.3712548 0.3840656 0.3985874 0.4128675
+2008-12-30 0.2776160 0.2834697 0.2945855 0.3096696 0.3272885 0.3496934 0.3716963 0.3937017 0.4188270 0.4493389 0.4809271 0.5116291 0.5413831 0.5730938
+2009-01-30 0.2786394 0.2850462 0.2914347 0.2977798 0.3089128 0.3224718 0.3362346 0.3496501 0.3585710 0.3682149 0.3765387 0.3875636 0.3950132 0.4044507
+2009-02-27 0.2604858 0.2624285 0.2659673 0.2705647 0.2726098 0.2797286 0.2845977 0.2894059 0.2929485 0.2985309 0.3017437 0.3076174 0.3125150 0.3180774
+2009-03-31 0.2503641 0.2601199 0.2690204 0.2797022 0.2881384 0.2966759 0.3047876 0.3132918 0.3218937 0.3303926 0.3385063 0.3475496 0.3537877 0.3592815
+2009-04-30 0.2302740 0.2291964 0.2282376 0.2267030 0.2243180 0.2229693 0.2214482 0.2193657 0.2165741 0.2151961 0.2125796 0.2095949 0.2061823 0.2072373
+2009-05-29 0.2088442 0.2115600 0.2147712 0.2199542 0.2249776 0.2308236 0.2358274 0.2421160 0.2473964 0.2529991 0.2582703 0.2654461 0.2718204 0.2802963
+2009-06-30 0.2029794 0.2068137 0.2104695 0.2140830 0.2169581 0.2200916 0.2232163 0.2273882 0.2289460 0.2289520 0.2308391 0.2326897 0.2334683 0.2299211
+2009-07-31 0.1866695 0.1876102 0.1878558 0.1891762 0.1907404 0.1916566 0.1919799 0.1922244 0.1937253 0.1962483 0.1978877 0.1985917 0.1995003 0.2024135
+2009-08-31 0.1761309 0.1766775 0.1764151 0.1767680 0.1770211 0.1765597 0.1762355 0.1781754 0.1796583 0.1807013 0.1801200 0.1834152 0.1859586 0.1894664
+                 M15       M16       M17       M18        M19        M20        M21        M22          M23
+2006-02-24 0.4035041 0.4085020 0.4126255 0.4182752 0.42518783 0.43209664 0.43856332 0.44533532  0.452493361
+2006-03-31 0.3747675 0.3764832 0.3791856 0.3804574 0.37816838 0.37622439 0.37579444 0.37605103  0.372500621
+2006-04-28 0.3447648 0.3436705 0.3427639 0.3416264 0.34058716 0.34015696 0.33747623 0.33601920  0.335202452
+2006-05-31 0.2037169 0.1799649 0.1613104 0.1438438 0.12110139 0.09527037 0.07052411 0.04635797  0.022804751
+2006-06-30 0.4099496 0.4244469 0.4373905 0.4500589 0.46401643 0.47728283 0.49137561 0.50501898  0.513982309
+2006-07-31 0.3478805 0.3534048 0.3620172 0.3726627 0.38326842 0.39224924 0.40111734 0.41054177  0.420485213
+2006-08-31 0.3597741 0.3665443 0.3745470 0.3822541 0.38852194 0.39570156 0.40381768 0.40990443  0.415466703
+2006-09-29 0.3681955 0.3703593 0.3738188 0.3783525 0.38181743 0.38542305 0.39133371 0.39577162  0.399143537
+2006-10-31 0.3625590 0.3696484 0.3763670 0.3836721 0.39044803 0.39579785 0.40193485 0.41052263  0.420354889
+2006-11-30 0.2987109 0.3023198 0.3062133 0.3103777 0.31471677 0.31809135 0.31976793 0.32015344  0.321314046
+2006-12-28 0.3147987 0.3199500 0.3249066 0.3306109 0.33744993 0.34476522 0.35240681 0.36056435  0.369079912
+2007-01-31 0.2610867 0.2612226 0.2600825 0.2592998 0.26010514 0.26151472 0.26049935 0.25926683  0.259324257
+2007-02-28 0.2995940 0.3042009 0.3081347 0.3108593 0.31438294 0.32077983 0.32603961 0.32917423  0.333019924
+2007-03-30 0.2831951 0.2880653 0.2924834 0.2965677 0.29998495 0.30335899 0.30630096 0.31115675  0.315355470
+2007-04-30 0.3210790 0.3279639 0.3340827 0.3410695 0.34893992 0.35815784 0.36745517 0.37767424  0.387093677
+2007-05-31 0.2750216 0.2793368 0.2817092 0.2842577 0.28853280 0.29281659 0.29656773 0.29986457  0.304734391
+2007-06-29 0.2676861 0.2679902 0.2678606 0.2656238 0.26083897 0.25534520 0.25218307 0.25072310  0.247860079
+2007-07-31 0.2067769 0.2023819 0.1976978 0.1931085 0.18890413 0.18422369 0.17805201 0.17072442  0.162420602
+2007-08-31 0.1753331 0.1649807 0.1553043 0.1457646 0.13518163 0.12295097 0.11057224 0.09887327  0.087709165
+2007-09-28 0.2578372 0.2632152 0.2687480 0.2745569 0.28082528 0.28678824 0.29332206 0.29990650  0.305275713
+2007-10-31 0.2086093 0.2064081 0.2036138 0.2024166 0.20138871 0.19987988 0.19876765 0.19598181  0.195616317
+2007-11-30 0.1945236 0.1891749 0.1837140 0.1793073 0.17463053 0.16757257 0.16360635 0.15812426  0.152119753
+2007-12-28 0.1748756 0.1673036 0.1589747 0.1490774 0.13817435 0.12692751 0.11714587 0.10726405  0.098731800
+2008-01-31 0.2385855 0.2412613 0.2412261 0.2445538 0.24956338 0.25034306 0.25192845 0.25477452  0.256045739
+2008-02-29 0.2680776 0.2706868 0.2734163 0.2754735 0.27808040 0.27995027 0.28203982 0.28434336  0.286170579
+2008-03-31 0.1290787 0.1208527 0.1107495 0.1010345 0.09225882 0.08123055 0.07203378 0.06242863  0.052087878
+2008-04-30 0.1777940 0.1720879 0.1680909 0.1628734 0.15801844 0.15422589 0.14982877 0.14827027  0.144301458
+2008-05-30 0.1840233 0.1772731 0.1712500 0.1664775 0.16035312 0.15448718 0.14953623 0.14493961  0.139024250
+2008-06-30 0.1755289 0.1655816 0.1567193 0.1436380 0.12984771 0.11543329 0.10042261 0.08569712  0.071085088
+2008-07-31 0.2425321 0.2465055 0.2538226 0.2617764 0.26980266 0.27770733 0.29057498 0.30204171  0.313581486
+2008-08-29 0.2901170 0.2961438 0.3032780 0.3085247 0.31583100 0.32100017 0.32454049 0.32898448  0.333337276
+2008-09-30 0.3018514 0.3059641 0.3106886 0.3154545 0.31537472 0.31699534 0.31752404 0.31938231  0.321711781
+2008-10-31 0.1712629 0.1560622 0.1328912 0.1114025 0.08748750 0.06616347 0.04346614 0.02075849 -0.002885725
+2008-11-28 0.4258102 0.4450323 0.4643600 0.4848514 0.50475337 0.52119797 0.53414615 0.54671050  0.561090977
+2008-12-30 0.6055020 0.6381932 0.6716429 0.7028082 0.73419864 0.76636180 0.80042298 0.83216861  0.868687861
+2009-01-30 0.4144305 0.4223351 0.4287092 0.4357990 0.44355628 0.45091811 0.45661269 0.46186072  0.465377770
+2009-02-27 0.3222640 0.3281744 0.3359987 0.3415718 0.34865709 0.35413675 0.36132956 0.36954373  0.376768491
+2009-03-31 0.3626256 0.3671869 0.3715795 0.3717117 0.37312044 0.37396477 0.37535323 0.37490112  0.380079726
+2009-04-30 0.2051588 0.2045657 0.2030302 0.2032674 0.20429161 0.20509167 0.20364369 0.20143135  0.199981964
+2009-05-29 0.2873595 0.2962515 0.3054023 0.3149413 0.32392418 0.33115527 0.33881485 0.34667583  0.354232446
+2009-06-30 0.2250599 0.2217345 0.2183964 0.2100159 0.20021963 0.19152040 0.18234033 0.17192771  0.160805010
+2009-07-31 0.2059343 0.2060281 0.2040359 0.2078817 0.21080621 0.21300642 0.21501255 0.21784498  0.222387895
+2009-08-31 0.1898422 0.1950012 0.1991684 0.2072557 0.21144584 0.20868406 0.20687606 0.20691392  0.206560478
+ [ reached 'max' / getOption("max.print") -- omitted 155 rows ]
+> mean(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf)
+[1] NA
+Warning message:
+In mean.default(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2` *  :
+  argumento não é numérico nem lógico: retornando NA
+> PE<-as.data.frame(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf))
+Error: unexpected ')' in "PE<-as.data.frame(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf))"
+> PE<-as.data.frame(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf)
+> mean(PE)
+[1] NA
+Warning message:
+In mean.default(PE) : argumento não é numérico nem lógico: retornando NA
+> mean(as.matrix(PE))
+[1] 0.2053067
+> mean(crossprod(as.matrix(PE),as.matrix(PE))
++ 
++ mean(crossprod(as.matrix(PE),as.matrix(PE)))
