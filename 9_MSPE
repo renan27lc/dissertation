@@ -4,7 +4,15 @@
 
 lm_B1A6_M2_coef<-as.data.frame(t(lm_B1A6_M2$coefficients))
 
-PE<-as.matrix(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf)
+B1A6_alpha <- cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_B1A6_M2$coefficients[1]),as.data.frame(lm_B1A6_M3$coefficients[1]),as.data.frame(lm_B1A6_M6$coefficients[1]),as.data.frame(lm_B1A6_M9$coefficients[1]),as.data.frame(lm_B1A6_M12$coefficients[1]),as.data.frame(lm_B1A6_M18$coefficients[1]))))))
+i_198<-as.data.frame(rep(1, 198))
+
+
+B1A6_beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_B1A6_M2$coefficients[2]),as.data.frame(lm_B1A6_M3$coefficients[2]),as.data.frame(lm_B1A6_M6$coefficients[2]),as.data.frame(lm_B1A6_M9$coefficients[2]),as.data.frame(lm_B1A6_M12$coefficients[2]),as.data.frame(lm_B1A6_M18$coefficients[2]))))
+V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
+
+
+PE<-as.matrix(r_h1mo - B1A6_alpha*i_198 + B1A6_beta_hat*rf)
 MSPE_B1A6_M2<-mean(PE)^2
 #mas esse é só de uma maturidade, quando fiz o mspe do adrian 3steps foi todas de uma vez
 # além disso, o jeito certo de fazer a regressão b1 é esse novo aqui ou o original?
@@ -15,7 +23,7 @@ MSPE_B1A6_M2<-mean(PE)^2
 #=============== ADRIAN 3 STEPS ==============
 
 #based on A14
-a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+a__hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
 i_198<-as.data.frame(rep(1, 198))
 
 beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[2:6]),as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
