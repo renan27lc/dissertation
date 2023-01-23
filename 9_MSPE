@@ -6,9 +6,10 @@ lm_B1A6_M2_coef<-as.data.frame(t(lm_B1A6_M2$coefficients))
 
 PE<-as.matrix(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf)
 MSPE_B1A6_M2<-mean(PE)^2
-#mas esse é só de uma maturidade, quando fiz o mspe do adrian 3steps foi todas de uma vez. além disso, o jeito certo de fazer a regressão b1 é esse novo aqui ou o original?
+#mas esse é só de uma maturidade, quando fiz o mspe do adrian 3steps foi todas de uma vez
+# além disso, o jeito certo de fazer a regressão b1 é esse novo aqui ou o original?
+# a variável a ser predita no mspe devia ser a mesma em todos (r_xs), não?
 # c(lm_B1A6_M2$coefficients,lm_B1A6_M3$coefficients,lm_B1A6_M6$coefficients,lm_B1A6_M9$coefficients,lm_B1A6_M12$coefficients,lm_B1A6_M18$coefficients)
-
 
 
 #=============== ADRIAN 3 STEPS ==============
