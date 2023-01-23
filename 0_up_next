@@ -995,3 +995,6 @@ In mean.default(PE) : argumento não é numérico nem lógico: retornando NA
 > mean(crossprod(as.matrix(PE),as.matrix(PE))
 + 
 + mean(crossprod(as.matrix(PE),as.matrix(PE)))
+
+> PE<-as.matrix(r_h1mo - lm_B1A6_M2_coef$`(Intercept)` + lm_B1A6_M2_coef$`rf$M2`*rf)
+> MSPE_B1A6_M2<-mean(PE)^2 #mas esse é só de uma maturidade, quando fiz o mspe do adrian 3steps foi todas de uma vez. além disso, o jeito certo de fazer a regressão b1 é esse novo aqui ou o original?
