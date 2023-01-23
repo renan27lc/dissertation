@@ -9,21 +9,41 @@ i_198<-as.data.frame(rep(1, 198))
 
 
 B1A6_beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_B1A6_M2$coefficients[2]),as.data.frame(lm_B1A6_M3$coefficients[2]),as.data.frame(lm_B1A6_M6$coefficients[2]),as.data.frame(lm_B1A6_M9$coefficients[2]),as.data.frame(lm_B1A6_M12$coefficients[2]),as.data.frame(lm_B1A6_M18$coefficients[2]))))
-V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
+PC5_t<-as.data.frame(pca_yields_scores_lastday[1:198,1:5]))
 
 
-PE<-as.matrix(r_h1mo - B1A6_alpha*i_198 + B1A6_beta_hat*rf)
-MSPE_B1A6_M2<-mean(PE)^2
-#mas esse é só de uma maturidade, quando fiz o mspe do adrian 3steps foi todas de uma vez
-# além disso, o jeito certo de fazer a regressão b1 é esse novo aqui ou o original?
+#PE<-as.matrix(r_h1mo - B1A6_alpha*i_198 + B1A6_beta_hat*rf)
+#MSPE_B1A6_M2<-mean(PE)^2
+
 # a variável a ser predita no mspe devia ser a mesma em todos (r_xs), não?
 # c(lm_B1A6_M2$coefficients,lm_B1A6_M3$coefficients,lm_B1A6_M6$coefficients,lm_B1A6_M9$coefficients,lm_B1A6_M12$coefficients,lm_B1A6_M18$coefficients)
+
+
+#== lm(return rate for holding the bond for 1 month ~ risk free rate)
+
+lm_r1h1mo_alpha_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1mo_M2$coefficients[1]),as.data.frame(lm_r1h1mo_M3$coefficients[1]),as.data.frame(lm_r1h1mo_M6$coefficients[1]),as.data.frame(lm_r1h1mo_M9$coefficients[1]),as.data.frame(lm_r1h1mo_M12$coefficients[1]),as.data.frame(lm_r1h1mo_M18$coefficients[1]))))))
+i_198<-as.data.frame(rep(1, 198))
+
+lm_r1h1mo_beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_r1h1mo_M2$coefficients[2]),as.data.frame(lm_r1h1mo_M3$coefficients[2]),as.data.frame(lm_r1h1mo_M6$coefficients[2]),as.data.frame(lm_r1h1mo_M9$coefficients[2]),as.data.frame(lm_r1h1mo_M12$coefficients[2]),as.data.frame(lm_r1h1mo_M18$coefficients[2]))))
+PC5_t<-as.data.frame(pca_yields_scores_lastday[1:198,1:5])
+
+
+lm_r1h1mo_PE<-as.matrix(#r_h1mo - crossprod(t(lm_r1h1mo_alpha_hat),t(i_198)) + crossprod(as.matrix(lm_r1h1mo_beta_hat),t(rf[,1])))
+lm_r1h1mo_MSPE<-mean(lm_r1h1mo_PE)^2
+lm_r1h1mo_MSPE
+
+
+E_r1h1mo<-as.data.frame(t(crossprod(t(lm_r1h1mo_alpha_hat),t(i_198)) + crossprod(as.matrix(lm_r1h1mo_beta_hat),t(rf$M2))))
+
+lm_r1h1mo_MSPE_<-mean(as.matrix(r_h1mo-E_r1h1mo)^2)
+lm_r1h1mo_MSPE_
+
 
 
 #=============== ADRIAN 3 STEPS ==============
 
 #based on A14
-a__hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
 i_198<-as.data.frame(rep(1, 198))
 
 beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[2:6]),as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
