@@ -1,7 +1,11 @@
 
+#=============== ENTENDENDO DIFERENÇA ENTRE A1B6 E lm_r1h1mo ==============
+
 #r_xp<-ytm_ini+rf      # expected returns. aqui na expectation hypothesis, r_xp=rf, não)
-#rownames(r_xp)<-rownames(ytm_ini)
-#colnames(r_xp)<-colnames(ytm_ini)
+E_ytmfin<-ytm_ini+rf # expected ytm_fin
+#na verdade deveria ser r_xp<- -ytm_ini-rf, não? não, estou confundindo y com ytm e achando que r = -ytm
+#rownames(E_ytmfin)<-rownames(ytm_ini)
+#colnames(E_ytmfin)<-colnames(ytm_ini)
 
 r_h1mo<- ytm_ini - ytm_fin
 
@@ -9,25 +13,25 @@ r_h1mo_6M<-cbind(r_h1mo[,1],r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[
 
 ytm_fin[,1] ~ ytm_ini+rf[,1]        #A1B6
 ytm_ini - ytm_fin[,1] ~ rf[,1]      #r_h1mo
-#pq ytm_ini não tem [,1]
-#qual a diferença entre a primeira e a segunda?
+# diferença entre a primeira e a segunda: ytm_fin - ytm_ini vs ytm_ini - ytm_fin (ou rf=+/-y)
+# ver folha 23/1/2023-3
 
-#verificar 6M de todas essas listas
+lm_B1A6_M2<-lm(formula = ytm_fin[,1] ~ E_ytmfin[,1])
+lm_B1A6_M3<-lm(formula = ytm_fin[,2] ~ E_ytmfin[,2])
+lm_B1A6_M6<-lm(formula = ytm_fin[,6] ~ E_ytmfin[,6])
+lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ E_ytmfin[,9])
+lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ E_ytmfin[,12])
+lm_B1A6_M18<-lm(formula = ytm_fin[,18] ~ E_ytmfin[,18])
 
-lm_B1A6_M2<-lm(formula = ytm_fin[,1] ~ r_xp[,1])
-lm_B1A6_M3<-lm(formula = ytm_fin[,2] ~ r_xp[,2])
-lm_B1A6_M6<-lm(formula = ytm_fin[,6] ~ r_xp[,6])
-lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ r_xp[,9])
-lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ r_xp[,12])
-lm_B1A6_M18<-lm(formula = ytm_fin[,18] ~ r_xp[,18])
-
-
-lm_r1h1mo_M1<-lm(formula = r_h1mo[,1] ~ rf[,1])
+lm_r1h1mo_M1<-lm(formula = r_h1mo[,1] ~ rf #[,1])# todas as colunas de rf são iguais. já no de cima, a variável explicativa é uma para cada 
 lm_r1h1mo_M2<-lm(formula = r_h1mo[,2] ~ rf[,2])
 lm_r1h1mo_M6<-lm(formula = r_h1mo[,6] ~ rf[,6])
 lm_r1h1mo_M9<-lm(formula = r_h1mo[,9] ~ rf[,9])
 lm_r1h1mo_M12<-lm(formula = r_h1mo[,12] ~ rf[,12])
 lm_r1h1mo_M18<-lm(formula = r_h1mo[,18] ~ rf[,18])
+#coeficientes estão dando negativo, pois rf é negativo. fazendo com rf positivo, C_rep[,1], dá exatamente o oposto. 
+#P.A.: entender: qual a diferença entre lm_r1h1mo_M1<-lm(formula = r_h1mo[,1] ~ C_rep[,1]) e o a1b6?
+
 #=============== A1B6 ==============
 
 lm_B1A6_M2_coef<-as.data.frame(t(lm_B1A6_M2$coefficients))
@@ -35,36 +39,45 @@ lm_B1A6_M2_coef<-as.data.frame(t(lm_B1A6_M2$coefficients))
 B1A6_alpha <- cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_B1A6_M2$coefficients[1]),as.data.frame(lm_B1A6_M3$coefficients[1]),as.data.frame(lm_B1A6_M6$coefficients[1]),as.data.frame(lm_B1A6_M9$coefficients[1]),as.data.frame(lm_B1A6_M12$coefficients[1]),as.data.frame(lm_B1A6_M18$coefficients[1]))))))
 i_198<-as.data.frame(rep(1, 198))
 
-
 B1A6_beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_B1A6_M2$coefficients[2]),as.data.frame(lm_B1A6_M3$coefficients[2]),as.data.frame(lm_B1A6_M6$coefficients[2]),as.data.frame(lm_B1A6_M9$coefficients[2]),as.data.frame(lm_B1A6_M12$coefficients[2]),as.data.frame(lm_B1A6_M18$coefficients[2]))))
-PC5_t<-as.data.frame(pca_yields_scores_lastday[1:198,1:5]))
 
+E_ytmfin<- as.matrix(t(crossprod(t(B1A6_alpha),t(i_198))) + t(crossprod(t(B1A6_beta_hat),t(r_xp#[,1]))))
+
+#P.A.: terminar MSPE A1B6, fazer dos 2 jeitos
 
 #PE<-as.matrix(r_h1mo - B1A6_alpha*i_198 + B1A6_beta_hat*rf)
 #MSPE_B1A6_M2<-mean(PE)^2
 
-# a variável a ser predita no mspe devia ser a mesma em todos (r_xs), não?
+# a variável a ser predita no mspe devia ser a mesma em todos (ytm_fin, r_h1mo ou r_xs), não?
 # c(lm_B1A6_M2$coefficients,lm_B1A6_M3$coefficients,lm_B1A6_M6$coefficients,lm_B1A6_M9$coefficients,lm_B1A6_M12$coefficients,lm_B1A6_M18$coefficients)
 
 
 #== lm(return rate for holding the bond for 1 month ~ risk free rate)
 
-lm_r1h1mo_alpha_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1mo_M1$coefficients[1]),as.data.frame(lm_r1h1mo_M2$coefficients[1]),as.data.frame(lm_r1h1mo_M6$coefficients[1]),as.data.frame(lm_r1h1mo_M9$coefficients[1]),as.data.frame(lm_r1h1mo_M12$coefficients[1]),as.data.frame(lm_r1h1mo_M18$coefficients[1]))))))
+lm_rh1mo_alpha_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1mo_M1$coefficients[1]),as.data.frame(lm_r1h1mo_M2$coefficients[1]),as.data.frame(lm_r1h1mo_M6$coefficients[1]),as.data.frame(lm_r1h1mo_M9$coefficients[1]),as.data.frame(lm_r1h1mo_M12$coefficients[1]),as.data.frame(lm_r1h1mo_M18$coefficients[1]))))))
 i_198<-as.data.frame(rep(1, 198))
 #P.A.: tentar reduzir esses as.data.frame(), etc
 
-lm_r1h1mo_beta_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1mo_M1$coefficients[2]),as.data.frame(lm_r1h1mo_M2$coefficients[2]),as.data.frame(lm_r1h1mo_M6$coefficients[2]),as.data.frame(lm_r1h1mo_M9$coefficients[2]),as.data.frame(lm_r1h1mo_M12$coefficients[2]),as.data.frame(lm_r1h1mo_M18$coefficients[2]))))
-PC5_t<-as.data.frame(pca_yields_scores_lastday[1:198,1:5])
+lm_rh1mo_beta_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1mo_M1$coefficients[2]),as.data.frame(lm_r1h1mo_M2$coefficients[2]),as.data.frame(lm_r1h1mo_M6$coefficients[2]),as.data.frame(lm_r1h1mo_M9$coefficients[2]),as.data.frame(lm_r1h1mo_M12$coefficients[2]),as.data.frame(lm_r1h1mo_M18$coefficients[2]))))
+rf[,1]
 
-E_r1h1mo<- as.matrix(t(crossprod(t(lm_r1h1mo_alpha_hat),t(i_198))) + t(crossprod(t(lm_r1h1mo_beta_hat),t(rf[,1]))))
-lm_r1h1mo_MSPE_<-mean(as.matrix(r_h1mo_6M-E_r1h1mo))^2 # ou <-mean(as.matrix(r_h1mo_6M-E_r1h1mo)^2)?
-lm_r1h1mo_MSPE_
+E_rh1mo<- as.matrix(t(crossprod(t(lm_rh1mo_alpha_hat),t(i_198))) + t(crossprod(t(lm_rh1mo_beta_hat),t(rf[,1]))))
+lm_rh1mo_MSPE_<-mean(as.matrix(r_h1mo_6M-E_r1h1mo))^2 # ou <-mean(as.matrix(r_h1mo_6M-E_r1h1mo)^2)?
+lm_rh1mo_MSPE_
 
 
 #alternativa
-#lm_r1h1mo_PE<-as.matrix(r_h1mo_6M - as.matrix(t(crossprod(t(lm_r1h1mo_alpha_hat),t(i_198))) + t(crossprod(t(lm_r1h1mo_beta_hat),t(rf[,1])))))
-#lm_r1h1mo_MSPE<-mean(lm_r1h1mo_PE)^2
-#lm_r1h1mo_MSPE
+#lm_rh1mo_PE<-as.matrix(r_h1mo_6M - as.matrix(t(crossprod(t(lm_rh1mo_alpha_hat),t(i_198))) + t(crossprod(t(lm_rh1mo_beta_hat),t(rf[,1])))))
+#lm_rh1mo_MSPE<-mean(lm_rh1mo_PE)^2
+#lm_rh1mo_MSPE
+
+
+#=============== LM_RXS_PC5 ==============
+
+
+
+PC5_t<-as.data.frame(pca_yields_scores_lastday[1:198,1:5]))
+
 
 
 #=============== ADRIAN 3 STEPS ==============
