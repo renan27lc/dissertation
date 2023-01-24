@@ -2,7 +2,9 @@
 #=============== ENTENDENDO DIFERENÇA ENTRE A1B6 E lm_r1h1mo ==============
 
 #r_xp<-ytm_ini+rf      # expected returns. aqui na expectation hypothesis, r_xp=rf, não)
-E_ytmfin<-ytm_ini+rf # expected ytm_fin
+E_ytmfin<-ytm_ini-rf # expected ytm_fin
+#P.A.: trocar r_xp por E_ytmfin no sofar
+#resposta: na verdade rf não tem esse problema pois, para rf, y e ytm são iguais, visto que M=1. pergunta: talvez outro problema aqui é eu estar subtraindo ytm de r (ytm_ini-rf), sendo que são coisas distintas.
 #na verdade deveria ser r_xp<- -ytm_ini-rf, não? não, estou confundindo y com ytm e achando que r = -ytm
 #rownames(E_ytmfin)<-rownames(ytm_ini)
 #colnames(E_ytmfin)<-colnames(ytm_ini)
