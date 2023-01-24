@@ -117,6 +117,7 @@ colnames(C_rep)<-colnames(B)
 
 
 rf<- C_rep
+#P.A.: enviar email ao prof perguntando: de acordo com Adrian, rf= ln(P(h=1)) = -y(h=1), então teria de ser rf<- -C_rep, não?
 
 ytm_fin<-as.data.frame(A*P_rep)
 ytm_ini<-as.data.frame(B*Q_rep)
@@ -136,24 +137,26 @@ r_h1mo<- ytm_ini - ytm_fin
 rownames(r_h1mo)<-rownames(ytm_fin)
 colnames(r_h1mo)<-colnames(ytm_fin)
 
+r_h1mo_6M<-cbind(r_h1mo[,1],r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,18])
+
 r_xs<- r_h1mo - rf       # excess returns
 rownames(r_xs)<-rownames(ytm_fin)
 colnames(r_xs)<-colnames(ytm_fin)
 
-lm_B1A6_M2<-lm(formula = ytm_fin$M1 ~ r_xp$M2)
-lm_B1A6_M3<-lm(formula = ytm_fin$M2 ~ r_xp$M3)
-lm_B1A6_M6<-lm(formula = ytm_fin$M5 ~ r_xp$M6)
-lm_B1A6_M9<-lm(formula = ytm_fin$M8 ~ r_xp$M9)
-lm_B1A6_M12<-lm(formula = ytm_fin$M11 ~ r_xp$M12)
-lm_B1A6_M18<-lm(formula = ytm_fin$M17 ~ r_xp$M18)
+lm_B1A6_M1<-lm(formula = ytm_fin[,1] ~ r_xp[,1])
+lm_B1A6_M2<-lm(formula = ytm_fin[,2] ~ r_xp[,2])
+lm_B1A6_M6<-lm(formula = ytm_fin[,6] ~ r_xp[,6])
+lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ r_xp[,9])
+lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ r_xp[,12])
+lm_B1A6_M18<-lm(formula = ytm_fin[,18] ~ r_xp[,18])
 
 # lm(return rate for holding the bond for 1 month ~ risk free rate)
-lm_r1h1mo_M2<-lm(formula = r_h1mo$M1 ~ rf$M2)
-lm_r1h1mo_M3<-lm(formula = r_h1mo$M2 ~ rf$M3)
-lm_r1h1mo_M6<-lm(formula = r_h1mo$M5 ~ rf$M6)
-lm_r1h1mo_M9<-lm(formula = r_h1mo$M8 ~ rf$M9)
-lm_r1h1mo_M12<-lm(formula = r_h1mo$M11 ~ rf$M12)
-lm_r1h1mo_M18<-lm(formula = r_h1mo$M17 ~ rf$M18)
+lm_r1h1mo_M1<-lm(formula = r_h1mo[,1] ~ rf[,1])
+lm_r1h1mo_M2<-lm(formula = r_h1mo[,2] ~ rf[,2])
+lm_r1h1mo_M6<-lm(formula = r_h1mo[,6] ~ rf[,6])
+lm_r1h1mo_M9<-lm(formula = r_h1mo[,9] ~ rf[,9])
+lm_r1h1mo_M12<-lm(formula = r_h1mo[,12] ~ rf[,12])
+lm_r1h1mo_M18<-lm(formula = r_h1mo[,18] ~ rf[,18])
 
 # ===================== PCA ==========================
 
