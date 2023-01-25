@@ -18,8 +18,8 @@ ytm_ini - ytm_fin[,1] ~ rf[,1]      #r_h1mo
 # diferença entre a primeira e a segunda: ytm_fin - ytm_ini vs ytm_ini - ytm_fin (ou rf=+/-y)
 # ver folha 23/1/2023-3
 
-lm_B1A6_M2<-lm(formula = ytm_fin[,1] ~ E_ytmfin[,1])
-lm_B1A6_M3<-lm(formula = ytm_fin[,2] ~ E_ytmfin[,2])
+lm_B1A6_M1<-lm(formula = ytm_fin[,1] ~ E_ytmfin[,1])
+lm_B1A6_M2<-lm(formula = ytm_fin[,2] ~ E_ytmfin[,2])
 lm_B1A6_M6<-lm(formula = ytm_fin[,6] ~ E_ytmfin[,6])
 lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ E_ytmfin[,9])
 lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ E_ytmfin[,12])
