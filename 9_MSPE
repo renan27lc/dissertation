@@ -60,12 +60,12 @@ lm_rh1mo_alpha_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1m
 i_198<-as.data.frame(rep(1, 198))
 #P.A.: tentar reduzir esses as.data.frame(), etc
 
-lm_rh1mo_beta_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1mo_M1$coefficients[2]),as.data.frame(lm_r1h1mo_M2$coefficients[2]),as.data.frame(lm_r1h1mo_M6$coefficients[2]),as.data.frame(lm_r1h1mo_M9$coefficients[2]),as.data.frame(lm_r1h1mo_M12$coefficients[2]),as.data.frame(lm_r1h1mo_M18$coefficients[2]))))
+lm_rh1mo_beta_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1mo_M1$coefficients[2]),as.data.frame(lm_r1h1mo_M2$coefficients[2]),as.data.frame(lm_r1h1mo_M6$coefficients[2]),as.data.frame(lm_r1h1mo_M9$coefficients[2]),as.data.frame(lm_r1h1mo_M12$coefficients[2]),as.data.frame(lm_r1h1mo_M18$coefficients[2]))))))
 rf[,1]
 
 E_rh1mo<- as.matrix(t(crossprod(t(lm_rh1mo_alpha_hat),t(i_198))) + t(crossprod(t(lm_rh1mo_beta_hat),t(rf[,1]))))
-lm_rh1mo_MSPE_<-mean(as.matrix(r_h1mo_6M-E_r1h1mo))^2 # ou <-mean(as.matrix(r_h1mo_6M-E_r1h1mo)^2)?
-lm_rh1mo_MSPE_
+MSPE_lm_rh1mo<-mean(as.matrix(r_h1mo_6M-E_r1h1mo))^2 # ou <-mean(as.matrix(r_h1mo_6M-E_r1h1mo)^2)?
+MSPE_lm_rh1mo
 
 
 #alternativa
