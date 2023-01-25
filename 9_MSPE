@@ -78,9 +78,21 @@ lm_rh1mo_MSPE_
 
 
 
-PC5_t<-as.data.frame(pca_yields_scores_lastday[1:198,1:5]))
+
+pc5_t<-as.data.frame(pca_yields_scores_lastday[1:198,1:5])
 
 
+lm_pc5_alpha_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_pc5_M1$coefficients[1]),as.data.frame(lm_pc5_M3$coefficients[1]),as.data.frame(lm_pc5_M6$coefficients[1]),as.data.frame(lm_pc5_M9$coefficients[1]),as.data.frame(lm_pc5_M12$coefficients[1]),as.data.frame(lm_pc5_M18$coefficients[1]))))))
+i_198<-as.data.frame(rep(1, 198))
+#P.A.: tentar reduzir esses as.data.frame(), etc
+
+lm_pc5_beta_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_pc5_M1$coefficients[2]),as.data.frame(lm_pc5_M3$coefficients[2]),as.data.frame(lm_pc5_M6$coefficients[2]),as.data.frame(lm_pc5_M9$coefficients[2]),as.data.frame(lm_pc5_M12$coefficients[2]),as.data.frame(lm_pc5_M18$coefficients[2]))))))
+rf[,1]
+
+E_rxs_pc5<-as.data.frame(t(crossprod(t(lm_pc5_alpha_hat),t(i_198))+crossprod(as.matrix(lm_pc5_beta_hat),t(PC5_t))))
+
+MSPE_pc5<-mean(as.matrix(r_xs_6M-E_rxs_pc5)^2)
+MSPE_pc5
 
 #=============== ADRIAN 3 STEPS ==============
 
@@ -94,7 +106,7 @@ V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
 c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[7:11]),as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
 X__transp<-as.data.frame(as.matrix(pca_yields_scores_lastday)[1:198,1:5])
 
-E_rxs<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
+E_rxs_a14<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
 
 MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs)^2)
 MSPE_adrian3steps
