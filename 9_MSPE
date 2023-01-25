@@ -8,12 +8,11 @@ MSPE_rw
 #=============== ENTENDENDO DIFERENÇA ENTRE A1B6 E lm_r1h1mo ==============
 
 #r_xp<-ytm_ini+rf      # expected returns. aqui na expectation hypothesis, r_xp=rf, não)
-E_ytmfin<-ytm_ini-rf # expected ytm_fin
-#P.A.: trocar r_xp por E_ytmfin no sofar
-#resposta: na verdade rf não tem esse problema pois, para rf, y e ytm são iguais, visto que M=1. pergunta: talvez outro problema aqui é eu estar subtraindo ytm de r (ytm_ini-rf), sendo que são coisas distintas.
-#na verdade deveria ser r_xp<- -ytm_ini-rf, não? não, estou confundindo y com ytm e achando que r = -ytm
-#rownames(E_ytmfin)<-rownames(ytm_ini)
-#colnames(E_ytmfin)<-colnames(ytm_ini)
+ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin
+ytmfin_xphyp6M<-as.data.frame(cbind(ytmfin_xphyp[,1],ytmfin_xphyp[,3],ytmfin_xphyp[,6],ytmfin_xphyp[,9],ytmfin_xphyp[,12],ytmfin_xphyp[,18]))
+
+#rownames(ytmfin_xphyp)<-rownames(ytm_ini)
+#colnames(ytmfin_xphyp)<-colnames(ytm_ini)
 
 r_h1mo<- ytm_ini - ytm_fin
 
@@ -24,12 +23,12 @@ ytm_ini - ytm_fin[,1] ~ rf[,1]      #r_h1mo
 # diferença entre a primeira e a segunda: ytm_fin - ytm_ini vs ytm_ini - ytm_fin (ou rf=+/-y)
 # ver folha 23/1/2023-3
 
-lm_B1A6_M1<-lm(formula = ytm_fin[,1] ~ E_ytmfin[,1])
-lm_B1A6_M2<-lm(formula = ytm_fin[,2] ~ E_ytmfin[,2])
-lm_B1A6_M6<-lm(formula = ytm_fin[,6] ~ E_ytmfin[,6])
-lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ E_ytmfin[,9])
-lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ E_ytmfin[,12])
-lm_B1A6_M18<-lm(formula = ytm_fin[,18] ~ E_ytmfin[,18])
+lm_B1A6_M1<-lm(formula = ytm_fin[,1] ~ ytmfin_xphyp[,1])
+lm_B1A6_M2<-lm(formula = ytm_fin[,2] ~ ytmfin_xphyp[,2])
+lm_B1A6_M6<-lm(formula = ytm_fin[,6] ~ ytmfin_xphyp[,6])
+lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ ytmfin_xphyp[,9])
+lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ ytmfin_xphyp[,12])
+lm_B1A6_M18<-lm(formula = ytm_fin[,18] ~ ytmfin_xphyp[,18])
 
 lm_r1h1mo_M1<-lm(formula = r_h1mo[,1] ~ rf #[,1])# todas as colunas de rf são iguais. já no de cima, a variável explicativa é uma para cada 
 lm_r1h1mo_M2<-lm(formula = r_h1mo[,2] ~ rf[,2])
@@ -49,7 +48,12 @@ i_198<-as.data.frame(rep(1, 198))
 
 B1A6_beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_B1A6_M2$coefficients[2]),as.data.frame(lm_B1A6_M3$coefficients[2]),as.data.frame(lm_B1A6_M6$coefficients[2]),as.data.frame(lm_B1A6_M9$coefficients[2]),as.data.frame(lm_B1A6_M12$coefficients[2]),as.data.frame(lm_B1A6_M18$coefficients[2]))))
 
-E_ytmfin<- as.matrix(t(crossprod(t(B1A6_alpha),t(i_198))) + t(crossprod(t(B1A6_beta_hat),t(r_xp#[,1]))))
+#B1A6_beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_B1A6_M2$coefficients[2:6]),as.data.frame(lm_B1A6_M3$coefficients[2:6]),as.data.frame(lm_B1A6_M6$coefficients[2:6]),as.data.frame(lm_B1A6_M9$coefficients[2:6]),as.data.frame(lm_B1A6_M12$coefficients[2:6]),as.data.frame(lm_B1A6_M18$coefficients[2:6]))))
+
+
+E_ytmfin<- as.matrix(t(crossprod(t(B1A6_alpha),t(i_198))) + t(crossprod(t(B1A6_beta_hat),t(ytmfin_xphyp6M))))
+MSPE_A1B6<-mean(as.matrix(ytm_fin -E_ytmfin))^2
+MSPE_A1B6
 
 #P.A.: terminar MSPE A1B6, fazer dos 2 jeitos
 
