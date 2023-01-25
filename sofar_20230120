@@ -206,6 +206,7 @@ lines(Maturities,                    # Draw first time series
 
 # ===================== LM() EXCESS RETURN ~ PCA ==========================
 
+r_xs_6M<-cbind(r_xs)[c(1,3,6,9,12,18)]
 
 pca_yields_scores_clmn<-cbind(dates_asDate,rownames_to_column(pca_yields_scores))
 pca_yields_scores_clmn<-pca_yields_scores_clmn[,-2]
@@ -213,13 +214,12 @@ colnames(pca_yields_scores_clmn)[1]<-"DATE"
 pca_yields_scores_lastday<-inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE")
 pca_yields_scores_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE"),var = "DATE")
 
-lm_pc5_M1<-lm(r_xs$M1 ~ pca_yields_scores_lastday$Comp.1[1:198]  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
-lm_pc5_M3<-lm(r_xs$M3 ~ pca_yields_scores_lastday$Comp.1[1:198]  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] +    pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
-lm_pc5_M6<-lm(r_xs$M6 ~ pca_yields_scores_lastday$Comp.1[1:198]  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
-lm_pc5_M9<-lm(r_xs$M9 ~ pca_yields_scores_lastday$Comp.1[1:198] +  pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
-lm_pc5_M12<-lm(r_xs$M12 ~ pca_yields_scores_lastday$Comp.1[1:198] +  pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
-lm_pc5_M18<-lm(r_xs$M18 ~ pca_yields_scores_lastday$Comp.1[1:198] +  pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
-
+lm_pc5_M1<-lm(r_xs[1:198,1] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5]) 
+lm_pc5_M3<-lm(r_xs[1:198,3] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
+lm_pc5_M6<-lm(r_xs[1:198,6] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
+lm_pc5_M9<-lm(r_xs[1:198,9] ~  ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
+lm_pc5_M12<-lm(r_xs[1:198,12] ~  ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
+lm_pc5_M18<-lm(r_xs[1:198,18] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
 
 # ===================== ADRIAN 3 STEPS ==========================
 
