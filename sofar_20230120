@@ -63,72 +63,66 @@ Initial_Date = '2006/01/01' # Available from 2003/08/08. YYYY/MM/DD
 Final_Date = '2022/08/08'
 Maturities = c(1:25)
 
-yields_100 = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
-yields_100
+yields_daily_100 = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
+yields_daily_100
 
-yields_rowcolumn<-rownames_to_column(as.data.frame(yields_100/100))
-yields_df<-as.data.frame(yields_rowcolumn)
-colnames(yields_df)[1]<-"DATE"
+yields_daily_rowcolumn<-rownames_to_column(as.data.frame(yields_daily_100/100))
+yields_daily_df<-as.data.frame(yields_daily_rowcolumn)
+colnames(yields_daily_df)[1]<-"DATE"
 
 plot(colMeans(yields))
 
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
 
 last_days_asDate<-as.data.frame(as.Date.POSIXct(matrix(c(1138665600, 1140739200, 1143763200, 1146182400, 1149033600, 1151625600, 1154304000, 1156982400, 1159488000, 1162252800, 1164844800, 1167264000, 1170201600, 1172620800, 1175212800, 1177891200, 1180569600, 1183075200, 1185840000, 1188518400, 1190937600, 1193788800, 1196380800, 1198800000, 1201737600, 1204243200, 1206921600, 1209513600, 1212105600, 1214784000, 1217462400, 1219968000, 1222732800, 1225411200, 1227830400, 1230595200, 1233273600, 1235692800, 1238457600, 1241049600, 1243555200, 1246320000, 1248998400, 1251676800, 1254268800, 1256860800, 1259539200, 1262131200, 1264723200, 1267142400, 1269993600, 1272585600, 1275264000, 1277856000, 1280448000, 1283212800, 1285804800, 1288310400, 1291075200, 1293667200, 1296432000, 1298851200, 1301529600, 1304035200, 1306800000, 1309392000, 1311897600, 1314748800, 1317340800, 1320019200, 1322611200, 1325116800, 1327968000, 1330473600, 1333065600, 1335744000, 1338422400, 1340928000, 1343692800, 1346371200, 1348790400, 1351641600, 1354233600, 1356652800, 1359590400, 1362009600, 1364428800, 1367280000, 1369958400, 1372377600, 1375228800, 1377820800, 1380499200, 1383177600, 1385683200, 1388361600, 1391126400, 1393545600, 1396224000, 1398816000, 1401408000, 1404086400, 1406764800, 1409270400, 1412035200, 1414713600, 1417132800, 1419897600, 1422576000, 1424995200, 1427760000, 1430352000, 1432857600, 1435622400, 1438300800, 1440979200, 1443571200, 1446163200, 1448841600, 1451433600, 1454025600, 1456704000, 1459382400, 1461888000, 1464652800, 1467244800, 1469750400, 1472601600, 1475193600, 1477872000, 1480464000, 1482969600, 1485820800, 1487894400, 1490918400, 1493337600, 1496188800, 1498780800, 1501459200, 1504137600, 1506643200, 1509408000, 1512000000, 1514419200, 1517356800, 1519776000, 1522281600, 1525046400, 1527638400, 1530230400, 1532995200, 1535673600, 1538092800, 1540944000, 1543536000, 1545955200, 1548892800, 1551312000, 1553817600, 1556582400, 1559260800, 1561680000, 1564531200, 1567123200, 1569801600, 1572480000, 1574985600, 1577664000, 1580428800, 1582848000, 1585612800, 1588204800, 1590710400, 1593475200, 1596153600, 1598832000, 1601424000, 1604016000, 1606694400, 1609286400, 1611878400, 1614297600, 1617148800, 1619740800, 1622419200, 1625011200, 1627603200, 1630368000, 1632960000, 1635465600, 1638230400, 1640822400, 1643587200, 1645747200, 1648684800, 1651190400, 1653955200, 1656547200, 1659052800),199,1),tz="UTC"))
-colnames(last_days_asDate)[1]<-"DATE"
 last_days_asDate<-as.data.frame(as.matrix(last_days_asDate))
-last_days_asDate<-as.Date(last_days_asDate$DATE)
-last_days_asDate<-as.data.frame(last_days_asDate)
-last_days_asDate<-as.data.frame(as.Date(last_days_asDate$last_days_asDate))
+last_days_asDate<-as.data.frame(as.Date(last_days_asDate[,1]))
 colnames(last_days_asDate)[1]<-"DATE"
 
-colnames(yields_rowcolumn)[1]<-"DATE"
+colnames(yields_daily_rowcolumn)[1]<-"DATE"
 
-yields_df<-as.data.frame(yields_rowcolumn)
-dates_asDate<-as.data.frame(as.Date(yields_df$DATE, "%d - %m - %Y"))
+dates_asDate<-as.data.frame(as.Date(yields_daily_df$DATE, "%d - %m - %Y"))
 
-yields_list_asDate<-bind_cols(dates_asDate,yields_df)
-yields_list_asDate<-yields_list_asDate[,-2]
+yields_daily_df_asDate<-bind_cols(dates_asDate,yields_df)
+yields_daily_df_asDate<-as.data.frame(yields_daily_df_asDate[,-2])
+colnames(yields_daily_df_asDate)[1]<-"DATE"
 
-yields_df_asDate<-as.data.frame(yields_list_asDate)
-colnames(yields_df_asDate)[1]<-"DATE"
-yields_lastday_df_asDate<-inner_join(last_days_asDate,yields_df_asDate, by = "DATE")
+yields_df_asDate<-inner_join(last_days_asDate,yields_df_asDate, by = "DATE")
 
-yields_rwnms<-column_to_rownames(yields_df_asDate,var = "DATE")
-yields_lastday_rwnms<-column_to_rownames(yields_lastday_df_asDate,var = "DATE")
+yields_daily_rwnms<-column_to_rownames(yields_daily_df_asDate,var = "DATE")
+yields_rwnms<-column_to_rownames(yields_lastday_df_asDate,var = "DATE")
 
-A<-yields_lastday_rwnms[2:199, 1:23]
-B<-yields_lastday_rwnms[1:198, 2:24]
+yields_fin<-yields_lastday_rwnms[2:199, 1:23] # t1=jan/06, h1=M2
+yields_ini<-yields_lastday_rwnms[1:198, 2:24]
 #C<-as.data.frame(yields_lastday_rwnms[1:198,1])      #risk free
 #P<-as.data.frame(Maturities[1:23])
 #Q<-as.data.frame(Maturities[2:24])
 
 
-P_rep<-t(as.data.frame(rep(as.data.frame(Maturities[1:23])[1],198)))
-Q_rep<-t(as.data.frame(rep(as.data.frame(Maturities[2:24])[1],198)))
-C_rep<-as.data.frame(rep(as.data.frame(yields_lastday_rwnms[1:198,1])[1],23))
+mat_fin.rep<-t(as.data.frame(rep(as.data.frame(Maturities[1:23])[1],198)))
+mat_ini.rep<-t(as.data.frame(rep(as.data.frame(Maturities[2:24])[1],198)))
+rf.rep<-as.data.frame(rep(as.data.frame(yields_lastday_rwnms[1:198,1])[1],23))
 
-rownames(P_rep)<-rownames(A)
-rownames(Q_rep)<-rownames(B)
-rownames(C_rep)<-rownames(B)
-colnames(P_rep)<-colnames(A)
-colnames(Q_rep)<-colnames(B)
-colnames(C_rep)<-colnames(B)
+rownames(mat_fin.rep)<-rownames(yields_fin)
+rownames(mat_ini.rep)<-rownames(yields_ini)
+rownames(rf.rep)<-rownames(yields_ini)
+colnames(mat_fin.rep)<-colnames(yields_fin)
+colnames(mat_ini.rep)<-colnames(yields_ini)
+colnames(rf.rep)<-colnames(yields_ini)
 
+rf<- as.matrix(rf.rep[,1])
+colnames(rf)<-"risk_free"
+rownames(rf)<-rownames(yields_ini)
 
-rf<- C_rep
+ytm_fin<-as.data.frame(yields_fin*mat_fin.rep)
+ytm_ini<-as.data.frame(yields_ini*mat_ini.rep)
 
-ytm_fin<-as.data.frame(A*P_rep)
-ytm_ini<-as.data.frame(B*Q_rep)
+rownames(ytm_fin)<-rownames(yields_fin)
+colnames(ytm_fin)<-colnames(yields_fin)
+rownames(ytm_ini)<-rownames(yields_ini)
+colnames(ytm_ini)<-colnames(yields_ini)
 
-rownames(ytm_fin)<-rownames(A)
-colnames(ytm_fin)<-colnames(A)
-rownames(ytm_ini)<-rownames(B)
-colnames(ytm_ini)<-colnames(B)
-colnames(rf)<-colnames(B)
-rownames(rf)<-rownames(B)
-
-#r_xp<-ytm_ini+rf      # expected returns. aqui na expectation hypothesis, r_xp=rf, não)
+#r_xp<-ytm_ini+rf.rep      # expected returns. aqui na expectation hypothesis, r_xp=rf, não)
 #rownames(r_xp)<-rownames(ytm_ini)
 #colnames(r_xp)<-colnames(ytm_ini)
 
@@ -136,26 +130,13 @@ r_h1mo<- ytm_ini - ytm_fin
 rownames(r_h1mo)<-rownames(ytm_fin)
 colnames(r_h1mo)<-colnames(ytm_fin)
 
-r_h1mo_6M<-cbind(r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,15],r_h1mo[,18])
+r_h1mo_6M<-as.matrix(cbind(r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,15],r_h1mo[,18]))
 
-r_xs<- r_h1mo - rf       # excess returns
+r_xs<- r_h1mo - rf.rep       # excess returns
 rownames(r_xs)<-rownames(ytm_fin)
 colnames(r_xs)<-colnames(ytm_fin)
 
-#lm_B1A6_M1<-lm(formula = ytm_fin[,1] ~ r_xp[,1])
-#lm_B1A6_M2<-lm(formula = ytm_fin[,2] ~ r_xp[,2])
-#lm_B1A6_M6<-lm(formula = ytm_fin[,6] ~ r_xp[,6])
-#lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ r_xp[,9])
-#lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ r_xp[,12])
-#lm_B1A6_M18<-lm(formula = ytm_fin[,18] ~ r_xp[,18])
-
-# lm(return rate for holding the bond for 1 month ~ risk free rate)
-lm_r1h1mo_M3<-lm(formula = r_h1mo[,3] ~ rf [,3]) # todas as colunas de rf são iguais. já no de cima, a variável explicativa é uma para cada 
-lm_r1h1mo_M6<-lm(formula = r_h1mo[,6] ~ rf[,6])
-lm_r1h1mo_M9<-lm(formula = r_h1mo[,9] ~ rf[,9])
-lm_r1h1mo_M12<-lm(formula = r_h1mo[,12] ~ rf[,12])
-lm_r1h1mo_M15<-lm(formula = r_h1mo[,15] ~ rf[,15])
-lm_r1h1mo_M18<-lm(formula = r_h1mo[,18] ~ rf[,18])
+lm_r1h1mo<-lm(r_h1mo_6M ~ rf) # lm(return rate for holding the bond for 1 month ~ risk free rate)
 
 # ===================== PCA ==========================
 
@@ -174,27 +155,38 @@ f_draw_factor_loading<-function(m.loadings,var,title){
 mat<-Maturities
 
 
-pca_yields<-princomp(yields_rwnms)
+pca_yields<-princomp(yields_daily_rwnms)
 f_draw_factor_loading(pca_yields$loadings[,1:5],
                       round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
                       "Yields level PCA - princomp()")
         
         
-pca_yields_scores<-as.data.frame(pca_yields$scores)
+pc_scores_daily<-as.data.frame(pca_yields$scores)
 
-pca_yields_loadings<-as.data.frame(unclass(pca_yields$loadings))
+pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
+
+
+
 
 
 lines(Maturities,                    # Draw first time series
-       pca_yields_loadings$Comp.3,
+       pca_loadings_daily$Comp.1,
+       type = "l",
+       col = 2)
+lines(Maturities,                    # Draw first time series
+       pca_loadings_daily$Comp.2,
+       type = "l",
+       col = 3)
+lines(Maturities,                    # Draw first time series
+       pca_loadings_daily$Comp.3,
        type = "l",
        col = 4)
  lines(Maturities,                   # Draw first time series
-       pca_yields_loadings$Comp.4,
+       pca_loadings_daily$Comp.4,
        type = "l",
        col = 5)
  lines(Maturities,                   # Draw first time series
-       pca_yields_loadings$Comp.5,
+       pca_loadings_daily$Comp.5,
        type = "l",
        col = 6)
  legend("topright",                  # Add legend to plot
@@ -205,20 +197,16 @@ lines(Maturities,                    # Draw first time series
 
 # ===================== LM() EXCESS RETURN ~ PCA ==========================
 
-r_xs_6M<-cbind(r_xs)[c(1,3,6,9,12,18)]
+r_xs_6M<-as.matrix(cbind(r_xs)[c(3,6,9,12,15,18)])
 
-pca_yields_scores_clmn<-cbind(dates_asDate,rownames_to_column(pca_yields_scores))
-pca_yields_scores_clmn<-pca_yields_scores_clmn[,-2]
-colnames(pca_yields_scores_clmn)[1]<-"DATE"
-pca_yields_scores_lastday<-inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE")
-pca_yields_scores_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE"),var = "DATE")
+pc_scores_daily_clmn<-cbind(dates_asDate,rownames_to_column(pc_scores_daily))
+pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
+colnames(pc_scores_daily_clmn)[1]<-"DATE"
+pc_scores<-inner_join(last_days_asDate,pc_scores_daily_clmn, by = "DATE")
+pc_scores<-column_to_rownames(inner_join(last_days_asDate,pc_scores_daily_clmn, by = "DATE"),var = "DATE")
 
-lm_pc5_M3<-lm(r_xs[1:198,3] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
-lm_pc5_M6<-lm(r_xs[1:198,6] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
-lm_pc5_M9<-lm(r_xs[1:198,9] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
-lm_pc5_M12<-lm(r_xs[1:198,12] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
-lm_pc5_M15<-lm(r_xs[1:198,15] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5]) 
-lm_pc5_M18<-lm(r_xs[1:198,18] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
+lm_pc5<-lm(r_xs_6M ~ as.matrix(pc_scores[1:198,1:5]))
+
 
 # ===================== ADRIAN 3 STEPS ==========================
 
@@ -226,15 +214,15 @@ lm_pc5_M18<-lm(r_xs[1:198,18] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields
 
 library("vars")
 
-#var1_pc<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",ic = "SC")
-#var1_pc_S5<-VAR(pca_yields_scores[,1:5], p = 1, type = "const",season = 5, ic = "SC")
+#var1_pc_daily<-VAR(pc_scores_daily[,1:5], p = 1, type = "const",ic = "SC")
+#var1_pc_daily_S5<-VAR(pc_scores_daily[,1:5], p = 1, type = "const",season = 5, ic = "SC")
 
-var1_pc_lastday <- VAR(pca_yields_scores_lastday[,1:5], p = 1, type = "const",ic = "SC")
+var1_pc5 <- VAR(pc_scores[,1:5], p = 1, type = "const",ic = "SC")
 
-#X<-as.matrix(var1_pc_lastday$varresult$Comp.1$residuals)
+#X<-as.matrix(var1_pc5$varresult$Comp.1$residuals)
 
-#X_<-t((pca_yields_scores_lastday)[1:198,1:5])
-#V<-t(residuals(var1_pc_lastday))
+#X_<-t((pc_scores)[1:198,1:5])
+#V<-t(residuals(var1_pc5))
 #it<-as.data.frame(rep(1, 198))
 #r_xs_transp<-(t(r_xs))
 
@@ -242,36 +230,28 @@ var1_pc_lastday <- VAR(pca_yields_scores_lastday[,1:5], p = 1, type = "const",ic
 Sigma_hat<-crossprod(as.matrix(residuals(var1_pc_lastday)))/192
 
 X__transp<-as.data.frame(as.matrix(pca_yields_scores_lastday)[1:198,1:5])
-V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
-r_xs_6M<-cbind(r_xs)[c(3,6,9,12,15,18)]
+V_transp<-as.data.frame(as.matrix(residuals(var1_pc5)))
+
 
 # estimando parâmetros Adrian (14):
-lm_A14_M3<-lm(r_xs_6M$M3 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
-lm_A14_M6<-lm(r_xs_6M$M6 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
-lm_A14_M9<-lm(r_xs_6M$M9 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
-lm_A14_M12<-lm(r_xs_6M$M12 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
-lm_A14_M15<-lm(r_xs_6M$M15 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
-lm_A14_M18<-lm(r_xs_6M$M18 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
-#lm_A14_M21<-lm(r_xs_6M$M21 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
 
-E_hat<-as.data.frame(cbind(lm_A14_M3$residuals,lm_A14_M6$residuals,lm_A14_M9$residuals,lm_A14_M12$residuals,lm_A14_M15$residuals,lm_A14_M18$residuals))
+lm_A14<-lm(r_xs_6M ~ as.matrix(V_transp[1:198,1:5]) + as.matrix(X__transp[1:198,1:5]))
+
+E_hat<-as.data.frame(lm_A14$residuals)
 sig2_hat<-sum(diag((crossprod(as.matrix((E_hat))))))/(192*6)
 
-#beta3<-as.data.frame(lm_A14_M3$coefficients[2:6])
-#beta6<-as.data.frame(lm_A14_M6$coefficients[2:6])
-#beta9<-as.data.frame(lm_A14_M9$coefficients[2:6])
-#beta12<-as.data.frame(lm_A14_M12$coefficients[2:6])
-#beta15<-as.data.frame(lm_A14_M15$coefficients[2:6])
-#beta18<-as.data.frame(lm_A14_M18$coefficients[2:6])
 
-betabeta3<-crossprod(t(lm_A14_M3$coefficients[2:6]),t(lm_A14_M3$coefficients[2:6]))
-betabeta6<-(crossprod(t(lm_A14_M6$coefficients[2:6]),t(lm_A14_M6$coefficients[2:6])))
-betabeta9<-(crossprod(t(lm_A14_M9$coefficients[2:6]),t(lm_A14_M9$coefficients[2:6])))
-betabeta12<-(crossprod(t(lm_A14_M12$coefficients[2:6]),t(lm_A14_M12$coefficients[2:6])))
-betabeta15<-(crossprod(t(lm_A14_M15$coefficients[2:6]),t(lm_A14_M15$coefficients[2:6])))
-betabeta18<-(crossprod(t(lm_A14_M18$coefficients[2:6]),t(lm_A14_M18$coefficients[2:6])))
+B_ast<-matrix(
+	cbind(
+             crossprod(t(lm_A14$coefficients[2:6,1]),t(lm_A14$coefficients[2:6,1])),
+             crossprod(t(lm_A14$coefficients[2:6,2]),t(lm_A14$coefficients[2:6,2])),
+             crossprod(t(lm_A14$coefficients[2:6,3]),t(lm_A14$coefficients[2:6,3])),
+             crossprod(t(lm_A14$coefficients[2:6,4]),t(lm_A14$coefficients[2:6,4])),
+             crossprod(t(lm_A14$coefficients[2:6,5]),t(lm_A14$coefficients[2:6,5])),
+             crossprod(t(lm_A14$coefficients[2:6,6]),t(lm_A14$coefficients[2:6,6]))
+	     )
+	,25,6)
 
-B_ast<-as.data.frame(cbind(as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta15),as.vector(betabeta18)))
 
 #============== lambda0_hat ============
 
@@ -311,10 +291,10 @@ a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M3$coefficient
 i_198<-as.data.frame(rep(1, 198))
 
 beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M15$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
-V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
+V_transp<-as.data.frame(as.matrix(residuals(var1_pc5)))
 
 c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M15$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
-X__transp<-as.data.frame(as.matrix(pca_yields_scores_lastday)[1:198,1:5])
+X__transp<-as.data.frame(as.matrix(var1_pc5)[1:198,1:5])
 
 E_rxs<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
 
