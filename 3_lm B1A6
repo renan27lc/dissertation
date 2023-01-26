@@ -6,6 +6,16 @@ lm_B1A6_M9<-lm(formula = ytm_fin$M9 ~ r_xp$M9)
 lm_B1A6_M12<-lm(formula = ytm_fin$M12 ~ r_xp$M12)
 lm_B1A6_M18<-lm(formula = ytm_fin$M18 ~ r_xp$M18)
 
+lm_r1h1mo<-lm(r_h1mo_6M ~ rf) # lm(return rate for holding the bond for 1 month ~ risk free rate)
+
+#lm_r1h1mo_M3<-lm(formula = r_h1mo[,3] ~ rf) # aqui, os 6 lms têm a mesma variável explicativa. já no de cima, a variável explicativa é uma para cada lm 
+#lm_r1h1mo_M6<-lm(formula = r_h1mo[,6] ~ rf)
+#lm_r1h1mo_M9<-lm(formula = r_h1mo[,9] ~ rf)
+#lm_r1h1mo_M12<-lm(formula = r_h1mo[,12] ~ rf)
+#lm_r1h1mo_M15<-lm(formula = r_h1mo[,15] ~ rf)
+#lm_r1h1mo_M18<-lm(formula = r_h1mo[,18] ~ rf)
+
+
 
 #========================OLD===================#
 
