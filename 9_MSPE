@@ -8,7 +8,7 @@ MSPE_rw
 #=============== ENTENDENDO DIFERENÇA ENTRE A1B6 E lm_r1h1mo ==============
 
 #r_xp<-ytm_ini+rf      # expected returns. aqui na expectation hypothesis, r_xp=rf, não)
-ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin
+ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin (RP: Risk Premium Bmstr?)
 ytmfin_xphyp6M<-as.data.frame(cbind(ytmfin_xphyp[,1],ytmfin_xphyp[,3],ytmfin_xphyp[,6],ytmfin_xphyp[,9],ytmfin_xphyp[,12],ytmfin_xphyp[,18]))
 
 #rownames(ytmfin_xphyp)<-rownames(ytm_ini)
@@ -20,7 +20,7 @@ r_h1mo_6M<-cbind(r_h1mo[,1],r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[
 
 ytm_fin[,1] ~ ytm_ini+rf[,1]        #A1B6
 ytm_ini - ytm_fin[,1] ~ rf[,1]      #r_h1mo
-# diferença entre a primeira e a segunda: ytm_fin - ytm_ini vs ytm_ini - ytm_fin (ou rf=+/-y)
+# diferença entre a primeira e a segunda: ytm_fin - ytm_ini vs ytm_ini - ytm_fin (ou rf=+/-y)?
 # ver folha 23/1/2023-3
 
 lm_B1A6_M1<-lm(formula = ytm_fin[,1] ~ ytmfin_xphyp[,1])
@@ -30,14 +30,6 @@ lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ ytmfin_xphyp[,9])
 lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ ytmfin_xphyp[,12])
 lm_B1A6_M18<-lm(formula = ytm_fin[,18] ~ ytmfin_xphyp[,18])
 
-lm_r1h1mo_M1<-lm(formula = r_h1mo[,1] ~ rf #[,1])# todas as colunas de rf são iguais. já no de cima, a variável explicativa é uma para cada 
-lm_r1h1mo_M2<-lm(formula = r_h1mo[,2] ~ rf[,2])
-lm_r1h1mo_M6<-lm(formula = r_h1mo[,6] ~ rf[,6])
-lm_r1h1mo_M9<-lm(formula = r_h1mo[,9] ~ rf[,9])
-lm_r1h1mo_M12<-lm(formula = r_h1mo[,12] ~ rf[,12])
-lm_r1h1mo_M18<-lm(formula = r_h1mo[,18] ~ rf[,18])
-#coeficientes estão dando negativo, pois rf é negativo. fazendo com rf positivo, C_rep[,1], dá exatamente o oposto. 
-#P.A.: entender: qual a diferença entre lm_r1h1mo_M1<-lm(formula = r_h1mo[,1] ~ C_rep[,1]) e o a1b6?
 
 #=============== A1B6 ==============
 
