@@ -255,15 +255,24 @@ B_ast<-matrix(
 
 #============== lambda0_hat ============
 
-beta_hat<-cbind(as.data.frame(c(as.data.frame(as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),lm_A14_M15$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
+beta_hat<-matrix(cbind(c(
+	    lm_A14$coefficients[2:6,1],
+	    lm_A14$coefficients[2:6,2],
+	    lm_A14$coefficients[2:6,3],
+	    lm_A14$coefficients[2:6,4],
+	    lm_A14$coefficients[2:6,5],
+	    lm_A14$coefficients[2:6,6])
+		),5,6)
 
-#c3<-as.data.frame(lm_A14_M3$coefficients[7:11])
-#c6<-as.data.frame(lm_A14_M6$coefficients[7:11])
-#c9<-as.data.frame(lm_A14_M9$coefficients[7:11])
-#c12<-as.data.frame(lm_A14_M12$coefficients[7:11])
-#c15<-as.data.frame(lm_A14_M15$coefficients[7:11])
-#c18<-as.data.frame(lm_A14_M18$coefficients[7:11])
-c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M15$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
+c_hat<-matrix(cbind(c(
+	    lm_A14$coefficients[7:11,1],
+	    lm_A14$coefficients[7:11,2],
+	    lm_A14$coefficients[7:11,3],
+	    lm_A14$coefficients[7:11,4],
+	    lm_A14$coefficients[7:11,5],
+	    lm_A14$coefficients[7:11,6])
+		),5,6)
+
 lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat),t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
 
 #============== lambda0_hat ============
@@ -272,7 +281,15 @@ vec_Sigma<-as.data.frame(as.vector(Sigma_hat))
 Basc_Sigma<-crossprod(as.matrix(B_ast),as.matrix(vec_Sigma))
 betabeta_inv<- solve(crossprod(t(beta_hat),t(beta_hat)))
 betabeta<- crossprod(t(beta_hat),t(beta_hat))
-a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M15$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+
+a_hat<-matrix(cbind(c(
+	    lm_A14$coefficients[1,1],
+	    lm_A14$coefficients[1,2],
+	    lm_A14$coefficients[1,3],
+	    lm_A14$coefficients[1,4],
+	    lm_A14$coefficients[1,5],
+	    lm_A14$coefficients[1,6])
+		),1,6)
 
 install.packages("psych")
 library("psych")
@@ -281,7 +298,7 @@ sigmasq_hat<-tr(crossprod(as.matrix(E_hat),as.matrix(E_hat)))/(6*198)
 i_6<-as.data.frame(rep(1, 6))
 i_198<-as.data.frame(rep(1, 198))
 sigmasq6_hat<-sigmasq_hat*i_6
-lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( a_hat + Basc_Sigma/2 + sigmasq6_hat))))
+lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( t(a_hat) + Basc_Sigma/2 + sigmasq6_hat))))
 
 
 #=============== MSPE ADRIAN 3 STEPS ==============
