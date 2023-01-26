@@ -117,7 +117,6 @@ colnames(C_rep)<-colnames(B)
 
 
 rf<- C_rep
-#P.A.: enviar email ao prof perguntando: de acordo com Adrian, rf= ln(P(h=1)) = -y(h=1), então teria de ser rf<- -C_rep, não?
 
 ytm_fin<-as.data.frame(A*P_rep)
 ytm_ini<-as.data.frame(B*Q_rep)
@@ -137,25 +136,25 @@ r_h1mo<- ytm_ini - ytm_fin
 rownames(r_h1mo)<-rownames(ytm_fin)
 colnames(r_h1mo)<-colnames(ytm_fin)
 
-r_h1mo_6M<-cbind(r_h1mo[,1],r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,18])
+r_h1mo_6M<-cbind(r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,15],r_h1mo[,18])
 
 r_xs<- r_h1mo - rf       # excess returns
 rownames(r_xs)<-rownames(ytm_fin)
 colnames(r_xs)<-colnames(ytm_fin)
 
-lm_B1A6_M1<-lm(formula = ytm_fin[,1] ~ r_xp[,1])
-lm_B1A6_M2<-lm(formula = ytm_fin[,2] ~ r_xp[,2])
-lm_B1A6_M6<-lm(formula = ytm_fin[,6] ~ r_xp[,6])
-lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ r_xp[,9])
-lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ r_xp[,12])
-lm_B1A6_M18<-lm(formula = ytm_fin[,18] ~ r_xp[,18])
+#lm_B1A6_M1<-lm(formula = ytm_fin[,1] ~ r_xp[,1])
+#lm_B1A6_M2<-lm(formula = ytm_fin[,2] ~ r_xp[,2])
+#lm_B1A6_M6<-lm(formula = ytm_fin[,6] ~ r_xp[,6])
+#lm_B1A6_M9<-lm(formula = ytm_fin[,9] ~ r_xp[,9])
+#lm_B1A6_M12<-lm(formula = ytm_fin[,12] ~ r_xp[,12])
+#lm_B1A6_M18<-lm(formula = ytm_fin[,18] ~ r_xp[,18])
 
 # lm(return rate for holding the bond for 1 month ~ risk free rate)
-lm_r1h1mo_M1<-lm(formula = r_h1mo[,1] ~ rf[,1])
-lm_r1h1mo_M2<-lm(formula = r_h1mo[,2] ~ rf[,2])
+lm_r1h1mo_M3<-lm(formula = r_h1mo[,3] ~ rf [,3]) # todas as colunas de rf são iguais. já no de cima, a variável explicativa é uma para cada 
 lm_r1h1mo_M6<-lm(formula = r_h1mo[,6] ~ rf[,6])
 lm_r1h1mo_M9<-lm(formula = r_h1mo[,9] ~ rf[,9])
 lm_r1h1mo_M12<-lm(formula = r_h1mo[,12] ~ rf[,12])
+lm_r1h1mo_M15<-lm(formula = r_h1mo[,15] ~ rf[,15])
 lm_r1h1mo_M18<-lm(formula = r_h1mo[,18] ~ rf[,18])
 
 # ===================== PCA ==========================
@@ -214,11 +213,11 @@ colnames(pca_yields_scores_clmn)[1]<-"DATE"
 pca_yields_scores_lastday<-inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE")
 pca_yields_scores_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE"),var = "DATE")
 
-lm_pc5_M1<-lm(r_xs[1:198,1] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5]) 
 lm_pc5_M3<-lm(r_xs[1:198,3] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
 lm_pc5_M6<-lm(r_xs[1:198,6] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
-lm_pc5_M9<-lm(r_xs[1:198,9] ~  ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
-lm_pc5_M12<-lm(r_xs[1:198,12] ~  ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
+lm_pc5_M9<-lm(r_xs[1:198,9] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
+lm_pc5_M12<-lm(r_xs[1:198,12] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
+lm_pc5_M15<-lm(r_xs[1:198,15] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5]) 
 lm_pc5_M18<-lm(r_xs[1:198,18] ~ pca_yields_scores_lastday[1:198,1]  + pca_yields_scores_lastday[1:198,2] + pca_yields_scores_lastday[1:198,3] + pca_yields_scores_lastday[1:198,4] + pca_yields_scores_lastday[1:198,5])
 
 # ===================== ADRIAN 3 STEPS ==========================
@@ -244,47 +243,47 @@ Sigma_hat<-crossprod(as.matrix(residuals(var1_pc_lastday)))/192
 
 X__transp<-as.data.frame(as.matrix(pca_yields_scores_lastday)[1:198,1:5])
 V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
-r_xs_6M<-cbind(r_xs)[c(1,3,6,9,12,18)]
+r_xs_6M<-cbind(r_xs)[c(3,6,9,12,15,18)]
 
 # estimando parâmetros Adrian (14):
-lm_A14_M1<-lm(r_xs_6M$M1 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
 lm_A14_M3<-lm(r_xs_6M$M3 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
 lm_A14_M6<-lm(r_xs_6M$M6 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
 lm_A14_M9<-lm(r_xs_6M$M9 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
 lm_A14_M12<-lm(r_xs_6M$M12 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+lm_A14_M15<-lm(r_xs_6M$M15 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
 lm_A14_M18<-lm(r_xs_6M$M18 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
-#lm_A14_M23<-lm(r_xs_6M$M23 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
+#lm_A14_M21<-lm(r_xs_6M$M21 ~ V_transp$Comp.1 + V_transp$Comp.2 + V_transp$Comp.3 + V_transp$Comp.4 + V_transp$Comp.5 + X__transp$Comp.1 + X__transp$Comp.2 + X__transp$Comp.3 + X__transp$Comp.4 + X__transp$Comp.5)
 
-E_hat<-as.data.frame(cbind(lm_A14_M1$residuals,lm_A14_M3$residuals,lm_A14_M6$residuals,lm_A14_M9$residuals,lm_A14_M12$residuals,lm_A14_M18$residuals))
+E_hat<-as.data.frame(cbind(lm_A14_M3$residuals,lm_A14_M6$residuals,lm_A14_M9$residuals,lm_A14_M12$residuals,lm_A14_M15$residuals,lm_A14_M18$residuals))
 sig2_hat<-sum(diag((crossprod(as.matrix((E_hat))))))/(192*6)
 
-#beta1<-as.data.frame(lm_A14_M1$coefficients[2:6])
 #beta3<-as.data.frame(lm_A14_M3$coefficients[2:6])
 #beta6<-as.data.frame(lm_A14_M6$coefficients[2:6])
 #beta9<-as.data.frame(lm_A14_M9$coefficients[2:6])
 #beta12<-as.data.frame(lm_A14_M12$coefficients[2:6])
+#beta15<-as.data.frame(lm_A14_M15$coefficients[2:6])
 #beta18<-as.data.frame(lm_A14_M18$coefficients[2:6])
 
-betabeta1<-(crossprod(t(lm_A14_M1$coefficients[2:6]),t(lm_A14_M1$coefficients[2:6])))
 betabeta3<-crossprod(t(lm_A14_M3$coefficients[2:6]),t(lm_A14_M3$coefficients[2:6]))
 betabeta6<-(crossprod(t(lm_A14_M6$coefficients[2:6]),t(lm_A14_M6$coefficients[2:6])))
 betabeta9<-(crossprod(t(lm_A14_M9$coefficients[2:6]),t(lm_A14_M9$coefficients[2:6])))
 betabeta12<-(crossprod(t(lm_A14_M12$coefficients[2:6]),t(lm_A14_M12$coefficients[2:6])))
+betabeta15<-(crossprod(t(lm_A14_M15$coefficients[2:6]),t(lm_A14_M15$coefficients[2:6])))
 betabeta18<-(crossprod(t(lm_A14_M18$coefficients[2:6]),t(lm_A14_M18$coefficients[2:6])))
 
-B_ast<-as.data.frame(cbind(as.vector(betabeta1),as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta18)))
+B_ast<-as.data.frame(cbind(as.vector(betabeta3),as.vector(betabeta6),as.vector(betabeta9),as.vector(betabeta12),as.vector(betabeta15),as.vector(betabeta18)))
 
 #============== lambda0_hat ============
 
-beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[2:6]),as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
+beta_hat<-cbind(as.data.frame(c(as.data.frame(as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),lm_A14_M15$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
 
-#c1<-as.data.frame(lm_A14_M1$coefficients[7:11])
 #c3<-as.data.frame(lm_A14_M3$coefficients[7:11])
 #c6<-as.data.frame(lm_A14_M6$coefficients[7:11])
 #c9<-as.data.frame(lm_A14_M9$coefficients[7:11])
 #c12<-as.data.frame(lm_A14_M12$coefficients[7:11])
+#c15<-as.data.frame(lm_A14_M15$coefficients[7:11])
 #c18<-as.data.frame(lm_A14_M18$coefficients[7:11])
-c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[7:11]),as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
+c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M15$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
 lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat),t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
 
 #============== lambda0_hat ============
@@ -293,7 +292,7 @@ vec_Sigma<-as.data.frame(as.vector(Sigma_hat))
 Basc_Sigma<-crossprod(as.matrix(B_ast),as.matrix(vec_Sigma))
 betabeta_inv<- solve(crossprod(t(beta_hat),t(beta_hat)))
 betabeta<- crossprod(t(beta_hat),t(beta_hat))
-a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M15$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
 
 install.packages("psych")
 library("psych")
@@ -308,13 +307,13 @@ lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.ma
 #=============== MSPE ADRIAN 3 STEPS ==============
 
 #based on A14
-a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[1]),as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M15$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
 i_198<-as.data.frame(rep(1, 198))
 
-beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[2:6]),as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
+beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M15$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
 V_transp<-as.data.frame(as.matrix(residuals(var1_pc_lastday)))
 
-c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M1$coefficients[7:11]),as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
+c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M15$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
 X__transp<-as.data.frame(as.matrix(pca_yields_scores_lastday)[1:198,1:5])
 
 E_rxs<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
@@ -336,14 +335,14 @@ MSPE_adrian3steps
 
 
 summary_lm_B1A6_M18<-summary(lm_B1A6_M18)
+summary_lm_B1A6_M15<-summary(lm_B1A6_M15)
 summary_lm_B1A6_M12<-summary(lm_B1A6_M12)
 summary_lm_B1A6_M9<-summary(lm_B1A6_M9)
 summary_lm_B1A6_M6<-summary(lm_B1A6_M6)
 summary_lm_B1A6_M3<-summary(lm_B1A6_M3)
-summary_lm_B1A6_M2<-summary(lm_B1A6_M2)
 
-lmB1A6_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(4,24,by=4)]),t(data.frame(summary_lm_B1A6_M2$adj.r.squared,summary_lm_B1A6_M3$adj.r.squared,summary_lm_B1A6_M6$adj.r.squared,summary_lm_B1A6_M9$adj.r.squared,summary_lm_B1A6_M12$adj.r.squared,summary_lm_B1A6_M18$adj.r.squared))))
-row.names(lmB1A6_tbl1)<-c("M2","M3","M6","M9","M12","M18")
+lmB1A6_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M15$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M15$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M15$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M15$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(4,24,by=4)]),t(data.frame(summary_lm_B1A6_M3$adj.r.squared,summary_lm_B1A6_M6$adj.r.squared,summary_lm_B1A6_M9$adj.r.squared,summary_lm_B1A6_M12$adj.r.squared,summary_lm_B1A6_M15$adj.r.squared,summary_lm_B1A6_M18$adj.r.squared))))
+row.names(lmB1A6_tbl1)<-c("M3","M6","M9","M12","M15","M18")
 colnames(lmB1A6_tbl1)<-c("Intercept","P_value","Beta","P_value","R_squared")
 
 View(lmB1A6_tbl1)
@@ -352,11 +351,11 @@ View(lmB1A6_tbl1)
 
 
 summary_lm_PC5_M18<-summary(lm_pc5_M18)
+summary_lm_PC5_M15<-summary(lm_pc5_M15)
 summary_lm_PC5_M12<-summary(lm_pc5_M12)
 summary_lm_PC5_M9<-summary(lm_pc5_M9)
 summary_lm_PC5_M6<-summary(lm_pc5_M6)
 summary_lm_PC5_M3<-summary(lm_pc5_M3)
-summary_lm_PC5_M1<-summary(lm_pc5_M1)
 
 # substituir lm_M1 por lm_pc5_M1:
 #lm_rxs_pc5_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_M1$coefficients ,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[2,seq(4,24,by=4)]),
@@ -364,10 +363,10 @@ summary_lm_PC5_M1<-summary(lm_pc5_M1)
 #t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[4,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[4,seq(4,24,by=4)]),
 #t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[5,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[5,seq(4,24,by=4)]),
 #t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[6,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[6,seq(4,24,by=4)]), t(data.frame(summary_lm_M1$adj.r.squared,summary_lm_M3$adj.r.squared,summary_lm_M6$adj.r.squared,summary_lm_M9$adj.r.squared,summary_lm_M12$adj.r.squared,summary_lm_M18$adj.r.squared))))
-colnames(lm_rxs_pc5_tbl1)<-c("Intercept","P_value","Beta_PC1","P_value","Beta_PC2","P_value","Beta_PC3","P_value","Beta_PC4","P_value","Beta_PC5","P_value","R_squared")
-row.names(lm_rxs_pc5_tbl1)<-c("M2","M3","M6","M9","M12","M18")
+#colnames(lm_rxs_pc5_tbl1)<-c("Intercept","P_value","Beta_PC1","P_value","Beta_PC2","P_value","Beta_PC3","P_value","Beta_PC4","P_value","Beta_PC5","P_value","R_squared")
+#row.names(lm_rxs_pc5_tbl1)<-c("M2","M3","M6","M9","M12","M18")
 
-View(lm_rxs_pc5_tbl1)
+#View(lm_rxs_pc5_tbl1)
 
 
 # ===================== PRICES OF RISK PARAMETERS ==========================
