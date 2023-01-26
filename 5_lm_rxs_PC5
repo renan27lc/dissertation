@@ -1,13 +1,16 @@
 
+r_xs_6M<-as.matrix(cbind(r_xs)[c(1,3,6,9,12,18)])
 
+pc_scores_daily_clmn<-cbind(dates_asDate,rownames_to_column(pc_scores_daily))
+pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
+colnames(pc_scores_daily_clmn)[1]<-"DATE"
+pc_scores<-inner_join(last_days_asDate,pc_scores_daily_clmn, by = "DATE")
+pc_scores<-column_to_rownames(inner_join(last_days_asDate,pc_scores_daily_clmn, by = "DATE"),var = "DATE")
 
-pca_yields_scores_clmn<-cbind(dates_asDate,rownames_to_column(pca_yields_scores))
-pca_yields_scores_clmn<-pca_yields_scores_clmn[,-2]
-colnames(pca_yields_scores_clmn)[1]<-"DATE"
-pca_yields_scores_lastday<-inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE")
-pca_yields_scores_lastday<-column_to_rownames(inner_join(last_days_asDate,pca_yields_scores_clmn, by = "DATE"),var = "DATE")
-
-lm_M3<-lm(r_xs$M3 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] +    pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
-lm_M6<-lm(r_xs$M6 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
-lm_M9<-lm(r_xs$M9 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198])
-lm_M12<-lm(r_xs$M12 ~ pca_yields_scores_lastday$Comp.1[1:198] +  + pca_yields_scores_lastday$Comp.2[1:198] + pca_yields_scores_lastday$Comp.3[1:198] + pca_yields_scores_lastday$Comp.4[1:198] + pca_yields_scores_lastday$Comp.5[1:198]) 
+lm(r_xs_6M ~ as.matrix(pc_scores[1:198,1:5]))
+#lm_pc5_M3<-lm(r_xs[1:198,3] ~ as.matrix(pc_scores[1:198,1:5]))
+#lm_pc5_M6<-lm(r_xs[1:198,6] ~ as.matrix(pc_scores[1:198,1:5]))
+#lm_pc5_M9<-lm(r_xs[1:198,9] ~ as.matrix(pc_scores[1:198,1:5]))
+#lm_pc5_M12<-lm(r_xs[1:198,12] ~ as.matrix(pc_scores[1:198,1:5]))
+#lm_pc5_M15<-lm(r_xs[1:198,15] ~ as.matrix(pc_scores[1:198,1:5])) 
+#lm_pc5_M18<-lm(r_xs[1:198,18] ~ as.matrix(pc_scores[1:198,1:5]))
