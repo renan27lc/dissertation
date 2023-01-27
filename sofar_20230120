@@ -116,7 +116,7 @@ colnames(ytm_ini)<-colnames(yields_ini)
 ytm_fin_6M<-as.matrix(cbind(ytm_fin[,3],ytm_fin[,6],ytm_fin[,9],ytm_fin[,12],ytm_fin[,15],ytm_fin[,18]))
 ytm_ini_6M<-as.matrix(cbind(ytm_ini[,3],ytm_ini[,6],ytm_ini[,9],ytm_ini[,12],ytm_ini[,15],ytm_ini[,18]))
 
-ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin (RP: Risk Premium Bmstr?)
+ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin
 rownames(ytmfin_xphyp)<-rownames(ytm_fin)
 colnames(ytmfin_xphyp)<-colnames(ytm_fin)
 
@@ -305,11 +305,9 @@ MSPE_rw
 #=== expectation hypothesis
 
 
-
-
-
-
-
+E_rxs_xphyp<-0
+MSPE_xphyp<-mean(as.matrix(r_xs_6M)^2)
+MSPE_xphyp
 
 #=== r_xs pc5
 
