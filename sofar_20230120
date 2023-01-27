@@ -64,10 +64,10 @@ Maturities = c(1:25)
 yields_daily_100 = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
 yields_daily_100
 
-yields_daily_clmn<-as.data.frame(rownames_to_column(yields_daily_100/100)) # se não funcionar, usar esse: yields_daily_clmn<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100/100)))
+yields_daily_clmn<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100/100)))
 colnames(yields_daily_clmn)[1]<-"DATE"
 
-plot(colMeans(yields))
+plot(colMeans(yields_daily_100/100))
 
 
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
@@ -134,9 +134,9 @@ colnames(r_h1mo)<-colnames(ytm_fin)
 
 r_h1mo_6M<-as.matrix(cbind(r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,15],r_h1mo[,18]))
 
-lm_r1h1mo<-lm(r_h1mo_6M ~ rf) 
+lm_rh1mo<-lm(r_h1mo_6M ~ rf) 
 
-#summary(lm_r1h1mo)
+#summary(lm_rh1mo)
 
 
 # ===================== PCA ==========================
@@ -146,7 +146,7 @@ f_draw_factor_loading<-function(m.loadings,var,title){
     
     x11(width=16/3,height=5);
     matplot(mat,m.loadings,type="l",xaxt="n",lwd=5,lty=1,
-            main=title,col=rainbow(5),ylim=c(-0.6,0.6),
+            main=title,col=rainbow(5),ylim=c(-0.6,0.8),
             xlab="Maturity (month)",ylab="Factor loadings")
     legend('bottomright',max(m.loadings),col=rainbow(5),lty=1,lwd=3,
            legend=paste0(c("PC1","PC2","PC3","PC4","PC5"),var))
@@ -168,31 +168,6 @@ pc_scores_daily<-as.data.frame(pca_yields$scores)
 pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
 
 
-lines(Maturities,                    # Draw first time series
-       pca_loadings_daily$Comp.1,
-       type = "l",
-       col = 2)
-lines(Maturities,                    # Draw first time series
-       pca_loadings_daily$Comp.2,
-       type = "l",
-       col = 3)
-lines(Maturities,                    # Draw first time series
-       pca_loadings_daily$Comp.3,
-       type = "l",
-       col = 4)
- lines(Maturities,                   # Draw first time series
-       pca_loadings_daily$Comp.4,
-       type = "l",
-       col = 5)
- lines(Maturities,                   # Draw first time series
-       pca_loadings_daily$Comp.5,
-       type = "l",
-       col = 6)
- legend("topright",                  # Add legend to plot
-        c("PC1", "PC2", "PC3", "PC4", "PC5"),
-        lty = 1,
-        col = 2:4)
-
 
 # ===================== LM() EXCESS RETURN ~ PCA ==========================
 
@@ -203,12 +178,12 @@ colnames(r_xs)<-colnames(ytm_fin)
 
 r_xs_6M<-as.matrix(cbind(r_xs)[c(3,6,9,12,15,18)])
 
-pc_scores_daily_clmn<-cbind(dates_asDate,rownames_to_column(pc_scores_daily))
+pc_scores_daily_clmn<-cbind(dates_daily,rownames_to_column(pc_scores_daily))
 pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
 colnames(pc_scores_daily_clmn)[1]<-"DATE"
 
-pc_scores<-inner_join(last_days_asDate,pc_scores_daily_clmn, by = "DATE")
-pc_scores<-column_to_rownames(inner_join(last_days_asDate,pc_scores_daily_clmn, by = "DATE"),var = "DATE")
+pc_scores<-inner_join(last_days,pc_scores_daily_clmn, by = "DATE")
+pc_scores<-column_to_rownames(inner_join(last_days,pc_scores_daily_clmn, by = "DATE"),var = "DATE")
 
 pc5_ini<-as.matrix(pc_scores[1:198,1:5])
 
@@ -226,7 +201,7 @@ var1_pc5 <- VAR(pc_scores[,1:5], p = 1, type = "const",ic = "SC")
 
 Sigma_hat<-crossprod(as.matrix(residuals(var1_pc5)))/192 # Covariance matrix of residuals
 
-X__transp<-as.matrix(pca_yields_scores_lastday)[1:198,1:5]
+X__transp<-as.matrix(pc_scores)[1:198,1:5]
 V_transp<-as.matrix(residuals(var1_pc5))
 
 #====== estimando parâmetros Adrian (14):
@@ -311,25 +286,16 @@ E_rxs_xphyp<-0
 MSPE_xphyp<-mean(as.matrix(r_xs_6M)^2)
 MSPE_xphyp
 
-#E_ytmfin
-E_ytmfin <- ytmfin_xphyp_6M
-MSPE_ytmfin<-mean(as.matrix(r_xs_6M)^2)
-MSPE_ytmfin
-lm_B1A6<-lm(formula = ytm_fin_6M ~ ytmfin_xphyp_6M)
-
-#E_rh1mo
-lm_r1h1mo<-lm(r_h1mo_6M ~ rf) 
-
 #=== r_xs pc5
 
-pc5_ini<-as.matrix(pc_scores[1:198,1:5])
+pc5_ini<-t(pc_scores[1:198,1:5])
 
 lm_pc5_alpha_hat<-t(lm_pc5$coefficients[1,])
 lm_pc5_beta_hat<-t(lm_pc5$coefficients[2:6,])
 
 i_198<-as.data.frame(rep(1, 198))
 
-E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198))+crossprod(lm_pc5_beta_hat,t(PC5_t))))
+E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(t(lm_pc5_beta_hat),pc5_ini)))
 
 MSPE_pc5<-mean(as.matrix(r_xs_6M-E_rxs_pc5)^2)
 MSPE_pc5
@@ -353,40 +319,39 @@ MSPE_adrian3steps
 
 #======== EXCESS RETURNS - EXPECTATION HIPOTHESIS ===========
 
+#======B1A6
 
-summary_lm_B1A6_M18<-summary(lm_B1A6_M18)
-summary_lm_B1A6_M15<-summary(lm_B1A6_M15)
-summary_lm_B1A6_M12<-summary(lm_B1A6_M12)
-summary_lm_B1A6_M9<-summary(lm_B1A6_M9)
-summary_lm_B1A6_M6<-summary(lm_B1A6_M6)
-summary_lm_B1A6_M3<-summary(lm_B1A6_M3)
+summary_lm_B1A6<-summary(lm_B1A6)
+coef_lm_B1A6<-coefficients(lm_B1A6)
 
-lmB1A6_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M15$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M15$coefficients,summary_lm_B1A6_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M15$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M15$coefficients,summary_lm_B1A6_M18$coefficients)[2,seq(4,24,by=4)]),t(data.frame(summary_lm_B1A6_M3$adj.r.squared,summary_lm_B1A6_M6$adj.r.squared,summary_lm_B1A6_M9$adj.r.squared,summary_lm_B1A6_M12$adj.r.squared,summary_lm_B1A6_M15$adj.r.squared,summary_lm_B1A6_M18$adj.r.squared))))
-row.names(lmB1A6_tbl1)<-c("M3","M6","M9","M12","M15","M18")
-colnames(lmB1A6_tbl1)<-c("Intercept","P_value","Beta","P_value","R_squared")
+#lmB1A6_tbl1<-
 
-View(lmB1A6_tbl1)
+#row.names(lmB1A6_tbl1)<-c("M3","M6","M9","M12","M15","M18")
+#colnames(lmB1A6_tbl1)<-c("Intercept","P_value","Beta","P_value","R_squared")
 
-# ===================== LM() EXCESS RETURN ~ PCA ==========================
+#=====r_h1mo
 
+summary_lm_rh1mo<-summary(lm_rh1mo)
 
-summary_lm_PC5_M18<-summary(lm_pc5_M18)
-summary_lm_PC5_M15<-summary(lm_pc5_M15)
-summary_lm_PC5_M12<-summary(lm_pc5_M12)
-summary_lm_PC5_M9<-summary(lm_pc5_M9)
-summary_lm_PC5_M6<-summary(lm_pc5_M6)
-summary_lm_PC5_M3<-summary(lm_pc5_M3)
+lmrh1mo_tbl1<-matrix(c(
+	summary_lm_rh1mo$`Response Y1`$coefficients[1,1],
+	summary_lm_rh1mo$`Response Y4`$coefficients[1,1],
+	summary_lm_rh1mo$`Response Y1`$coefficients[1,4],
+	summary_lm_rh1mo$`Response Y4`$coefficients[1,4],
+	summary_lm_rh1mo$`Response Y1`$coefficients[2,1],
+	summary_lm_rh1mo$`Response Y4`$coefficients[2,1],
+	summary_lm_rh1mo$`Response Y1`$coefficients[2,4],
+	summary_lm_rh1mo$`Response Y4`$coefficients[2,4],
+	summary_lm_rh1mo$`Response Y1`$adj.r.squared,
+	summary_lm_rh1mo$`Response Y4`$adj.r.squared
+			),2,5)
 
-# substituir lm_M1 por lm_pc5_M1:
-#lm_rxs_pc5_tbl1<-as.data.frame(cbind(t(data.frame(summary_lm_M1$coefficients ,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[1,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[1,seq(4,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[2,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[2,seq(4,24,by=4)]),
-#t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[3,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[3,seq(4,24,by=4)]),
-#t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[4,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[4,seq(4,24,by=4)]),
-#t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[5,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[5,seq(4,24,by=4)]),
-#t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[6,seq(1,24,by=4)]),t(data.frame(summary_lm_M1$coefficients,summary_lm_M3$coefficients,summary_lm_M6$coefficients,summary_lm_M9$coefficients,summary_lm_M12$coefficients,summary_lm_M18$coefficients)[6,seq(4,24,by=4)]), t(data.frame(summary_lm_M1$adj.r.squared,summary_lm_M3$adj.r.squared,summary_lm_M6$adj.r.squared,summary_lm_M9$adj.r.squared,summary_lm_M12$adj.r.squared,summary_lm_M18$adj.r.squared))))
-#colnames(lm_rxs_pc5_tbl1)<-c("Intercept","P_value","Beta_PC1","P_value","Beta_PC2","P_value","Beta_PC3","P_value","Beta_PC4","P_value","Beta_PC5","P_value","R_squared")
-#row.names(lm_rxs_pc5_tbl1)<-c("M2","M3","M6","M9","M12","M18")
+colnames(lmrh1mo_tbl1)<-c("Intercept","P_value","Beta","P_value","R_squared")
+row.names(lmrh1mo_tbl1)<-c("M3","M12")
 
-#View(lm_rxs_pc5_tbl1)
+View(lmrh1mo_tbl1)
+
+#falta fazer os 3 H0 que ela faz (beta=1, alpha=beta=0 e alpha=0, beta=1)
 
 
 # ===================== PRICES OF RISK PARAMETERS ==========================
@@ -398,18 +363,23 @@ colnames(lambdas)<-c("lmbd_0","lmbd_1.1","lmbd_1.2","lmbd_1.3","lmbd_1.4","lmbd_
 
 View(lambdas)
 
+
+# ===================== MSPE ==========================
+
+
+
 # ===================== TABLES IN .PDF ==========================
 
 
 #install.packages("gridExtra")
 #library("gridExtra")
 
-#pdf("lmB1A6_tbl1.pdf", height=4, width=12)
-#grid.table(lmB1A6_tbl1)
+#pdf("lmrh1mo_tbl1.pdf", height=4, width=12)
+#grid.table(lmrh1mo_tbl1)
 #dev.off()
 
-#pdf("lm_rxs_pc5_tbl1.pdf", height=4, width=24)
-#grid.table(lm_rxs_pc5_tbl1)
+#pdf("MSPE_tbl2.pdf", height=4, width=24)
+#grid.table(MSPE_tbl2)
 #dev.off()
 
 #pdf("lambdas.pdf", height=4, width=12)
