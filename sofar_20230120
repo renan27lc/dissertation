@@ -191,7 +191,9 @@ colnames(pc_scores_daily_clmn)[1]<-"DATE"
 pc_scores<-inner_join(last_days_asDate,pc_scores_daily_clmn, by = "DATE")
 pc_scores<-column_to_rownames(inner_join(last_days_asDate,pc_scores_daily_clmn, by = "DATE"),var = "DATE")
 
-lm_pc5<-lm(r_xs_6M ~ as.matrix(pc_scores[1:198,1:5]))
+pc5_ini<-as.matrix(pc_scores[1:198,1:5])
+
+lm_pc5<-lm(r_xs_6M ~ pc5_ini)
 
 #summary(lm_pc5)
 
@@ -274,7 +276,40 @@ sigmasq6_hat<-sigmasq_hat*i_6
 lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( t(a_hat) + Basc_Sigma/2 + sigmasq6_hat))))
 
 
-#=============== MSPE ADRIAN 3 STEPS ==============
+#============================ MSPE ============================
+
+
+#=== no-change (random walk)
+
+E_rxs_rw<-as.data.frame(r_xs_6M[1:197,])
+rxs_rw<-as.data.frame(r_xs_6M[2:198,])
+MSPE_rw<-mean(as.matrix(rxs_rw-E_rxs_rw)^2)
+MSPE_rw
+
+#=== expectation hypothesis
+
+
+
+
+
+
+
+
+#=== r_xs pc5
+
+pc5_ini<-as.matrix(pc_scores[1:198,1:5])
+
+lm_pc5_alpha_hat<-t(lm_pc5$coefficients[1,])
+lm_pc5_beta_hat<-t(lm_pc5$coefficients[2:6,])
+
+i_198<-as.data.frame(rep(1, 198))
+
+E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198))+crossprod(lm_pc5_beta_hat,t(PC5_t))))
+
+MSPE_pc5<-mean(as.matrix(r_xs_6M-E_rxs_pc5)^2)
+MSPE_pc5
+
+#=== adrian 3 steps
 
 #based on A14
 a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M15$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
