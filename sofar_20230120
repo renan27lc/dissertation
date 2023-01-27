@@ -1,6 +1,7 @@
 # ===================== PACKAGES AND LIBRARIES ==========================
 
 install.packages("psych")
+install.packages("gridExtra")
 
 library(dplyr)
 library(tibble)
@@ -187,7 +188,7 @@ pc_scores<-column_to_rownames(inner_join(last_days,pc_scores_daily_clmn, by = "D
 
 pc5_ini<-as.matrix(pc_scores[1:198,1:5])
 
-lm_pc5<-lm(r_xs_6M ~ t(pc5_ini))
+lm_pc5<-lm(r_xs_6M ~ pc5_ini)
 
 #lm_rf_pc5<-lm(r_xs_6M ~ rf + t(pc5_ini))	não faz sentido pois já estou regredindo contra o excesso de retorno)
 
@@ -289,7 +290,6 @@ MSPErw_6M<-matrix(c(
 colnames(MSPErw_6M)<-c("M3","M6","M9","M12","M15","M18")
 
 MSPE_rw<-mean(as.matrix(rxs_rw-E_rxs_rw)^2)
-MSPE_rw
 
 #=== expectation hypothesis
 
@@ -307,7 +307,6 @@ MSPExphyp_6M<-matrix(c(
 colnames(MSPExphyp_6M)<-c("M3","M6","M9","M12","M15","M18")
 
 MSPE_xphyp<-mean(as.matrix(r_xs_6M)^2)
-MSPE_xphyp
 
 #=== r_xs pc5
 
@@ -332,7 +331,6 @@ MSPEpc5_6M<-matrix(c(
 colnames(MSPEpc5_6M)<-c("M3","M6","M9","M12","M15","M18")
 
 MSPE_pc5<-mean(as.matrix(r_xs_6M-E_rxs_pc5)^2)
-MSPE_pc5
 
 #=== adrian 3 steps
 
@@ -340,17 +338,16 @@ E_rxs_a14<-as.data.frame(t(crossprod(a_hat,t(i_198))+crossprod(as.matrix(beta_ha
 
 MSPEadrian3steps_6M<-matrix(c(
   mean(as.matrix(r_xs_6M[,1]-E_rxs_a14[,1])^2),
-  mean(as.matrix(r_xs_6M[,2]-E_rxs_pc5[,2])^2),
-  mean(as.matrix(r_xs_6M[,3]-E_rxs_pc5[,3])^2),
-  mean(as.matrix(r_xs_6M[,4]-E_rxs_pc5[,4])^2),
-  mean(as.matrix(r_xs_6M[,5]-E_rxs_pc5[,5])^2),
-  mean(as.matrix(r_xs_6M[,6]-E_rxs_pc5[,6])^2))
+  mean(as.matrix(r_xs_6M[,2]-E_rxs_a14[,2])^2),
+  mean(as.matrix(r_xs_6M[,3]-E_rxs_a14[,3])^2),
+  mean(as.matrix(r_xs_6M[,4]-E_rxs_a14[,4])^2),
+  mean(as.matrix(r_xs_6M[,5]-E_rxs_a14[,5])^2),
+  mean(as.matrix(r_xs_6M[,6]-E_rxs_a14[,6])^2))
       ,1,6)
 
 colnames(MSPEadrian3steps_6M)<-c("M3","M6","M9","M12","M15","M18")
 
 MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs_a14)^2)
-MSPE_adrian3steps
 
 
 #=== ratio
@@ -378,8 +375,8 @@ View(MSPE_ratio)
 
 #======B1A6
 
-summary_lm_B1A6<-summary(lm_B1A6)
-coef_lm_B1A6<-coefficients(lm_B1A6)
+#summary_lm_B1A6<-summary(lm_B1A6)
+#coef_lm_B1A6<-coefficients(lm_B1A6)
 
 #lmB1A6_tbl1<-
 
@@ -410,6 +407,7 @@ View(lmrh1mo_tbl1)
 
 #falta fazer os 3 H0 que ela faz (beta=1, alpha=beta=0 e alpha=0, beta=1)
 
+View(MSPE_ratio)
 
 # ===================== PRICES OF RISK PARAMETERS ==========================
 
@@ -418,13 +416,12 @@ lambdas<-as.data.frame(c(lambda0_hat,lambda1_hat))
 rownames(lambdas)<-c("PC1","PC2","PC3","PC4","PC5")
 colnames(lambdas)<-c("lmbd_0","lmbd_1.1","lmbd_1.2","lmbd_1.3","lmbd_1.4","lmbd_1.5")
 
-View(lambdas)
+lambdas
 
 
 # ===================== TABLES IN .PDF ==========================
 
 
-#install.packages("gridExtra")
 #library("gridExtra")
 
 #pdf("lmrh1mo_tbl1.pdf", height=4, width=12)
