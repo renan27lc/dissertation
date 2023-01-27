@@ -12,8 +12,8 @@ library(purrr)
 library(broom)
 #library(pander)
 
-# ===================== DOWNLOAD DATA ==========================
 
+# ===================== DOWNLOAD DATA ==========================
 # Author: Werley Cordeiro
 # werleycordeiro@gmail.com
 # https://github.com/werleycordeiro/Brazil_Yield_Curve/blob/master/DI-Pre.R
@@ -69,7 +69,9 @@ colnames(yields_daily_clmn)[1]<-"DATE"
 
 plot(colMeans(yields))
 
+
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
+
 
 last_days<-as.data.frame(as.Date.POSIXct(matrix(c(1138665600, 1140739200, 1143763200, 1146182400, 1149033600, 1151625600, 1154304000, 1156982400, 1159488000, 1162252800, 1164844800, 1167264000, 1170201600, 1172620800, 1175212800, 1177891200, 1180569600, 1183075200, 1185840000, 1188518400, 1190937600, 1193788800, 1196380800, 1198800000, 1201737600, 1204243200, 1206921600, 1209513600, 1212105600, 1214784000, 1217462400, 1219968000, 1222732800, 1225411200, 1227830400, 1230595200, 1233273600, 1235692800, 1238457600, 1241049600, 1243555200, 1246320000, 1248998400, 1251676800, 1254268800, 1256860800, 1259539200, 1262131200, 1264723200, 1267142400, 1269993600, 1272585600, 1275264000, 1277856000, 1280448000, 1283212800, 1285804800, 1288310400, 1291075200, 1293667200, 1296432000, 1298851200, 1301529600, 1304035200, 1306800000, 1309392000, 1311897600, 1314748800, 1317340800, 1320019200, 1322611200, 1325116800, 1327968000, 1330473600, 1333065600, 1335744000, 1338422400, 1340928000, 1343692800, 1346371200, 1348790400, 1351641600, 1354233600, 1356652800, 1359590400, 1362009600, 1364428800, 1367280000, 1369958400, 1372377600, 1375228800, 1377820800, 1380499200, 1383177600, 1385683200, 1388361600, 1391126400, 1393545600, 1396224000, 1398816000, 1401408000, 1404086400, 1406764800, 1409270400, 1412035200, 1414713600, 1417132800, 1419897600, 1422576000, 1424995200, 1427760000, 1430352000, 1432857600, 1435622400, 1438300800, 1440979200, 1443571200, 1446163200, 1448841600, 1451433600, 1454025600, 1456704000, 1459382400, 1461888000, 1464652800, 1467244800, 1469750400, 1472601600, 1475193600, 1477872000, 1480464000, 1482969600, 1485820800, 1487894400, 1490918400, 1493337600, 1496188800, 1498780800, 1501459200, 1504137600, 1506643200, 1509408000, 1512000000, 1514419200, 1517356800, 1519776000, 1522281600, 1525046400, 1527638400, 1530230400, 1532995200, 1535673600, 1538092800, 1540944000, 1543536000, 1545955200, 1548892800, 1551312000, 1553817600, 1556582400, 1559260800, 1561680000, 1564531200, 1567123200, 1569801600, 1572480000, 1574985600, 1577664000, 1580428800, 1582848000, 1585612800, 1588204800, 1590710400, 1593475200, 1596153600, 1598832000, 1601424000, 1604016000, 1606694400, 1609286400, 1611878400, 1614297600, 1617148800, 1619740800, 1622419200, 1625011200, 1627603200, 1630368000, 1632960000, 1635465600, 1638230400, 1640822400, 1643587200, 1645747200, 1648684800, 1651190400, 1653955200, 1656547200, 1659052800),199,1),tz="UTC"))
 last_days<-as.data.frame(as.matrix(last_days))
@@ -100,7 +102,7 @@ colnames(mat_fin.rep)<-colnames(yields_fin)
 colnames(mat_ini.rep)<-colnames(yields_ini)
 colnames(rf.rep)<-colnames(yields_ini)
 
-rf<- as.matrix(rf.rep[,1])
+rf<- as.matrix(rf.rep[,1]) 	#risk free rate
 colnames(rf)<-"risk_free"
 rownames(rf)<-rownames(yields_ini)
 
@@ -111,17 +113,32 @@ colnames(ytm_fin)<-colnames(yields_fin)
 rownames(ytm_ini)<-rownames(yields_ini)
 colnames(ytm_ini)<-colnames(yields_ini)
 
-r_h1mo<- ytm_ini - ytm_fin
+ytm_fin_6M<-as.matrix(cbind(ytm_fin[,3],ytm_fin[,6],ytm_fin[,9],ytm_fin[,12],ytm_fin[,15],ytm_fin[,18]))
+ytm_ini_6M<-as.matrix(cbind(ytm_ini[,3],ytm_ini[,6],ytm_ini[,9],ytm_ini[,12],ytm_ini[,15],ytm_ini[,18]))
+
+ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin (RP: Risk Premium Bmstr?)
+rownames(ytmfin_xphyp)<-rownames(ytm_fin)
+colnames(ytmfin_xphyp)<-colnames(ytm_fin)
+
+ytmfin_xphyp_6M<-as.matrix(cbind(ytmfin_xphyp[,3],ytmfin_xphyp[,6],ytmfin_xphyp[,9],ytmfin_xphyp[,12],ytmfin_xphyp[,],ytmfin_xphyp[,18]))
+
+lm_B1A6<-lm(formula = ytm_fin_6M ~ ytmfin_xphyp_6M)
+
+# ====== 1 month return
+
+r_h1mo<- ytm_ini - ytm_fin 	#return rate for holding the bond for 1 month
 rownames(r_h1mo)<-rownames(ytm_fin)
 colnames(r_h1mo)<-colnames(ytm_fin)
 
 r_h1mo_6M<-as.matrix(cbind(r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,15],r_h1mo[,18]))
 
-lm_r1h1mo<-lm(r_h1mo_6M ~ rf) # lm(return rate for holding the bond for 1 month ~ risk free rate)
+lm_r1h1mo<-lm(r_h1mo_6M ~ rf) 
 
 #summary(lm_r1h1mo)
 
+
 # ===================== PCA ==========================
+
 
 f_draw_factor_loading<-function(m.loadings,var,title){
     
@@ -197,8 +214,8 @@ lm_pc5<-lm(r_xs_6M ~ pc5_ini)
 
 #summary(lm_pc5)
 
-# ===================== ADRIAN 3 STEPS ==========================
 
+# ===================== ADRIAN 3 STEPS ==========================
 #https://www.rdocumentation.org/packages/vars/versions/1.5-6/topics/VAR
 library("vars")
 
@@ -217,7 +234,6 @@ lm_A14<-lm(r_xs_6M ~ V_transp[1:198,1:5] + X__transp[1:198,1:5])
 E_hat<-as.matrix(lm_A14$residuals)
 sig2_hat<-sum(diag((crossprod((E_hat)))))/(192*6)
 
-
 B_ast<-matrix(
 	cbind(
              crossprod(t(lm_A14$coefficients[2:6,1]),t(lm_A14$coefficients[2:6,1])),
@@ -228,7 +244,6 @@ B_ast<-matrix(
              crossprod(t(lm_A14$coefficients[2:6,6]),t(lm_A14$coefficients[2:6,6]))
 	     )
 	,25,6)
-
 
 #============== lambda0_hat ============
 
@@ -280,6 +295,7 @@ lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.ma
 
 
 #=== no-change (random walk)
+#maybe i should random walk the price (or the yield) instead of r_xs
 
 E_rxs_rw<-as.data.frame(r_xs_6M[1:197,])
 rxs_rw<-as.data.frame(r_xs_6M[2:198,])
@@ -311,19 +327,9 @@ MSPE_pc5
 
 #=== adrian 3 steps
 
-#based on A14
-a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M15$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
-i_198<-as.data.frame(rep(1, 198))
+E_rxs_a14<-as.data.frame(t(crossprod(a_hat,t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
 
-beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M15$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
-V_transp<-as.data.frame(as.matrix(residuals(var1_pc5)))
-
-c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M15$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
-X__transp<-as.data.frame(as.matrix(var1_pc5)[1:198,1:5])
-
-E_rxs<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
-
-MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs)^2)
+MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs_a14)^2)
 MSPE_adrian3steps
 
 
