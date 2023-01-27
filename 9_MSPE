@@ -78,20 +78,21 @@ MSPE_lm_rh1mo
 
 #=============== LM_RXS_PC5 ==============
 
+pc5_ini<-as.matrix(pc_scores[1:198,1:5])
 
+lm_pc5_alpha_hat<-t(lm_pc5$coefficients[1,])
 
+#lm_pc5_alpha_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_pc5_M1$coefficients[1]),as.data.frame(lm_pc5_M3$coefficients[1]),as.data.frame(lm_pc5_M6$coefficients[1]),as.data.frame(lm_pc5_M9$coefficients[1]),as.data.frame(lm_pc5_M12$coefficients[1]),as.data.frame(lm_pc5_M18$coefficients[1]))))))
 
-pc5_t<-as.data.frame(pca_yields_scores_lastday[1:198,1:5])
-
-
-lm_pc5_alpha_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_pc5_M1$coefficients[1]),as.data.frame(lm_pc5_M3$coefficients[1]),as.data.frame(lm_pc5_M6$coefficients[1]),as.data.frame(lm_pc5_M9$coefficients[1]),as.data.frame(lm_pc5_M12$coefficients[1]),as.data.frame(lm_pc5_M18$coefficients[1]))))))
 i_198<-as.data.frame(rep(1, 198))
 #P.A.: tentar reduzir esses as.data.frame(), etc
 
-lm_pc5_beta_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_pc5_M1$coefficients[2:6]),as.data.frame(lm_pc5_M3$coefficients[2:6]),as.data.frame(lm_pc5_M6$coefficients[2:6]),as.data.frame(lm_pc5_M9$coefficients[2:6]),as.data.frame(lm_pc5_M12$coefficients[2:6]),as.data.frame(lm_pc5_M18$coefficients[2:6]))))))
+lm_pc5_beta_hat<-t(lm_pc5$coefficients[2:6,])
+
+#lm_pc5_beta_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_pc5_M1$coefficients[2:6]),as.data.frame(lm_pc5_M3$coefficients[2:6]),as.data.frame(lm_pc5_M6$coefficients[2:6]),as.data.frame(lm_pc5_M9$coefficients[2:6]),as.data.frame(lm_pc5_M12$coefficients[2:6]),as.data.frame(lm_pc5_M18$coefficients[2:6]))))))
 rf[,1]
 
-E_rxs_pc5<-as.data.frame(t(crossprod(t(lm_pc5_alpha_hat),t(i_198))+crossprod(t(lm_pc5_beta_hat),t(PC5_t))))
+E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198))+crossprod(lm_pc5_beta_hat,t(PC5_t))))
 
 MSPE_pc5<-mean(as.matrix(r_xs_6M-E_rxs_pc5)^2)
 MSPE_pc5
