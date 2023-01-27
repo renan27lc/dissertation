@@ -9,7 +9,7 @@ MSPE_rw
 
 #r_xp<-ytm_ini+rf      # expected returns. aqui na expectation hypothesis, r_xp=rf, não)
 ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin (RP: Risk Premium Bmstr?)
-ytmfin_xphyp6M<-as.data.frame(cbind(ytmfin_xphyp[,1],ytmfin_xphyp[,3],ytmfin_xphyp[,6],ytmfin_xphyp[,9],ytmfin_xphyp[,12],ytmfin_xphyp[,18]))
+ytmfin_xphyp_6M<-as.data.frame(cbind(ytmfin_xphyp[,3],ytmfin_xphyp[,6],ytmfin_xphyp[,9],ytmfin_xphyp[,12],ytmfin_xphyp[,15],ytmfin_xphyp[,18]))
 
 #rownames(ytmfin_xphyp)<-rownames(ytm_ini)
 #colnames(ytmfin_xphyp)<-colnames(ytm_ini)
@@ -58,6 +58,9 @@ MSPE_A1B6
 
 #== lm(return rate for holding the bond for 1 month ~ risk free rate)
 
+#não sei se faz sentido pq E_ não é de r_xs como as outras
+
+
 lm_rh1mo_alpha_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_r1h1mo_M1$coefficients[1]),as.data.frame(lm_r1h1mo_M2$coefficients[1]),as.data.frame(lm_r1h1mo_M6$coefficients[1]),as.data.frame(lm_r1h1mo_M9$coefficients[1]),as.data.frame(lm_r1h1mo_M12$coefficients[1]),as.data.frame(lm_r1h1mo_M18$coefficients[1]))))))
 i_198<-as.data.frame(rep(1, 198))
 #P.A.: tentar reduzir esses as.data.frame(), etc
@@ -103,6 +106,21 @@ MSPE_pc5
 #based on A14
 
 E_rxs_a14<-as.data.frame(t(crossprod(a_hat,t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
+
+MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs_a14)^2)
+MSPE_adrian3steps
+
+#based on A14
+a_hat<-cbind(as.data.frame(t(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[1]),as.data.frame(lm_A14_M6$coefficients[1]),as.data.frame(lm_A14_M9$coefficients[1]),as.data.frame(lm_A14_M12$coefficients[1]),as.data.frame(lm_A14_M15$coefficients[1]),as.data.frame(lm_A14_M18$coefficients[1]))))))
+i_198<-as.data.frame(rep(1, 198))
+
+beta_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[2:6]),as.data.frame(lm_A14_M6$coefficients[2:6]),as.data.frame(lm_A14_M9$coefficients[2:6]),as.data.frame(lm_A14_M12$coefficients[2:6]),as.data.frame(lm_A14_M15$coefficients[2:6]),as.data.frame(lm_A14_M18$coefficients[2:6]))))
+V_transp<-as.data.frame(as.matrix(residuals(var1_pc5)))
+
+c_hat<-cbind(as.data.frame(c(as.data.frame(lm_A14_M3$coefficients[7:11]),as.data.frame(lm_A14_M6$coefficients[7:11]),as.data.frame(lm_A14_M9$coefficients[7:11]),as.data.frame(lm_A14_M12$coefficients[7:11]),as.data.frame(lm_A14_M15$coefficients[7:11]),as.data.frame(lm_A14_M18$coefficients[7:11]))))
+X__transp<-as.data.frame(as.matrix(var1_pc5)[1:198,1:5])
+
+E_rxs<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
 
 MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs)^2)
 MSPE_adrian3steps
