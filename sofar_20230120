@@ -363,7 +363,7 @@ MSPEadrian3steps_6M/MSPErw_6M
 MSPE_ratio<-rbind(MSPExphyp_6M/MSPErw_6M,MSPEpc5_6M/MSPErw_6M,MSPEadrian3steps_6M/MSPErw_6M)
 row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian3steps")
 
-
+View(MSPE_ratio)
 
 
 
@@ -421,10 +421,6 @@ colnames(lambdas)<-c("lmbd_0","lmbd_1.1","lmbd_1.2","lmbd_1.3","lmbd_1.4","lmbd_
 View(lambdas)
 
 
-# ===================== MSPE ==========================
-
-
-
 # ===================== TABLES IN .PDF ==========================
 
 
@@ -435,8 +431,8 @@ View(lambdas)
 #grid.table(lmrh1mo_tbl1)
 #dev.off()
 
-#pdf("MSPE_tbl2.pdf", height=4, width=24)
-#grid.table(MSPE_tbl2)
+#pdf("MSPE_ratio.pdf", height=4, width=24)
+#grid.table(MSPE_ratio)
 #dev.off()
 
 #pdf("lambdas.pdf", height=4, width=12)
