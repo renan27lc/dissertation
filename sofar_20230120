@@ -187,9 +187,9 @@ pc_scores<-column_to_rownames(inner_join(last_days,pc_scores_daily_clmn, by = "D
 
 pc5_ini<-as.matrix(pc_scores[1:198,1:5])
 
-lm_pc5<-lm(r_xs_6M ~ pc5_ini)
+lm_pc5<-lm(r_xs_6M ~ t(pc5_ini))
 
-#summary(lm_pc5)
+#lm_rf_pc5<-lm(r_xs_6M ~ rf + t(pc5_ini))	não faz sentido pois já estou regredindo contra o excesso de retorno)
 
 
 # ===================== ADRIAN 3 STEPS ==========================
