@@ -106,6 +106,8 @@ rf<- as.matrix(rf.rep[,1]) 	#risk free rate
 colnames(rf)<-"risk_free"
 rownames(rf)<-rownames(yields_ini)
 
+rf_6M<-as.data.frame(rep(as.data.frame(yields[1:198,1])[1],6))
+
 ytm_fin<-as.data.frame(yields_fin*mat_fin.rep)
 ytm_ini<-as.data.frame(yields_ini*mat_ini.rep)
 rownames(ytm_fin)<-rownames(yields_fin)
@@ -116,11 +118,11 @@ colnames(ytm_ini)<-colnames(yields_ini)
 ytm_fin_6M<-as.matrix(cbind(ytm_fin[,3],ytm_fin[,6],ytm_fin[,9],ytm_fin[,12],ytm_fin[,15],ytm_fin[,18]))
 ytm_ini_6M<-as.matrix(cbind(ytm_ini[,3],ytm_ini[,6],ytm_ini[,9],ytm_ini[,12],ytm_ini[,15],ytm_ini[,18]))
 
-ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin
+ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin (expectation hypothesis)
 rownames(ytmfin_xphyp)<-rownames(ytm_fin)
 colnames(ytmfin_xphyp)<-colnames(ytm_fin)
 
-ytmfin_xphyp_6M<-as.matrix(cbind(ytmfin_xphyp[,3],ytmfin_xphyp[,6],ytmfin_xphyp[,9],ytmfin_xphyp[,12],ytmfin_xphyp[,],ytmfin_xphyp[,18]))
+ytmfin_xphyp_6M<-as.matrix(cbind(ytmfin_xphyp[,3],ytmfin_xphyp[,6],ytmfin_xphyp[,9],ytmfin_xphyp[,12],ytmfin_xphyp[,15],ytmfin_xphyp[,18]))
 
 lm_B1A6<-lm(formula = ytm_fin_6M ~ ytmfin_xphyp_6M)
 
@@ -304,10 +306,19 @@ MSPE_rw
 
 #=== expectation hypothesis
 
-
+#E_rxs
 E_rxs_xphyp<-0
 MSPE_xphyp<-mean(as.matrix(r_xs_6M)^2)
 MSPE_xphyp
+
+#E_ytmfin
+E_ytmfin <- ytmfin_xphyp_6M
+MSPE_ytmfin<-mean(as.matrix(r_xs_6M)^2)
+MSPE_ytmfin
+lm_B1A6<-lm(formula = ytm_fin_6M ~ ytmfin_xphyp_6M)
+
+#E_rh1mo
+lm_r1h1mo<-lm(r_h1mo_6M ~ rf) 
 
 #=== r_xs pc5
 
