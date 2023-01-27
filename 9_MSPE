@@ -1,3 +1,108 @@
+
+#=== no-change (random walk)
+#maybe i should random walk the price (or the yield) instead of r_xs
+
+E_rxs_rw<-as.data.frame(r_xs_6M[1:197,])
+rxs_rw<-as.data.frame(r_xs_6M[2:198,])
+
+MSPErw_6M<-matrix(c(
+  mean(as.matrix(rxs_rw[,1]-E_rxs_rw[,1])^2),
+  mean(as.matrix(rxs_rw[,2]-E_rxs_rw[,2])^2),
+  mean(as.matrix(rxs_rw[,3]-E_rxs_rw[,3])^2),
+  mean(as.matrix(rxs_rw[,4]-E_rxs_rw[,4])^2),
+  mean(as.matrix(rxs_rw[,5]-E_rxs_rw[,5])^2),
+  mean(as.matrix(rxs_rw[,6]-E_rxs_rw[,6])^2))
+    ,1,6)
+
+colnames(MSPErw_6M)<-c("M3","M6","M9","M12","M15","M18")
+
+MSPE_rw<-mean(as.matrix(rxs_rw-E_rxs_rw)^2)
+MSPE_rw
+
+#=== expectation hypothesis
+
+E_rxs_xphyp<-0
+
+MSPExphyp_6M<-matrix(c(
+  mean(as.matrix(r_xs_6M[,1])^2),
+  mean(as.matrix(r_xs_6M[,2])^2),
+  mean(as.matrix(r_xs_6M[,3])^2),
+  mean(as.matrix(r_xs_6M[,4])^2),
+  mean(as.matrix(r_xs_6M[,5])^2),
+  mean(as.matrix(r_xs_6M[,6])^2)
+    ),1,6)
+
+colnames(MSPExphyp_6M)<-c("M3","M6","M9","M12","M15","M18")
+
+MSPE_xphyp<-mean(as.matrix(r_xs_6M)^2)
+MSPE_xphyp
+
+#=== r_xs pc5
+
+pc5_ini<-t(pc_scores[1:198,1:5])
+
+lm_pc5_alpha_hat<-t(lm_pc5$coefficients[1,])
+lm_pc5_beta_hat<-t(lm_pc5$coefficients[2:6,])
+
+i_198<-as.data.frame(rep(1, 198))
+
+E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(t(lm_pc5_beta_hat),pc5_ini)))
+
+MSPEpc5_6M<-matrix(c(
+  mean(as.matrix(r_xs_6M[,1]-E_rxs_pc5[,1])^2),
+  mean(as.matrix(r_xs_6M[,2]-E_rxs_pc5[,2])^2),
+  mean(as.matrix(r_xs_6M[,3]-E_rxs_pc5[,3])^2),
+  mean(as.matrix(r_xs_6M[,4]-E_rxs_pc5[,4])^2),
+  mean(as.matrix(r_xs_6M[,5]-E_rxs_pc5[,5])^2),
+  mean(as.matrix(r_xs_6M[,6]-E_rxs_pc5[,6])^2))
+      ,1,6)
+
+colnames(MSPEpc5_6M)<-c("M3","M6","M9","M12","M15","M18")
+
+MSPE_pc5<-mean(as.matrix(r_xs_6M-E_rxs_pc5)^2)
+MSPE_pc5
+
+#=== adrian 3 steps
+
+E_rxs_a14<-as.data.frame(t(crossprod(a_hat,t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
+
+MSPEadrian3steps_6M<-matrix(c(
+  mean(as.matrix(r_xs_6M[,1]-E_rxs_a14[,1])^2),
+  mean(as.matrix(r_xs_6M[,2]-E_rxs_pc5[,2])^2),
+  mean(as.matrix(r_xs_6M[,3]-E_rxs_pc5[,3])^2),
+  mean(as.matrix(r_xs_6M[,4]-E_rxs_pc5[,4])^2),
+  mean(as.matrix(r_xs_6M[,5]-E_rxs_pc5[,5])^2),
+  mean(as.matrix(r_xs_6M[,6]-E_rxs_pc5[,6])^2))
+      ,1,6)
+
+colnames(MSPEadrian3steps_6M)<-c("M3","M6","M9","M12","M15","M18")
+
+MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs_a14)^2)
+MSPE_adrian3steps
+
+
+#=== ratio
+
+MSPExphyp_6M/MSPErw_6M
+MSPEpc5_6M/MSPErw_6M
+MSPEadrian3steps_6M/MSPErw_6M
+
+
+MSPE_ratio<-rbind(MSPExphyp_6M/MSPErw_6M,MSPEpc5_6M/MSPErw_6M,MSPEadrian3steps_6M/MSPErw_6M)
+row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian3steps")
+
+
+
+
+
+
+
+#=============== OLD ==============
+
+
+
+
+
 #=============== RANDOM WALK ==============
 
 E_rxs_rw<-as.data.frame(r_xs_6M[1:197,])
