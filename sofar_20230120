@@ -85,22 +85,23 @@ yields_daily_asDate<-bind_cols(dates_daily,yields_daily_clmn)
 yields_daily_asDate<-as.data.frame(yields_daily_asDate[,-2])
 colnames(yields_daily_asDate)[1]<-"DATE"
 
-yields_asDate<-inner_join(last_days,yields_daily_asDate, by = "DATE")
+yields_clmn<-inner_join(last_days,yields_daily_asDate, by = "DATE")
 
 yields_daily<-column_to_rownames(yields_daily_asDate,var = "DATE")
-yields<-column_to_rownames(yields_asDate,var = "DATE")
+yields<-column_to_rownames(yields_clmn,var = "DATE")
 
-yields_fin<-yields[2:199, 1:23] 
-yields_ini<-yields[1:198, 2:24] # t1=jan/06, h1=M2
+yields_fin<-yields[2:199, 1:23] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1) =M23
+yields_ini<-yields[1:198, 2:24] # t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M24
 
 mat_fin.rep<-t(as.data.frame(rep(as.data.frame(Maturities[1:23])[1],198)))
 mat_ini.rep<-t(as.data.frame(rep(as.data.frame(Maturities[2:24])[1],198)))
-rf.rep<-as.data.frame(rep(as.data.frame(yields[1:198,1])[1],23))
 rownames(mat_fin.rep)<-rownames(yields_fin)
 rownames(mat_ini.rep)<-rownames(yields_ini)
-rownames(rf.rep)<-rownames(yields_ini)
 colnames(mat_fin.rep)<-colnames(yields_fin)
 colnames(mat_ini.rep)<-colnames(yields_ini)
+
+rf.rep<-as.data.frame(rep(as.data.frame(yields[1:198,1])[1],23))
+rownames(rf.rep)<-rownames(yields_ini)
 colnames(rf.rep)<-colnames(yields_ini)
 
 rf<- as.matrix(rf.rep[,1]) 	#risk free rate
