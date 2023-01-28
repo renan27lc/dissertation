@@ -1,0 +1,28 @@
+
+pc5_ini<-as.matrix(pc_scores[1:198,1:5])
+
+lm_pc5_yieldsfin<-lm(as.matrix(yields_fin) ~ as.matrix(pc5_ini))
+
+
+
+#=== yields_fin pc5
+
+lm_pc5_yields_fin_alpha_hat<-t(lm_pc5_yieldsfin$coefficients[1,])
+lm_pc5_yields_fin_beta_hat<-t(lm_pc5_yieldsfin$coefficients[2:6,])
+
+i_198<-as.data.frame(rep(1, 198))
+
+E_yields_fin_pc5<-as.data.frame(t(crossprod(lm_pc5_yields_fin_alpha_hat,t(i_198)))+t(crossprod(t(lm_pc5_yields_fin_beta_hat),t(pc5_ini))))
+
+MSPEpc5_yields_fin_6M<-matrix(c(
+  mean(as.matrix(yields_fin[,1]-E_yields_fin_pc5[,1])^2),
+  mean(as.matrix(yields_fin[,2]-E_yields_fin_pc5[,2])^2),
+  mean(as.matrix(yields_fin[,3]-E_yields_fin_pc5[,3])^2),
+  mean(as.matrix(yields_fin[,4]-E_yields_fin_pc5[,4])^2),
+  mean(as.matrix(yields_fin[,5]-E_yields_fin_pc5[,5])^2),
+  mean(as.matrix(yields_fin[,6]-E_yields_fin_pc5[,6])^2))
+      ,1,6)
+
+colnames(MSPEpc5_yields_fin_6M)<-c("M1","M2","M3","M4","M5","M6")
+
+#MSPE_pc5<-mean(as.matrix(r_xs-E_rxs_pc5)^2)
