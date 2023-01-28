@@ -60,7 +60,7 @@ yieldsbr = function(Initial_Date,Final_Date,Maturities){
 
 Initial_Date = '2006/01/01' # Available from 2003/08/08. YYYY/MM/DD 
 Final_Date = '2022/08/08'
-Maturities = c(1:25)
+Maturities = c(1:7)
 
 yields_daily_100 = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
 yields_daily_100
@@ -90,7 +90,7 @@ yields_clmn<-inner_join(last_days,yields_daily_asDate, by = "DATE")
 yields_daily<-column_to_rownames(yields_daily_asDate,var = "DATE")
 yields<-column_to_rownames(yields_clmn,var = "DATE")
 
-yields_fin<-yields[2:199, 1:23] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1) =M23
+yields_fin<-yields[2:199, 1:23] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M23
 yields_ini<-yields[1:198, 2:24] # t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M24
 
 mat_fin.rep<-t(as.data.frame(rep(as.data.frame(Maturities[1:23])[1],198)))
@@ -211,7 +211,7 @@ V_transp<-as.matrix(residuals(var1_pc5))
 lm_A14<-lm(r_xs ~ V_transp[1:198,1:5] + X__transp[1:198,1:5])
 
 E_hat<-as.matrix(lm_A14$residuals)
-sig2_hat<-sum(diag((crossprod((E_hat)))))/(192*12)
+sig2_hat<-sum(diag((crossprod((E_hat)))))/(192*6)
 
 B_ast<-matrix(
 	cbind(
@@ -221,19 +221,13 @@ B_ast<-matrix(
              crossprod(t(lm_A14$coefficients[2:6,4]),t(lm_A14$coefficients[2:6,4])),
              crossprod(t(lm_A14$coefficients[2:6,5]),t(lm_A14$coefficients[2:6,5])),
              crossprod(t(lm_A14$coefficients[2:6,6]),t(lm_A14$coefficients[2:6,6])),
-             crossprod(t(lm_A14$coefficients[2:6,7]),t(lm_A14$coefficients[2:6,7])),
-             crossprod(t(lm_A14$coefficients[2:6,8]),t(lm_A14$coefficients[2:6,8])),
-             crossprod(t(lm_A14$coefficients[2:6,9]),t(lm_A14$coefficients[2:6,9])),
-             crossprod(t(lm_A14$coefficients[2:6,10]),t(lm_A14$coefficients[2:6,10])),
-             crossprod(t(lm_A14$coefficients[2:6,11]),t(lm_A14$coefficients[2:6,11])),
-             crossprod(t(lm_A14$coefficients[2:6,12]),t(lm_A14$coefficients[2:6,12]))
 	     )
-	,25,12)
+	,25,6)
 
 #============== lambda0_hat ============
 
 beta_hat<-matrix(cbind(c(
-	    lm_A14$coefficients[2:6,1:12],
+	    lm_A14$coefficients[2:6,1],
 	    lm_A14$coefficients[2:6,2],
 	    lm_A14$coefficients[2:6,3],
 	    lm_A14$coefficients[2:6,4],
@@ -282,8 +276,8 @@ lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.ma
 #=== no-change (random walk)
 #maybe i should random walk the price (or the yield) instead of r_xs
 
-E_rxs_rw<-as.data.frame(r_xs_6M[1:197,])
-rxs_rw<-as.data.frame(r_xs_6M[2:198,])
+E_rxs_rw<-as.data.frame(r_xs[1:197,])
+rxs_rw<-as.data.frame(r_xs[2:198,])
 
 MSPErw_6M<-matrix(c(
   mean(as.matrix(rxs_rw[,1]-E_rxs_rw[,1])^2),
@@ -296,24 +290,24 @@ MSPErw_6M<-matrix(c(
 
 colnames(MSPErw_6M)<-c("M3","M6","M9","M12","M15","M18")
 
-MSPE_rw<-mean(as.matrix(rxs_rw-E_rxs_rw)^2)
+#MSPE_rw<-mean(as.matrix(rxs_rw-E_rxs_rw)^2)
 
 #=== expectation hypothesis
 
 E_rxs_xphyp<-0
 
 MSPExphyp_6M<-matrix(c(
-  mean(as.matrix(r_xs_6M[,1])^2),
-  mean(as.matrix(r_xs_6M[,2])^2),
-  mean(as.matrix(r_xs_6M[,3])^2),
-  mean(as.matrix(r_xs_6M[,4])^2),
-  mean(as.matrix(r_xs_6M[,5])^2),
-  mean(as.matrix(r_xs_6M[,6])^2)
+  mean(as.matrix(r_xs[,1])^2),
+  mean(as.matrix(r_xs[,2])^2),
+  mean(as.matrix(r_xs[,3])^2),
+  mean(as.matrix(r_xs[,4])^2),
+  mean(as.matrix(r_xs[,5])^2),
+  mean(as.matrix(r_xs[,6])^2)
     ),1,6)
 
-colnames(MSPExphyp_6M)<-c("M3","M6","M9","M12","M15","M18")
+colnames(MSPExphyp_6M)<-c("M1","M2","M3","M4","M5","M6")
 
-MSPE_xphyp<-mean(as.matrix(r_xs_6M)^2)
+#MSPE_xphyp<-mean(as.matrix(r_xs)^2)
 
 #=== r_xs pc5
 
@@ -327,34 +321,34 @@ i_198<-as.data.frame(rep(1, 198))
 E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(t(lm_pc5_beta_hat),pc5_ini)))
 
 MSPEpc5_6M<-matrix(c(
-  mean(as.matrix(r_xs_6M[,1]-E_rxs_pc5[,1])^2),
-  mean(as.matrix(r_xs_6M[,2]-E_rxs_pc5[,2])^2),
-  mean(as.matrix(r_xs_6M[,3]-E_rxs_pc5[,3])^2),
-  mean(as.matrix(r_xs_6M[,4]-E_rxs_pc5[,4])^2),
-  mean(as.matrix(r_xs_6M[,5]-E_rxs_pc5[,5])^2),
-  mean(as.matrix(r_xs_6M[,6]-E_rxs_pc5[,6])^2))
+  mean(as.matrix(r_xs[,1]-E_rxs_pc5[,1])^2),
+  mean(as.matrix(r_xs[,2]-E_rxs_pc5[,2])^2),
+  mean(as.matrix(r_xs[,3]-E_rxs_pc5[,3])^2),
+  mean(as.matrix(r_xs[,4]-E_rxs_pc5[,4])^2),
+  mean(as.matrix(r_xs[,5]-E_rxs_pc5[,5])^2),
+  mean(as.matrix(r_xs[,6]-E_rxs_pc5[,6])^2))
       ,1,6)
 
-colnames(MSPEpc5_6M)<-c("M3","M6","M9","M12","M15","M18")
+colnames(MSPEpc5_6M)<-c("M1","M2","M3","M4","M5","M6")
 
-MSPE_pc5<-mean(as.matrix(r_xs_6M-E_rxs_pc5)^2)
+#MSPE_pc5<-mean(as.matrix(r_xs-E_rxs_pc5)^2)
 
 #=== adrian 3 steps
 
 E_rxs_a14<-as.data.frame(t(crossprod(a_hat,t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
 
 MSPEadrian3steps_6M<-matrix(c(
-  mean(as.matrix(r_xs_6M[,1]-E_rxs_a14[,1])^2),
-  mean(as.matrix(r_xs_6M[,2]-E_rxs_a14[,2])^2),
-  mean(as.matrix(r_xs_6M[,3]-E_rxs_a14[,3])^2),
-  mean(as.matrix(r_xs_6M[,4]-E_rxs_a14[,4])^2),
-  mean(as.matrix(r_xs_6M[,5]-E_rxs_a14[,5])^2),
-  mean(as.matrix(r_xs_6M[,6]-E_rxs_a14[,6])^2))
+  mean(as.matrix(r_xs[,1]-E_rxs_a14[,1])^2),
+  mean(as.matrix(r_xs[,2]-E_rxs_a14[,2])^2),
+  mean(as.matrix(r_xs[,3]-E_rxs_a14[,3])^2),
+  mean(as.matrix(r_xs[,4]-E_rxs_a14[,4])^2),
+  mean(as.matrix(r_xs[,5]-E_rxs_a14[,5])^2),
+  mean(as.matrix(r_xs[,6]-E_rxs_a14[,6])^2))
       ,1,6)
 
-colnames(MSPEadrian3steps_6M)<-c("M3","M6","M9","M12","M15","M18")
+colnames(MSPEadrian3steps_6M)<-c("M1","M2","M3","M4","M5","M6")
 
-MSPE_adrian3steps<-mean(as.matrix(r_xs_6M-E_rxs_a14)^2)
+#MSPE_adrian3steps<-mean(as.matrix(r_xs-E_rxs_a14)^2)
 
 
 #=== ratio
