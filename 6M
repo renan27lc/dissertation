@@ -136,7 +136,8 @@ colnames(r_h1mo)<-colnames(ytm_fin)
 
 #r_h1mo_6M<-as.matrix(cbind(r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,15],r_h1mo[,18]))
 
-lm_rh1mo<-lm(as.matrix(r_h1mo) ~ as.matrix(rf.rep)) 
+# lm_rh1mo<-lm(as.matrix(r_h1mo) ~ as.matrix(rf.rep))	no original 24M era assim, mas aqui está dando erro, o abaixo é uma alternativa 
+lm_rh1mo<-lm(as.matrix(r_h1mo) ~ as.matrix(rf))
 
 #summary(lm_rh1mo)
 
@@ -389,17 +390,17 @@ row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian3steps")
 summary_lm_rh1mo<-summary(lm_rh1mo)
 
 Table1_bmstr<-matrix(c(
-	summary_lm_rh1mo$`Response Y1`$coefficients[1,1],
-	summary_lm_rh1mo$`Response Y4`$coefficients[1,1],
-	summary_lm_rh1mo$`Response Y1`$coefficients[1,4],
-	summary_lm_rh1mo$`Response Y4`$coefficients[1,4],
-	summary_lm_rh1mo$`Response Y1`$coefficients[2,1],
-	summary_lm_rh1mo$`Response Y4`$coefficients[2,1],
-	summary_lm_rh1mo$`Response Y1`$coefficients[2,4],
-	summary_lm_rh1mo$`Response Y4`$coefficients[2,4],
-	summary_lm_rh1mo$`Response Y1`$adj.r.squared,
-	summary_lm_rh1mo$`Response Y4`$adj.r.squared
-			,2,5))
+	summary_lm_rh1mo$`Response M1`$coefficients[1,1],
+	summary_lm_rh1mo$`Response M4`$coefficients[1,1],
+	summary_lm_rh1mo$`Response M1`$coefficients[1,4],
+	summary_lm_rh1mo$`Response M4`$coefficients[1,4],
+	summary_lm_rh1mo$`Response M1`$coefficients[2,1],
+	summary_lm_rh1mo$`Response M4`$coefficients[2,1],
+	summary_lm_rh1mo$`Response M1`$coefficients[2,4],
+	summary_lm_rh1mo$`Response M4`$coefficients[2,4],
+	summary_lm_rh1mo$`Response M1`$adj.r.squared,
+	summary_lm_rh1mo$`Response M4`$adj.r.squared
+			),2,5)
 
 colnames(Table1_bmstr)<-c("Intercept","P_value","Beta","P_value","R_squared")
 row.names(Table1_bmstr)<-c("M1","M4")
