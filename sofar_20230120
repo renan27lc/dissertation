@@ -311,14 +311,12 @@ MSPE_xphyp<-mean(as.matrix(r_xs_6M)^2)
 
 #=== r_xs pc5
 
-pc5_ini<-t(pc_scores[1:198,1:5])
-
 lm_pc5_alpha_hat<-t(lm_pc5$coefficients[1,])
 lm_pc5_beta_hat<-t(lm_pc5$coefficients[2:6,])
 
 i_198<-as.data.frame(rep(1, 198))
 
-E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(t(lm_pc5_beta_hat),pc5_ini)))
+E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(t(lm_pc5_beta_hat),t(pc5_ini))))
 
 MSPEpc5_6M<-matrix(c(
   mean(as.matrix(r_xs_6M[,1]-E_rxs_pc5[,1])^2),
