@@ -90,17 +90,17 @@ yields_clmn<-inner_join(last_days,yields_daily_asDate, by = "DATE")
 yields_daily<-column_to_rownames(yields_daily_asDate,var = "DATE")
 yields<-column_to_rownames(yields_clmn,var = "DATE")
 
-yields_fin<-yields[2:199, 1:23] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M23
-yields_ini<-yields[1:198, 2:24] # t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M24
+yields_fin<-yields[2:199, 1:6] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M6
+yields_ini<-yields[1:198, 2:7] # t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M7
 
-mat_fin.rep<-t(as.data.frame(rep(as.data.frame(Maturities[1:23])[1],198)))
-mat_ini.rep<-t(as.data.frame(rep(as.data.frame(Maturities[2:24])[1],198)))
+mat_fin.rep<-t(as.data.frame(rep(as.data.frame(Maturities[1:6])[1],198)))
+mat_ini.rep<-t(as.data.frame(rep(as.data.frame(Maturities[2:7])[1],198)))
 rownames(mat_fin.rep)<-rownames(yields_fin)
 rownames(mat_ini.rep)<-rownames(yields_ini)
 colnames(mat_fin.rep)<-colnames(yields_fin)
 colnames(mat_ini.rep)<-colnames(yields_ini)
 
-rf.rep<-as.data.frame(rep(as.data.frame(yields[1:198,1])[1],23))
+rf.rep<-as.data.frame(rep(as.data.frame(yields[1:198,1])[1],6))
 rownames(rf.rep)<-rownames(yields_ini)
 colnames(rf.rep)<-colnames(yields_ini)
 
@@ -126,7 +126,7 @@ colnames(ytmfin_xphyp)<-colnames(ytm_fin)
 
 #ytmfin_xphyp_6M<-as.matrix(cbind(ytmfin_xphyp[,3],ytmfin_xphyp[,6],ytmfin_xphyp[,9],ytmfin_xphyp[,12],ytmfin_xphyp[,15],ytmfin_xphyp[,18]))
 
-lm_B1A6<-lm(formula = ytm_fin ~ ytmfin_xphyp)
+lm_B1A6<-lm(formula = as.matrix(ytm_fin) ~ as.matrix(ytmfin_xphyp))
 
 # ====== 1 month return
 
@@ -136,7 +136,7 @@ colnames(r_h1mo)<-colnames(ytm_fin)
 
 #r_h1mo_6M<-as.matrix(cbind(r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,15],r_h1mo[,18]))
 
-lm_rh1mo<-lm(r_h1mo ~ rf.rep) 
+lm_rh1mo<-lm(as.matrix(r_h1mo) ~ as.matrix(rf.rep)) 
 
 #summary(lm_rh1mo)
 
@@ -189,7 +189,7 @@ pc_scores<-column_to_rownames(inner_join(last_days,pc_scores_daily_clmn, by = "D
 
 pc5_ini<-as.matrix(pc_scores[1:198,1:5])
 
-lm_pc5<-lm(r_xs ~ pc5_ini)
+lm_pc5<-lm(as.matrix(r_xs) ~ as.matrix(pc5_ini))
 
 #lm_rf_pc5<-lm(r_xs ~ rf.rep + t(pc5_ini))	não faz sentido pois já estou regredindo contra o excesso de retorno)
 
@@ -208,7 +208,7 @@ V_transp<-as.matrix(residuals(var1_pc5))
 
 #====== estimando parâmetros Adrian (14):
 
-lm_A14<-lm(r_xs ~ V_transp[1:198,1:5] + X__transp[1:198,1:5])
+lm_A14<-lm(as.matrix(r_xs) ~ V_transp[1:198,1:5] + X__transp[1:198,1:5])
 
 E_hat<-as.matrix(lm_A14$residuals)
 sig2_hat<-sum(diag((crossprod((E_hat)))))/(192*6)
@@ -220,7 +220,7 @@ B_ast<-matrix(
              crossprod(t(lm_A14$coefficients[2:6,3]),t(lm_A14$coefficients[2:6,3])),
              crossprod(t(lm_A14$coefficients[2:6,4]),t(lm_A14$coefficients[2:6,4])),
              crossprod(t(lm_A14$coefficients[2:6,5]),t(lm_A14$coefficients[2:6,5])),
-             crossprod(t(lm_A14$coefficients[2:6,6]),t(lm_A14$coefficients[2:6,6])),
+             crossprod(t(lm_A14$coefficients[2:6,6]),t(lm_A14$coefficients[2:6,6]))
 	     )
 	,25,6)
 
@@ -399,10 +399,10 @@ Table1_bmstr<-matrix(c(
 	summary_lm_rh1mo$`Response Y4`$coefficients[2,4],
 	summary_lm_rh1mo$`Response Y1`$adj.r.squared,
 	summary_lm_rh1mo$`Response Y4`$adj.r.squared
-			),2,5)
+			,2,5))
 
 colnames(Table1_bmstr)<-c("Intercept","P_value","Beta","P_value","R_squared")
-row.names(Table1_bmstr)<-c("M3","M12")
+row.names(Table1_bmstr)<-c("M1","M4")
 
 View(Table1_bmstr)
 
