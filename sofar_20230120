@@ -65,8 +65,8 @@ Maturities = c(1:25)
 yields_daily_100 = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
 yields_daily_100
 
-yields_daily_clmn<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100/100)))
-colnames(yields_daily_clmn)[1]<-"DATE"
+yields_daily_chrctr<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100/100)))
+colnames(yields_daily_chrctr)[1]<-"DATE"
 
 plot(colMeans(yields_daily_100/100))
 
@@ -79,15 +79,15 @@ last_days<-as.data.frame(as.matrix(last_days))
 last_days<-as.data.frame(as.Date(last_days[,1]))
 colnames(last_days)[1]<-"DATE"
 
-dates_daily<-as.data.frame(as.Date(yields_daily_clmn$DATE, "%d - %m - %Y"))
+dates_daily<-as.data.frame(as.Date(yields_daily_chrctr$DATE, "%d - %m - %Y"))
 
-yields_daily_asDate<-bind_cols(dates_daily,yields_daily_clmn)
-yields_daily_asDate<-as.data.frame(yields_daily_asDate[,-2])
-colnames(yields_daily_asDate)[1]<-"DATE"
+yields_daily_clmn<-bind_cols(dates_daily,yields_daily_chrctr)
+yields_daily_clmn<-as.data.frame(yields_daily_clmn[,-2])
+colnames(yields_daily_clmn)[1]<-"DATE"
 
-yields_clmn<-inner_join(last_days,yields_daily_asDate, by = "DATE")
+yields_clmn<-inner_join(last_days,yields_daily_clmn, by = "DATE")
 
-yields_daily<-column_to_rownames(yields_daily_asDate,var = "DATE")
+yields_daily<-column_to_rownames(yields_daily_clmn,var = "DATE")
 yields<-column_to_rownames(yields_clmn,var = "DATE")
 
 yields_fin<-yields[2:199, 1:23] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1) =M23
