@@ -126,7 +126,7 @@ colnames(ytmfin_xphyp)<-colnames(ytm_fin)
 
 ytmfin_xphyp_6M<-as.matrix(cbind(ytmfin_xphyp[,3],ytmfin_xphyp[,6],ytmfin_xphyp[,9],ytmfin_xphyp[,12],ytmfin_xphyp[,15],ytmfin_xphyp[,18]))
 
-lm_B1A6<-lm(formula = ytm_fin_6M ~ ytmfin_xphyp_6M)
+lm_ytmfin_xphyp<-lm(formula = ytm_fin_6M ~ ytmfin_xphyp_6M)
 
 # ====== 1 month return
 
@@ -136,9 +136,9 @@ colnames(r_h1mo)<-colnames(ytm_fin)
 
 r_h1mo_6M<-as.matrix(cbind(r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,15],r_h1mo[,18]))
 
-lm_rh1mo<-lm(r_h1mo_6M ~ rf) 
+lm_rh1mo_xphyp<-lm(r_h1mo_6M ~ rf) 
 
-#summary(lm_rh1mo)
+#summary(lm_rh1mo_xphyp)
 
 
 # ===================== PCA ==========================
@@ -386,19 +386,19 @@ row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian3steps")
 
 #=====r_h1mo
 
-summary_lm_rh1mo<-summary(lm_rh1mo)
+summary_lm_rh1mo_xphyp<-summary(lm_rh1mo_xphyp)
 
 Table1_bmstr<-matrix(c(
-	summary_lm_rh1mo$`Response Y1`$coefficients[1,1],
-	summary_lm_rh1mo$`Response Y4`$coefficients[1,1],
-	summary_lm_rh1mo$`Response Y1`$coefficients[1,4],
-	summary_lm_rh1mo$`Response Y4`$coefficients[1,4],
-	summary_lm_rh1mo$`Response Y1`$coefficients[2,1],
-	summary_lm_rh1mo$`Response Y4`$coefficients[2,1],
-	summary_lm_rh1mo$`Response Y1`$coefficients[2,4],
-	summary_lm_rh1mo$`Response Y4`$coefficients[2,4],
-	summary_lm_rh1mo$`Response Y1`$adj.r.squared,
-	summary_lm_rh1mo$`Response Y4`$adj.r.squared
+	summary_lm_rh1mo_xphyp$`Response Y1`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response Y4`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response Y1`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response Y4`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response Y1`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response Y4`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response Y1`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response Y4`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response Y1`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response Y4`$adj.r.squared
 			),2,5)
 
 colnames(Table1_bmstr)<-c("Intercept","P_value","Beta","P_value","R_squared")
