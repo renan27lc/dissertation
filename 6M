@@ -398,6 +398,8 @@ Table1_bmstr_ytmfin<-matrix(c(
 colnames(Table1_bmstr_ytmfin)<-c("Intercept","P_value","Beta","P_value","R_squared")
 row.names(Table1_bmstr_ytmfin)<-c("M1","M6")
 
+View(Table1_bmstr_ytmfin)
+
 #===== r_h1mo
 
 summary_lm_rh1mo_xphyp<-summary(lm_rh1mo_xphyp)
