@@ -1,6 +1,5 @@
 # ===================== PACKAGES AND LIBRARIES ==========================
 
-install.packages("psych")
 install.packages("gridExtra")
 
 library(dplyr)
@@ -171,7 +170,7 @@ pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
 
 
 
-# ===================== LM() EXCESS RETURN ~ PCA ==========================
+# ===================== LM() EXCESS RETURN ~ PC YIELDS ==========================
 
 
 r_xs<- r_h1mo - rf.rep       # excess returns
@@ -189,9 +188,6 @@ pc5_ini<-as.matrix(pc_scores[1:198,1:5])
 
 lm_pc5<-lm(as.matrix(r_xs) ~ as.matrix(pc5_ini))
 
-#lm_rf_pc5<-lm(r_xs ~ rf.rep + t(pc5_ini))	não faz sentido pois já estou regredindo contra o excesso de retorno)
-
-
 # ===================== ADRIAN 3 STEPS ==========================
 #https://www.rdocumentation.org/packages/vars/versions/1.5-6/topics/VAR
 library("vars")
@@ -199,30 +195,25 @@ library("vars")
 
 var1_pc5 <- VAR(pc_scores[,1:5], p = 1, type = "const",ic = "SC")
 
-Sigma_hat<-crossprod(as.matrix(residuals(var1_pc5)))/192 # Covariance matrix of residuals
+V_hat<-as.matrix(residuals(var1_pc5))
 
-X__transp<-as.matrix(pc_scores)[1:198,1:5]
-V_transp<-as.matrix(residuals(var1_pc5))
+Sigma_hat<-crossprod(V_hat)/192 		# Covariance matrix of residuals (198-6)df
+
+X_<-pc5_ini
 
 #====== estimando parâmetros Adrian (14):
 
-lm_A14<-lm(as.matrix(r_xs) ~ V_transp[1:198,1:5] + X__transp[1:198,1:5])
+lm_A14<-lm(as.matrix(r_xs) ~ V_hat[1:198,1:5] + X_[1:198,1:5])
 
-E_hat<-as.matrix(lm_A14$residuals)
-sig2_hat<-sum(diag((crossprod((E_hat)))))/(192*6)
+E_hat<-as.matrix(lm_A14$residuals)	#198x6
 
-B_ast<-matrix(
-	cbind(
-             crossprod(t(lm_A14$coefficients[2:6,1]),t(lm_A14$coefficients[2:6,1])),
-             crossprod(t(lm_A14$coefficients[2:6,2]),t(lm_A14$coefficients[2:6,2])),
-             crossprod(t(lm_A14$coefficients[2:6,3]),t(lm_A14$coefficients[2:6,3])),
-             crossprod(t(lm_A14$coefficients[2:6,4]),t(lm_A14$coefficients[2:6,4])),
-             crossprod(t(lm_A14$coefficients[2:6,5]),t(lm_A14$coefficients[2:6,5])),
-             crossprod(t(lm_A14$coefficients[2:6,6]),t(lm_A14$coefficients[2:6,6]))
-	     )
-	,25,6)
 
-#============== lambda0_hat ============
+
+#Z_tilde<- t(cbind(i_198,V_hat,X_))	#11x198
+#lm(t_rxs[1,]~Z_tilde[2:6,]+Z_tilde[7:11,])
+
+
+sig2_hat<-sum(diag(crossprod(E_hat)))/(192*6)
 
 beta_hat<-matrix(cbind(c(
 	    lm_A14$coefficients[2:6,1],
@@ -231,7 +222,22 @@ beta_hat<-matrix(cbind(c(
 	    lm_A14$coefficients[2:6,4],
 	    lm_A14$coefficients[2:6,5],
 	    lm_A14$coefficients[2:6,6])
-		),5,6)
+	)
+	,5,6)
+
+B_ast<-matrix(
+	cbind(
+             crossprod(t(beta_hat[,1])),
+             crossprod(t(beta_hat[,2])),
+             crossprod(t(beta_hat[,3])),
+             crossprod(t(beta_hat[,4])),
+             crossprod(t(beta_hat[,5])),
+             crossprod(t(beta_hat[,6]))
+	     )
+	,25,6)
+
+
+#============== lambda0_hat ============
 
 c_hat<-matrix(cbind(c(
 	    lm_A14$coefficients[7:11,1],
@@ -242,16 +248,16 @@ c_hat<-matrix(cbind(c(
 	    lm_A14$coefficients[7:11,6])
 		),5,6)
 
-lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat),t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
+lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
 
 #============== lambda0_hat ============
 
-vec_Sigma<-as.matrix(as.vector(Sigma_hat))
-Basc_Sigma<-crossprod(B_ast,vec_Sigma)
-betabeta_inv<- solve(crossprod(t(beta_hat),t(beta_hat)))
+vec_Sigma<-as.matrix(as.vector(Sigma_hat))	#25x1
+Basc_vecSigma<-crossprod(B_ast,vec_Sigma)		#6x1
+betabeta_inv<- solve(crossprod(t(beta_hat)))	#5x5
 #betabeta<- crossprod(t(beta_hat),t(beta_hat))
 
-a_hat<-matrix(cbind(c(
+a_hat<-matrix(cbind(c(				#1x6
 	    lm_A14$coefficients[1,1],
 	    lm_A14$coefficients[1,2],
 	    lm_A14$coefficients[1,3],
@@ -260,19 +266,15 @@ a_hat<-matrix(cbind(c(
 	    lm_A14$coefficients[1,6])
 		),1,6)
 
-library("psych")
-sigmasq_hat<-tr(crossprod(E_hat,E_hat))/(6*198)
-i_6<-as.data.frame(rep(1, 6))
-sigmasq6_hat<-sigmasq_hat*i_6
+i_6<-as.data.frame(rep(1,6))
 
-lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( t(a_hat) + Basc_Sigma/2 + sigmasq6_hat))))
+lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( t(a_hat) + Basc_vecSigma/2 + sig2_hat*i_6))))
 
 
-#============================ MSPE ============================
+#============================ MSPE R_XS ============================
 
 
 #=== no-change (random walk)
-#maybe i should random walk the price (or the yield) instead of r_xs
 
 E_rxs_rw<-as.data.frame(r_xs[1:197,])
 rxs_rw<-as.data.frame(r_xs[2:198,])
@@ -286,7 +288,7 @@ MSPErw_6M<-matrix(c(
   mean(as.matrix(rxs_rw[,6]-E_rxs_rw[,6])^2))
     ,1,6)
 
-colnames(MSPErw_6M)<-c("M3","M6","M9","M12","M15","M18")
+colnames(MSPErw_6M)<-c("M1","M2","M3","M4","M5","M6")	
 
 #MSPE_rw<-mean(as.matrix(rxs_rw-E_rxs_rw)^2)
 
@@ -309,14 +311,12 @@ colnames(MSPExphyp_6M)<-c("M1","M2","M3","M4","M5","M6")
 
 #=== r_xs pc5
 
-pc5_ini<-t(pc_scores[1:198,1:5])
-
 lm_pc5_alpha_hat<-t(lm_pc5$coefficients[1,])
-lm_pc5_beta_hat<-t(lm_pc5$coefficients[2:6,])
+lm_pc5_beta_hat<-lm_pc5$coefficients[2:6,]
 
 i_198<-as.data.frame(rep(1, 198))
 
-E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(t(lm_pc5_beta_hat),pc5_ini)))
+E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(lm_pc5_beta_hat,t(pc5_ini))))
 
 MSPEpc5_6M<-matrix(c(
   mean(as.matrix(r_xs[,1]-E_rxs_pc5[,1])^2),
@@ -328,12 +328,13 @@ MSPEpc5_6M<-matrix(c(
       ,1,6)
 
 colnames(MSPEpc5_6M)<-c("M1","M2","M3","M4","M5","M6")
+row.names(MSPEpc5_6M)<-"MSPE_rxs_pc5"
 
 #MSPE_pc5<-mean(as.matrix(r_xs-E_rxs_pc5)^2)
 
 #=== adrian 3 steps
 
-E_rxs_a14<-as.data.frame(t(crossprod(a_hat,t(i_198))+crossprod(as.matrix(beta_hat),t(V_transp))+crossprod(as.matrix(c_hat),t(X__transp))))
+E_rxs_a14<-as.data.frame(t(crossprod(a_hat,t(i_198))+crossprod(beta_hat,t(V_hat))+crossprod(c_hat,t(X_)))) # [198x6] = t([1x6]*[1x198] + [5x6]*[5x198] + [5x6]*[5x198])
 
 MSPEadrian3steps_6M<-matrix(c(
   mean(as.matrix(r_xs[,1]-E_rxs_a14[,1])^2),
@@ -345,18 +346,18 @@ MSPEadrian3steps_6M<-matrix(c(
       ,1,6)
 
 colnames(MSPEadrian3steps_6M)<-c("M1","M2","M3","M4","M5","M6")
+#row.names(MSPEpc5_6M)<-"MSPE_rxs_pc5"
 
 #MSPE_adrian3steps<-mean(as.matrix(r_xs-E_rxs_a14)^2)
 
 
 #=== ratio
 
-MSPExphyp_6M/MSPErw_6M
-MSPEpc5_6M/MSPErw_6M
-MSPEadrian3steps_6M/MSPErw_6M
-
-
-MSPE_ratio<-rbind(MSPExphyp_6M/MSPErw_6M,MSPEpc5_6M/MSPErw_6M,MSPEadrian3steps_6M/MSPErw_6M)
+MSPE_ratio<-rbind(
+	MSPExphyp_6M/MSPErw_6M,
+	MSPEpc5_6M/MSPErw_6M,
+	MSPEadrian3steps_6M/MSPErw_6M)
+	
 row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian3steps")
 
 #View(MSPE_ratio)
