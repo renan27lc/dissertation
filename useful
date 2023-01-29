@@ -1,0 +1,2 @@
+options(digits=5)
+options(scipen = n)
