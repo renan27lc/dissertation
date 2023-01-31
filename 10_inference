@@ -1,0 +1,6 @@
+
+
+lm_rf_pc5<-lm(rf~pc5_ini)
+delta1<-as.matrix(coefficients(lm_rf_pc5)[2:6])
+delta0<-as.matrix(coefficients(lm_rf_pc5)[1])
+
