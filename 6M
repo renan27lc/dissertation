@@ -107,33 +107,33 @@ rf<- as.matrix(rf.rep[,1]) 	#risk free rate
 colnames(rf)<-"risk_free"
 rownames(rf)<-rownames(yields_ini)
 
-ytm_fin<-as.data.frame(yields_fin*mat_fin.rep)
-ytm_ini<-as.data.frame(yields_ini*mat_ini.rep)
-rownames(ytm_fin)<-rownames(yields_fin)
-colnames(ytm_fin)<-colnames(yields_fin)
-rownames(ytm_ini)<-rownames(yields_ini)
-colnames(ytm_ini)<-colnames(yields_ini)
+mns.lnP_fin<-as.data.frame(yields_fin*mat_fin.rep)	#minus lnP
+mns.lnP_ini<-as.data.frame(yields_ini*mat_ini.rep)
+rownames(mns.lnP_fin)<-rownames(yields_fin)
+colnames(mns.lnP_fin)<-colnames(yields_fin)
+rownames(mns.lnP_ini)<-rownames(yields_ini)
+colnames(mns.lnP_ini)<-colnames(yields_ini)
 
-# ====== E[ytm_fin] expectations hypothesis
+# ====== E[mns.lnP_fin] expectations hypothesis
 
-ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin (expectation hypothesis)
-rownames(ytmfin_xphyp)<-rownames(ytm_fin)
-colnames(ytmfin_xphyp)<-colnames(ytm_fin)
+mns.lnPfin_xphyp<-mns.lnP_ini-rf # expected mns.lnP_fin (expectation hypothesis)
+rownames(mns.lnPfin_xphyp)<-rownames(mns.lnP_fin)
+colnames(mns.lnPfin_xphyp)<-colnames(mns.lnP_fin)
 
-#lm_ytmfin_xphyp<-lm(formula = as.matrix(ytm_fin) ~ as.matrix(ytmfin_xphyp))
+#lm_mns.lnPfin_xphyp<-lm(formula = as.matrix(mns.lnP_fin) ~ as.matrix(mns.lnPfin_xphyp))
 
-lm_ytmfin_xphyp_M1<-lm(formula = as.matrix(ytm_fin[,1]) ~ as.matrix(ytmfin_xphyp[,1]))
-#lm_ytmfin_xphyp_M2<-lm(formula = as.matrix(ytm_fin[,2]) ~ as.matrix(ytmfin_xphyp[,2]))
-#lm_ytmfin_xphyp_M3<-lm(formula = as.matrix(ytm_fin[,3]) ~ as.matrix(ytmfin_xphyp[,3]))
-#lm_ytmfin_xphyp_M4<-lm(formula = as.matrix(ytm_fin[,4]) ~ as.matrix(ytmfin_xphyp[,4]))
-#lm_ytmfin_xphyp_M5<-lm(formula = as.matrix(ytm_fin[,5]) ~ as.matrix(ytmfin_xphyp[,5]))
-lm_ytmfin_xphyp_M6<-lm(formula = as.matrix(ytm_fin[,6]) ~ as.matrix(ytmfin_xphyp[,6]))
+lm_mns.lnPfin_xphyp_M1<-lm(formula = as.matrix(mns.lnP_fin[,1]) ~ as.matrix(mns.lnPfin_xphyp[,1]))
+#lm_mns.lnPfin_xphyp_M2<-lm(formula = as.matrix(mns.lnP_fin[,2]) ~ as.matrix(mns.lnPfin_xphyp[,2]))
+#lm_mns.lnPfin_xphyp_M3<-lm(formula = as.matrix(mns.lnP_fin[,3]) ~ as.matrix(mns.lnPfin_xphyp[,3]))
+#lm_mns.lnPfin_xphyp_M4<-lm(formula = as.matrix(mns.lnP_fin[,4]) ~ as.matrix(mns.lnPfin_xphyp[,4]))
+#lm_mns.lnPfin_xphyp_M5<-lm(formula = as.matrix(mns.lnP_fin[,5]) ~ as.matrix(mns.lnPfin_xphyp[,5]))
+lm_mns.lnPfin_xphyp_M6<-lm(formula = as.matrix(mns.lnP_fin[,6]) ~ as.matrix(mns.lnPfin_xphyp[,6]))
 
 # ====== E[1 month return] expectations hypothesis
 
-r_h1mo<- ytm_ini - ytm_fin 	#return rate for holding the bond for 1 month
-rownames(r_h1mo)<-rownames(ytm_fin)
-colnames(r_h1mo)<-colnames(ytm_fin)
+r_h1mo<- mns.lnP_ini - mns.lnP_fin 	#return rate for holding the bond for 1 month
+rownames(r_h1mo)<-rownames(mns.lnP_fin)
+colnames(r_h1mo)<-colnames(mns.lnP_fin)
 
 lm_rh1mo_xphyp<-lm(as.matrix(r_h1mo) ~ rf)
 
@@ -174,8 +174,8 @@ pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
 
 
 r_xs<- r_h1mo - rf.rep       # excess returns
-rownames(r_xs)<-rownames(ytm_fin)
-colnames(r_xs)<-colnames(ytm_fin)
+rownames(r_xs)<-rownames(mns.lnP_fin)
+colnames(r_xs)<-colnames(mns.lnP_fin)
 
 pc_scores_daily_clmn<-cbind(dates_daily,rownames_to_column(pc_scores_daily))
 pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
@@ -373,32 +373,32 @@ row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian3steps")
 
 #======== EXCESS RETURNS - EXPECTATION HIPOTHESIS ===========
 
-#====== ytmfin_xphyp
+#====== mns.lnPfin_xphyp
 
-summary_lm_ytmfin_xphyp_M1<-summary(lm_ytmfin_xphyp_M1)
-#summary_lm_ytmfin_xphyp_M2<-summary(lm_ytmfin_xphyp_M2)
-#summary_lm_ytmfin_xphyp_M3<-summary(lm_ytmfin_xphyp_M3)
-#summary_lm_ytmfin_xphyp_M4<-summary(lm_ytmfin_xphyp_M4)
-#summary_lm_ytmfin_xphyp_M5<-summary(lm_ytmfin_xphyp_M5)
-summary_lm_ytmfin_xphyp_M6<-summary(lm_ytmfin_xphyp_M6)
+summary_lm_mns.lnPfin_xphyp_M1<-summary(lm_mns.lnPfin_xphyp_M1)
+#summary_lm_mns.lnPfin_xphyp_M2<-summary(lm_mns.lnPfin_xphyp_M2)
+#summary_lm_mns.lnPfin_xphyp_M3<-summary(lm_mns.lnPfin_xphyp_M3)
+#summary_lm_mns.lnPfin_xphyp_M4<-summary(lm_mns.lnPfin_xphyp_M4)
+#summary_lm_mns.lnPfin_xphyp_M5<-summary(lm_mns.lnPfin_xphyp_M5)
+summary_lm_mns.lnPfin_xphyp_M6<-summary(lm_mns.lnPfin_xphyp_M6)
 
-Table1_bmstr_ytmfin<-matrix(c(
-	summary_lm_ytmfin_xphyp_M1$coefficients[1,1],
-	summary_lm_ytmfin_xphyp_M6$coefficients[1,1],
-	summary_lm_ytmfin_xphyp_M1$coefficients[1,4],
-	summary_lm_ytmfin_xphyp_M6$coefficients[1,4],
-	summary_lm_ytmfin_xphyp_M1$coefficients[2,1],
-	summary_lm_ytmfin_xphyp_M6$coefficients[2,1],
-	summary_lm_ytmfin_xphyp_M1$coefficients[2,4],
-	summary_lm_ytmfin_xphyp_M6$coefficients[2,4],
-	summary_lm_ytmfin_xphyp_M1$adj.r.squared,
-	summary_lm_ytmfin_xphyp_M6$adj.r.squared
+Table1_bmstr_mns.lnPfin<-matrix(c(
+	summary_lm_mns.lnPfin_xphyp_M1$coefficients[1,1],
+	summary_lm_mns.lnPfin_xphyp_M6$coefficients[1,1],
+	summary_lm_mns.lnPfin_xphyp_M1$coefficients[1,4],
+	summary_lm_mns.lnPfin_xphyp_M6$coefficients[1,4],
+	summary_lm_mns.lnPfin_xphyp_M1$coefficients[2,1],
+	summary_lm_mns.lnPfin_xphyp_M6$coefficients[2,1],
+	summary_lm_mns.lnPfin_xphyp_M1$coefficients[2,4],
+	summary_lm_mns.lnPfin_xphyp_M6$coefficients[2,4],
+	summary_lm_mns.lnPfin_xphyp_M1$adj.r.squared,
+	summary_lm_mns.lnPfin_xphyp_M6$adj.r.squared
 			),2,5)
 
-colnames(Table1_bmstr_ytmfin)<-c("Intercept","P_value","Beta","P_value","R_squared")
-row.names(Table1_bmstr_ytmfin)<-c("M1","M6")
+colnames(Table1_bmstr_mns.lnPfin)<-c("Intercept","P_value","Beta","P_value","R_squared")
+row.names(Table1_bmstr_mns.lnPfin)<-c("M1","M6")
 
-View(Table1_bmstr_ytmfin)
+View(Table1_bmstr_mns.lnPfin)
 
 #===== r_h1mo
 
