@@ -107,6 +107,8 @@ rf<- as.matrix(rf.rep[,1]) 	#risk free rate
 colnames(rf)<-"risk_free"
 rownames(rf)<-rownames(yields_ini)
 
+prices<-cbind(exp(-rf),exp(-ytm_ini))
+
 mns.lnP_fin<-as.data.frame(yields_fin*mat_fin.rep)	#minus lnP
 mns.lnP_ini<-as.data.frame(yields_ini*mat_ini.rep)
 rownames(mns.lnP_fin)<-rownames(yields_fin)
