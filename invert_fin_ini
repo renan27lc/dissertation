@@ -120,27 +120,28 @@ colnames(ytm_ini)<-colnames(yields_ini)
 #ytm_fin_6M<-as.matrix(cbind(ytm_fin[,3],ytm_fin[,6],ytm_fin[,9],ytm_fin[,12],ytm_fin[,15],ytm_fin[,18]))
 #ytm_ini_6M<-as.matrix(cbind(ytm_ini[,3],ytm_ini[,6],ytm_ini[,9],ytm_ini[,12],ytm_ini[,15],ytm_ini[,18]))
 
-ytmfin_xphyp<-ytm_ini-rf # expected ytm_fin (expectation hypothesis)
-rownames(ytmfin_xphyp)<-rownames(ytm_fin)
-colnames(ytmfin_xphyp)<-colnames(ytm_fin)
+ytmfin_xphyp_contr<-ytm_fin-rf # expected ytm_fin (expectation hypothesis)
+rownames(ytmfin_xphyp_contr)<-rownames(ytm_fin)
+colnames(ytmfin_xphyp_contr)<-colnames(ytm_fin)
 
 #ytmfin_xphyp_6M<-as.matrix(cbind(ytmfin_xphyp[,3],ytmfin_xphyp[,6],ytmfin_xphyp[,9],ytmfin_xphyp[,12],ytmfin_xphyp[,15],ytmfin_xphyp[,18]))
 
-lm_B1A6<-lm(formula = as.matrix(ytm_fin) ~ as.matrix(ytmfin_xphyp))
+lm_B1A6_contr<-lm(formula = as.matrix(ytm_ini) ~ as.matrix(ytmfin_xphyp_contr))
+
+
 
 # ====== 1 month return
 
-r_h1mo<- ytm_ini - ytm_fin 	#return rate for holding the bond for 1 month
-rownames(r_h1mo)<-rownames(ytm_fin)
-colnames(r_h1mo)<-colnames(ytm_fin)
+r_h1mo_contr<- ytm_fin - ytm_ini 	#return rate for holding the bond for 1 month
+rownames(r_h1mo_contr)<-rownames(ytm_fin)
+colnames(r_h1mo_contr)<-colnames(ytm_fin)
 
 #r_h1mo_6M<-as.matrix(cbind(r_h1mo[,3],r_h1mo[,6],r_h1mo[,9],r_h1mo[,12],r_h1mo[,15],r_h1mo[,18]))
 
 # lm_rh1mo<-lm(as.matrix(r_h1mo) ~ as.matrix(rf.rep))	no original 24M era assim, mas aqui está dando erro, o abaixo é uma alternativa 
-lm_rh1mo<-lm(as.matrix(r_h1mo) ~ as.matrix(rf))
+lm_rh1mo_contr<-lm(as.matrix(r_h1mo_contr) ~ as.matrix(rf))
 
-#summary(lm_rh1mo)
-
+summary(lm_rh1mo_contr)
 
 # ===================== PCA ==========================
 
