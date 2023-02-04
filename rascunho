@@ -1,5 +1,0 @@
-yields_daily_rowcolumn
-
-yields_daily_df
-
-i_198<-as.data.frame(rep(1, 198))
