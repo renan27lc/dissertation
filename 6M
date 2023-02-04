@@ -64,7 +64,7 @@ Maturities = c(1:7)
 yields_daily_100 = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
 yields_daily_100
 
-yields_daily_chrctr<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100/100)))
+yields_daily_chrctr<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100/(100*12))))
 colnames(yields_daily_chrctr)[1]<-"DATE"
 
 plot(colMeans(yields_daily_100/100))
@@ -113,6 +113,8 @@ rownames(mns.lnP_fin)<-rownames(yields_fin)
 colnames(mns.lnP_fin)<-colnames(yields_fin)
 rownames(mns.lnP_ini)<-rownames(yields_ini)
 colnames(mns.lnP_ini)<-colnames(yields_ini)
+
+prices<-cbind(exp(-rf),exp(-mns.lnP_ini))
 
 # ====== E[mns.lnP_fin] expectations hypothesis
 
