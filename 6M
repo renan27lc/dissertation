@@ -139,6 +139,8 @@ colnames(r_h1mo)<-colnames(mns.lnP_fin)
 
 lm_rh1mo_xphyp<-lm(as.matrix(r_h1mo) ~ rf)
 
+lm_rh1mo_xphyp_b0<-lm(as.matrix(I(r_h1mo - rf)) ~ rf)
+
 #summary(lm_rh1mo_xphyp)
 
 
