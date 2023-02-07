@@ -177,7 +177,7 @@ row.names(Table1_bmstr_rh1mo)<-c("M2","M3","M9","M23")
 
 
 
-View(as.matrix(c(
+#View(as.matrix(c(
   summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[1,4],
   summary_lm_rh1mo_xphyp_b0$`Response M6`$coefficients[1,4],
   summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[1,4],
@@ -203,7 +203,7 @@ View(as.matrix(c(
   summary_lm_rh1mo_xphyp_b0$`Response M69`$coefficients[1,4],
   summary_lm_rh1mo_xphyp_b0$`Response M72`$coefficients[1,4])))
 
-pv_b_equal_1_70M<-View(as.matrix(c(
+#pv_b_equal_1_70M<-View(as.matrix(c(
   summary_lm_rh1mo_xphyp_b0$`Response M1`$coefficients[2,4],
   summary_lm_rh1mo_xphyp_b0$`Response M2`$coefficients[2,4],
   summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[2,4],
