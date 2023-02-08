@@ -139,13 +139,11 @@ rownames(r_h1mo)<-rownames(mns.lnP_fin)
 colnames(r_h1mo)<-colnames(mns.lnP_fin)
 
 lm_rh1mo_xphyp<-lm(as.matrix(r_h1mo) ~ rf)
+summary_lm_rh1mo_xphyp<-summary(lm_rh1mo_xphyp)
 
 lm_rh1mo_xphyp_b0<-lm(as.matrix(I(r_h1mo - rf)) ~ rf)
+summary_lm_rh1mo_xphyp_b0<-summary(lm_rh1mo_xphyp_b0)
 
-#summary(lm_rh1mo_xphyp)
-
-
-summary_lm_rh1mo_xphyp<-summary(lm_rh1mo_xphyp)
 
 Table1_bmstr_rh1mo<-matrix(c(
 	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[1,1],
@@ -173,9 +171,31 @@ Table1_bmstr_rh1mo<-matrix(c(
 colnames(Table1_bmstr_rh1mo)<-c("Intercept","P_value","Beta","P_value","R_squared")
 row.names(Table1_bmstr_rh1mo)<-c("M2","M3","M9","M23")
 
+Table1_bmstr_rh1mo_b0<-matrix(c(
+	summary_lm_rh1mo_xphyp_b0$`Response M2`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M23`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M2`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M23`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M2`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M23`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M2`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M23`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M2`$adj.r.squared,
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$adj.r.squared,
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$adj.r.squared,
+	summary_lm_rh1mo_xphyp_b0$`Response M23`$adj.r.squared
+			),4,5)
 
-
-
+colnames(Table1_bmstr_rh1mo_b0)<-c("Intercept","P_value","Beta_minus_1","P_value","R_squared")
+row.names(Table1_bmstr_rh1mo_b0)<-c("M2","M3","M9","M23")
 
 #View(as.matrix(c(
   summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[1,4],
