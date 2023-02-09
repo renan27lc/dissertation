@@ -130,7 +130,8 @@ lm_mns.lnPfin_xphyp_M3<-lm(formula = as.matrix(mns.lnP_fin[,3]) ~ as.matrix(mns.
 #lm_mns.lnPfin_xphyp_M4<-lm(formula = as.matrix(mns.lnP_fin[,4]) ~ as.matrix(mns.lnPfin_xphyp[,4]))
 #lm_mns.lnPfin_xphyp_M5<-lm(formula = as.matrix(mns.lnP_fin[,5]) ~ as.matrix(mns.lnPfin_xphyp[,5]))
 lm_mns.lnPfin_xphyp_M9<-lm(formula = as.matrix(mns.lnP_fin[,9]) ~ as.matrix(mns.lnPfin_xphyp[,9]))
-lm_mns.lnPfin_xphyp_M23<-lm(formula = as.matrix(mns.lnP_fin[,23]) ~ as.matrix(mns.lnPfin_xphyp[,23]))
+#lm_mns.lnPfin_xphyp_M23<-lm(formula = as.matrix(mns.lnP_fin[,23]) ~ as.matrix(mns.lnPfin_xphyp[,23]))
+lm_mns.lnPfin_xphyp_M24<-lm(formula = as.matrix(mns.lnP_fin[,24]) ~ as.matrix(mns.lnPfin_xphyp[,24]))
 
 # ====== E[1 month return] expectations hypothesis
 
@@ -145,7 +146,7 @@ lm_rh1mo_xphyp_b0<-lm(as.matrix(I(r_h1mo - rf)) ~ rf)
 summary_lm_rh1mo_xphyp_b0<-summary(lm_rh1mo_xphyp_b0)
 
 
-Table1_bmstr_rh1mo<-matrix(c(
+#Table1_bmstr_rh1mo<-matrix(c(
 	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[1,1],
 	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[1,1],
 	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[1,1],
@@ -167,35 +168,76 @@ Table1_bmstr_rh1mo<-matrix(c(
 	summary_lm_rh1mo_xphyp$`Response M9`$adj.r.squared,
 	summary_lm_rh1mo_xphyp$`Response M23`$adj.r.squared
 			),4,5)
+			
+			
+Table1_bmstr_rh1mo<-matrix(c(
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M3`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M9`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M24`$adj.r.squared
+			),3,5)
 
 colnames(Table1_bmstr_rh1mo)<-c("Intercept","P_value","Beta","P_value","R_squared")
-row.names(Table1_bmstr_rh1mo)<-c("M2","M3","M9","M23")
+row.names(Table1_bmstr_rh1mo)<-c("M3","M9","M24")
 
 Table1_bmstr_rh1mo_b0<-matrix(c(
-	summary_lm_rh1mo_xphyp_b0$`Response M2`$coefficients[1,1],
 	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[1,1],
 	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[1,1],
-	summary_lm_rh1mo_xphyp_b0$`Response M23`$coefficients[1,1],
-	summary_lm_rh1mo_xphyp_b0$`Response M2`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[1,1],
 	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[1,4],
 	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[1,4],
-	summary_lm_rh1mo_xphyp_b0$`Response M23`$coefficients[1,4],
-	summary_lm_rh1mo_xphyp_b0$`Response M2`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[1,4],
 	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[2,1],
 	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[2,1],
-	summary_lm_rh1mo_xphyp_b0$`Response M23`$coefficients[2,1],
-	summary_lm_rh1mo_xphyp_b0$`Response M2`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[2,1],
 	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp_b0$`Response M23`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp_b0$`Response M2`$adj.r.squared,
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp_b0$`Response M3`$adj.r.squared,
 	summary_lm_rh1mo_xphyp_b0$`Response M9`$adj.r.squared,
-	summary_lm_rh1mo_xphyp_b0$`Response M23`$adj.r.squared
-			),4,5)
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$adj.r.squared
+			),3,5)
 
 colnames(Table1_bmstr_rh1mo_b0)<-c("Intercept","P_value","Beta_minus_1","P_value","R_squared")
-row.names(Table1_bmstr_rh1mo_b0)<-c("M2","M3","M9","M23")
+row.names(Table1_bmstr_rh1mo_b0)<-c("M3","M9","M24")
+
+Table1_bmstr_rh1mo_complete<-matrix(c(
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M3`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M9`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M24`$adj.r.squared
+			),3,6)
+
+colnames(Table1_bmstr_rh1mo_complete)<-c("alpha_hat","P_value","beta_hat","P_value","H0:alpha=0, beta=1 P_value","Adj R2")
+row.names(Table1_bmstr_rh1mo_complete)<-c("M3","M9","M24")
+
+
+
 
 #View(as.matrix(c(
   summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[1,4],
