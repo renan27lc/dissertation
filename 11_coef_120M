@@ -272,15 +272,7 @@ Table1_bmstr_rh1mo_complete<-matrix(c(
 	summary_lm_rh1mo_xphyp$`Response M48`$coefficients[2,1],
 	summary_lm_rh1mo_xphyp$`Response M72`$coefficients[2,1],
 	summary_lm_rh1mo_xphyp$`Response M96`$coefficients[2,1],
-	summary_lm_rh1mo_xphyp_ab1$`Response M2`$coefficients[2,4],	#3 H0: beta=1 P_value
-	summary_lm_rh1mo_xphyp_ab1$`Response M3`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp_ab1$`Response M9`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp_ab1$`Response M12`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp_ab1$`Response M24`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp_ab1$`Response M48`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp_ab1$`Response M72`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp_ab1$`Response M96`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,4],		#4 H0: alpha=0, beta=0 P_value
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,4],		#3 H0: alpha=0, beta=0 P_value
 	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp$`Response M12`$coefficients[2,4],
@@ -288,6 +280,14 @@ Table1_bmstr_rh1mo_complete<-matrix(c(
 	summary_lm_rh1mo_xphyp$`Response M48`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp$`Response M72`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp$`Response M96`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M2`$coefficients[2,4],	#4 H0: beta=1 P_value
+	summary_lm_rh1mo_xphyp_ab1$`Response M3`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M9`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M12`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M24`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M48`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M72`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M96`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp_a0b1$`Response M2`$coefficients[1,4],	#5 H0:alpha=0, beta=1 P_value
 	summary_lm_rh1mo_xphyp_a0b1$`Response M3`$coefficients[1,4],
 	summary_lm_rh1mo_xphyp_a0b1$`Response M9`$coefficients[1,4],
@@ -306,7 +306,7 @@ Table1_bmstr_rh1mo_complete<-matrix(c(
 	summary_lm_rh1mo_xphyp$`Response M96`$adj.r.squared
 			),8,6)
 
-colnames(Table1_bmstr_rh1mo_complete)<-c("alpha_hat","beta_hat","H0: beta=1 P_value","H0: alpha=0, beta=0 P_value","H0:alpha=0, beta=1 P_value","Adj R2")
+colnames(Table1_bmstr_rh1mo_complete)<-c("alpha_hat","beta_hat","H0: alpha=0, beta=0 P_value","H0: beta=1 P_value","H0:alpha=0, beta=1 P_value","Adj R2")
 row.names(Table1_bmstr_rh1mo_complete)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 
