@@ -61,8 +61,8 @@ Initial_Date = '2006/01/01' # Available from 2003/08/08. YYYY/MM/DD
 Final_Date = '2022/08/08'
 Maturities = c(1:121)
 
-yields_daily_100 = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
-yields_daily_100
+yields_daily_100_yr = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
+yields_daily_100_yr
 
 yields_daily_chrctr<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100/(100*12))))
 colnames(yields_daily_chrctr)[1]<-"DATE"
@@ -272,7 +272,15 @@ Table1_bmstr_rh1mo_complete<-matrix(c(
 	summary_lm_rh1mo_xphyp$`Response M48`$coefficients[2,1],
 	summary_lm_rh1mo_xphyp$`Response M72`$coefficients[2,1],
 	summary_lm_rh1mo_xphyp$`Response M96`$coefficients[2,1],
-	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,4],		#3 H0: alpha=0, beta=0 P_value
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,2],		#3 betahat_StdError
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M12`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M48`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M72`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M96`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,4],		#4 H0: alpha=0, beta=0 P_value
 	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp$`Response M12`$coefficients[2,4],
@@ -280,7 +288,7 @@ Table1_bmstr_rh1mo_complete<-matrix(c(
 	summary_lm_rh1mo_xphyp$`Response M48`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp$`Response M72`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp$`Response M96`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp_ab1$`Response M2`$coefficients[2,4],	#4 H0: beta=1 P_value
+	summary_lm_rh1mo_xphyp_ab1$`Response M2`$coefficients[2,4],	#5 H0: beta=1 P_value
 	summary_lm_rh1mo_xphyp_ab1$`Response M3`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp_ab1$`Response M9`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp_ab1$`Response M12`$coefficients[2,4],
@@ -288,7 +296,7 @@ Table1_bmstr_rh1mo_complete<-matrix(c(
 	summary_lm_rh1mo_xphyp_ab1$`Response M48`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp_ab1$`Response M72`$coefficients[2,4],
 	summary_lm_rh1mo_xphyp_ab1$`Response M96`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp_a0b1$`Response M2`$coefficients[1,4],	#5 H0:alpha=0, beta=1 P_value
+	summary_lm_rh1mo_xphyp_a0b1$`Response M2`$coefficients[1,4],	#6 H0:alpha=0, beta=1 P_value
 	summary_lm_rh1mo_xphyp_a0b1$`Response M3`$coefficients[1,4],
 	summary_lm_rh1mo_xphyp_a0b1$`Response M9`$coefficients[1,4],
 	summary_lm_rh1mo_xphyp_a0b1$`Response M12`$coefficients[1,4],
@@ -296,7 +304,7 @@ Table1_bmstr_rh1mo_complete<-matrix(c(
 	summary_lm_rh1mo_xphyp_a0b1$`Response M48`$coefficients[1,4],
 	summary_lm_rh1mo_xphyp_a0b1$`Response M72`$coefficients[1,4],
 	summary_lm_rh1mo_xphyp_a0b1$`Response M96`$coefficients[1,4],
-	summary_lm_rh1mo_xphyp$`Response M2`$adj.r.squared,		#6 Adj R2
+	summary_lm_rh1mo_xphyp$`Response M2`$adj.r.squared,		#7 Adj R2
 	summary_lm_rh1mo_xphyp$`Response M3`$adj.r.squared,
 	summary_lm_rh1mo_xphyp$`Response M9`$adj.r.squared,
 	summary_lm_rh1mo_xphyp$`Response M12`$adj.r.squared,
@@ -304,11 +312,59 @@ Table1_bmstr_rh1mo_complete<-matrix(c(
 	summary_lm_rh1mo_xphyp$`Response M48`$adj.r.squared,
 	summary_lm_rh1mo_xphyp$`Response M72`$adj.r.squared,
 	summary_lm_rh1mo_xphyp$`Response M96`$adj.r.squared
-			),8,6)
+			),8,7)
 
-colnames(Table1_bmstr_rh1mo_complete)<-c("alpha_hat","beta_hat","H0: alpha=0, beta=0 P_value","H0: beta=1 P_value","H0:alpha=0, beta=1 P_value","Adj R2")
+colnames(Table1_bmstr_rh1mo_complete)<-c("alpha_hat","beta_hat","betahat_StdError","H0: alpha=0, beta=0 P_value","H0: beta=1 P_value","H0:alpha=0, beta=1 P_value","Adj R2")
 row.names(Table1_bmstr_rh1mo_complete)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
+
+#===================diebold table1.1=======================
+
+Table1_diebold<-matrix(c(
+	mean(yields$M2)*100*12,
+	mean(yields$M3)*100*12,
+	mean(yields$M9)*100*12,
+	mean(yields$M12)*100*12,
+	mean(yields$M24)*100*12,
+	mean(yields$M48)*100*12,
+	mean(yields$M72)*100*12,
+	mean(yields$M96)*100*12,
+	sd(yields$M2*100*12),
+	sd(yields$M3*100*12),
+	sd(yields$M9*100*12),
+	sd(yields$M12*100*12),
+	sd(yields$M24*100*12),
+	sd(yields$M48*100*12),
+	sd(yields$M72*100*12),
+	sd(yields$M96*100*12)
+		),8,2)
+
+colnames(Table1_diebold)<- c("mean","sd")
+row.names<- c("M2","M3","M9","M12","M24","M48","M72","M96")
+
+#===================stargazer=======================
+
+lm_rh1mo_xphyp_M2<-lm(formula = as.matrix(r_h1mo$M2) ~ rf)
+lm_rh1mo_xphyp_M3<-lm(formula = as.matrix(r_h1mo$M3) ~ rf)
+lm_rh1mo_xphyp_M9<-lm(formula = as.matrix(r_h1mo$M9) ~ rf)
+lm_rh1mo_xphyp_M12<-lm(formula = as.matrix(r_h1mo$M12) ~ rf)
+lm_rh1mo_xphyp_M24<-lm(formula = as.matrix(r_h1mo$M24) ~ rf)
+lm_rh1mo_xphyp_M48<-lm(formula = as.matrix(r_h1mo$M48) ~ rf)
+lm_rh1mo_xphyp_M72<-lm(formula = as.matrix(r_h1mo$M72) ~ rf)
+lm_rh1mo_xphyp_M96<-lm(formula = as.matrix(r_h1mo$M96) ~ rf)
+
+#stargazer(
+	lm_rh1mo_xphyp_M2,
+	lm_rh1mo_xphyp_M3,
+	lm_rh1mo_xphyp_M9,
+	lm_rh1mo_xphyp_M12,
+	lm_rh1mo_xphyp_M24,
+	lm_rh1mo_xphyp_M48,
+	lm_rh1mo_xphyp_M72,
+	lm_rh1mo_xphyp_M96,
+	title="Results",align=TRUE)
+
+#=======================================
 
 
 
