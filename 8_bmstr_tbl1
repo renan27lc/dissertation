@@ -67,6 +67,315 @@ View(lambdas)
 
 
 # ===================== OLD ==========================
+   
+   
+       
+#===================stargazer=======================
+
+lm_rh1mo_xphyp_M2<-lm(formula = as.matrix(r_h1mo$M2) ~ rf)
+lm_rh1mo_xphyp_M3<-lm(formula = as.matrix(r_h1mo$M3) ~ rf)
+lm_rh1mo_xphyp_M9<-lm(formula = as.matrix(r_h1mo$M9) ~ rf)
+lm_rh1mo_xphyp_M12<-lm(formula = as.matrix(r_h1mo$M12) ~ rf)
+lm_rh1mo_xphyp_M24<-lm(formula = as.matrix(r_h1mo$M24) ~ rf)
+lm_rh1mo_xphyp_M48<-lm(formula = as.matrix(r_h1mo$M48) ~ rf)
+lm_rh1mo_xphyp_M72<-lm(formula = as.matrix(r_h1mo$M72) ~ rf)
+lm_rh1mo_xphyp_M96<-lm(formula = as.matrix(r_h1mo$M96) ~ rf)
+
+#stargazer(
+	lm_rh1mo_xphyp_M2,
+	lm_rh1mo_xphyp_M3,
+	lm_rh1mo_xphyp_M9,
+	lm_rh1mo_xphyp_M12,
+	lm_rh1mo_xphyp_M24,
+	lm_rh1mo_xphyp_M48,
+	lm_rh1mo_xphyp_M72,
+	lm_rh1mo_xphyp_M96,
+	title="Results",align=TRUE)
+
+#=======================================
+
+
+
+#View(as.matrix(c(
+  summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M6`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M12`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M15`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M18`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M21`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M27`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M30`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M33`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M36`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M39`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M42`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M45`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M48`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M51`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M54`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M57`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M60`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M63`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M66`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M69`$coefficients[1,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M72`$coefficients[1,4])))
+
+#pv_b_equal_1_70M<-View(as.matrix(c(
+  summary_lm_rh1mo_xphyp_b0$`Response M1`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M2`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M4`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M5`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M6`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M7`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M8`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M10`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M11`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M12`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M13`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M14`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M15`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M16`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M17`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M18`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M19`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M20`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M21`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M22`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M23`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M25`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M26`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M27`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M28`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M29`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M30`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M31`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M32`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M33`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M34`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M35`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M36`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M37`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M38`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M39`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M40`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M41`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M42`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M43`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M44`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M45`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M46`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M47`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M48`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M49`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M50`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M51`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M52`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M53`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M54`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M55`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M56`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M57`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M58`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M59`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M60`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M61`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M62`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M63`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M64`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M65`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M66`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M67`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M68`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M69`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp_b0$`Response M70`$coefficients[2,4])))
+
+#pv_a0b0<-View(as.matrix(c(
+  summary_lm_rh1mo_xphyp$`Response M1`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M4`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M5`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M6`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M7`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M8`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M10`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M11`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M12`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M13`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M14`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M15`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M16`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M17`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M18`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M19`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M20`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M21`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M22`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M23`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M25`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M26`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M27`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M28`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M29`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M30`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M31`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M32`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M33`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M34`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M35`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M36`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M37`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M38`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M39`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M40`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M41`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M42`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M43`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M44`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M45`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M46`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M47`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M48`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M49`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M50`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M51`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M52`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M53`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M54`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M55`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M56`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M57`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M58`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M59`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M60`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M61`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M62`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M63`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M64`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M65`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M66`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M67`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M68`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M69`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M70`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M71`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M72`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M73`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M74`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M75`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M76`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M77`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M78`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M79`$coefficients[2,4],
+  summary_lm_rh1mo_xphyp$`Response M80`$coefficients[2,4]
+ )))
+
+#Table1_bmstr_rh1mo<-matrix(c(
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M23`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M23`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M23`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M23`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M2`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M3`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M9`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M23`$adj.r.squared
+			),4,5)
+			
+			
+Table1_bmstr_rh1mo<-matrix(c(
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M3`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M9`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M24`$adj.r.squared
+			),3,5)
+
+colnames(Table1_bmstr_rh1mo)<-c("Intercept","P_value","Beta","P_value","R_squared")
+row.names(Table1_bmstr_rh1mo)<-c("M3","M9","M24")
+
+Table1_bmstr_rh1mo_b0<-matrix(c(
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_b0$`Response M3`$adj.r.squared,
+	summary_lm_rh1mo_xphyp_b0$`Response M9`$adj.r.squared,
+	summary_lm_rh1mo_xphyp_b0$`Response M24`$adj.r.squared
+			),3,5)
+
+colnames(Table1_bmstr_rh1mo_b0)<-c("Intercept","P_value","Beta_minus_1","P_value","R_squared")
+row.names(Table1_bmstr_rh1mo_b0)<-c("M3","M9","M24")
+
+Table1_bmstr_rh1mo_a0<-matrix(c(
+	summary_lm_rh1mo_xphyp_a0$`Response M3`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_a0$`Response M9`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_a0$`Response M24`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_a0$`Response M3`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0$`Response M9`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0$`Response M24`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0$`Response M3`$adj.r.squared,
+	summary_lm_rh1mo_xphyp_a0$`Response M9`$adj.r.squared,
+	summary_lm_rh1mo_xphyp_a0$`Response M24`$adj.r.squared
+			),3,3)
+
+colnames(Table1_bmstr_rh1mo_a0)<-c("Beta","P_value","R_squared")
+row.names(Table1_bmstr_rh1mo_a0)<-c("M3","M9","M24")
+
+
+Table1_bmstr_rh1mo_a0b0<-matrix(c(
+	summary_lm_rh1mo_xphyp_a0b0$`Response M3`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_a0b0$`Response M9`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_a0b0$`Response M24`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp_a0b0$`Response M3`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0b0$`Response M9`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0b0$`Response M24`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0b0$`Response M3`$adj.r.squared,
+	summary_lm_rh1mo_xphyp_a0b0$`Response M9`$adj.r.squared,
+	summary_lm_rh1mo_xphyp_a0b0$`Response M24`$adj.r.squared
+			),3,3)
+
+colnames(Table1_bmstr_rh1mo_a0b1)<-c("Beta","P_value","R_squared")
+row.names(Table1_bmstr_rh1mo_a0b1)<-c("M3","M9","M24")
+
+
+
 
 lm_rxs_parameters<-t(data.frame(summary_lm_B1A6_M2$coefficients,summary_lm_B1A6_M3$coefficients,summary_lm_B1A6_M6$coefficients,summary_lm_B1A6_M9$coefficients,summary_lm_B1A6_M12$coefficients,summary_lm_B1A6_M18$coefficients))
 
