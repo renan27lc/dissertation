@@ -451,6 +451,67 @@ row.names(Table1.2_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
 #===================diebold table1.r_xs=======================
 
 
+rxs_M2M96<- cbind(r_xs[c(2,3,9,12,24,48,72,96)])*1200
+
+ar1_rxs_M2<-lm(rxs_M2M96[,1] ~ lag(rxs_M2M96[,1],1)-1)
+ar1_rxs_M3<-lm(rxs_M2M96[,2] ~ lag(rxs_M2M96[,2],1)-1)
+ar1_rxs_M9<-lm(rxs_M2M96[,3] ~ lag(rxs_M2M96[,3],1)-1)
+ar1_rxs_M12<-lm(rxs_M2M96[,4] ~ lag(rxs_M2M96[,4],1)-1)
+ar1_rxs_M24<-lm(rxs_M2M96[,5] ~ lag(rxs_M2M96[,5],1)-1)
+ar1_rxs_M48<-lm(rxs_M2M96[,6] ~ lag(rxs_M2M96[,6],1)-1)
+ar1_rxs_M72<-lm(rxs_M2M96[,7] ~ lag(rxs_M2M96[,7],1)-1)
+ar1_rxs_M96<-lm(rxs_M2M96[,8] ~ lag(rxs_M2M96[,8],1)-1)
+
+
+ar12_rxs_M2<-lm(rxs_M2M96[,1] ~ lag(rxs_M2M96[,1],12)-1)
+ar12_rxs_M3<-lm(rxs_M2M96[,2] ~ lag(rxs_M2M96[,2],12)-1)
+ar12_rxs_M9<-lm(rxs_M2M96[,3] ~ lag(rxs_M2M96[,3],12)-1)
+ar12_rxs_M12<-lm(rxs_M2M96[,4] ~ lag(rxs_M2M96[,4],12)-1)
+ar12_rxs_M24<-lm(rxs_M2M96[,5] ~ lag(rxs_M2M96[,5],12)-1)
+ar12_rxs_M48<-lm(rxs_M2M96[,6] ~ lag(rxs_M2M96[,6],12)-1)
+ar12_rxs_M72<-lm(rxs_M2M96[,7] ~ lag(rxs_M2M96[,7],12)-1)
+ar12_rxs_M96<-lm(rxs_M2M96[,8] ~ lag(rxs_M2M96[,8],12)-1)
+
+Table1.rxs_diebold<-matrix(c(
+	mean(rxs_M2M96[,1]),
+	mean(rxs_M2M96[,2]),
+	mean(rxs_M2M96[,3]),
+	mean(rxs_M2M96[,4]),
+	mean(rxs_M2M96[,5]),
+	mean(rxs_M2M96[,6]),
+	mean(rxs_M2M96[,7]),
+	mean(rxs_M2M96[,8]),
+	sd(rxs_M2M96[,1]),
+	sd(rxs_M2M96[,2]),
+	sd(rxs_M2M96[,3]),
+	sd(rxs_M2M96[,4]),
+	sd(rxs_M2M96[,5]),
+	sd(rxs_M2M96[,6]),
+	sd(rxs_M2M96[,7]),
+	sd(rxs_M2M96[,8]),
+	coef(ar1_rxs_M2),
+	coef(ar1_rxs_M3),
+	coef(ar1_rxs_M9),
+	coef(ar1_rxs_M12),
+	coef(ar1_rxs_M24),
+	coef(ar1_rxs_M48),
+	coef(ar1_rxs_M72),
+	coef(ar1_rxs_M96),
+	coef(ar12_rxs_M2),
+	coef(ar12_rxs_M3),
+	coef(ar12_rxs_M9),
+	coef(ar12_rxs_M12),
+	coef(ar12_rxs_M24),
+	coef(ar12_rxs_M48),
+	coef(ar12_rxs_M72),
+	coef(ar12_rxs_M96)
+	),8,4)
+
+colnames(Table1.rxs_diebold)<- c("overline{rx}","hat{sigma}_{rx}", "hat{rho}_{rx}(1)","hat{rho}_{rx}(12)")
+row.names(Table1.rxs_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
+
+
+
 
 
 
