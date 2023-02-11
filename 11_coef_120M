@@ -320,7 +320,28 @@ row.names(Table1_bmstr_rh1mo_complete)<-c("M2","M3","M9","M12","M24","M48","M72"
 
 #===================diebold table1.1=======================
 
-Table1_diebold<-matrix(c(
+
+ yields_M2M96<- cbind(yields[c(2,3,9,12,24,48,72,96)])
+
+ar1_yields_M2<-lm(yields[,2] ~ lag(yields[,2],1)-1)
+ar1_yields_M3<-lm(yields[,3] ~ lag(yields[,3],1)-1)
+ar1_yields_M9<-lm(yields[,9] ~ lag(yields[,9],1)-1)
+ar1_yields_M12<-lm(yields[,12] ~ lag(yields[,12],1)-1)
+ar1_yields_M24<-lm(yields[,24] ~ lag(yields[,24],1)-1)
+ar1_yields_M48<-lm(yields[,48] ~ lag(yields[,48],1)-1)
+ar1_yields_M72<-lm(yields[,72] ~ lag(yields[,72],1)-1)
+ar1_yields_M96<-lm(yields[,96] ~ lag(yields[,96],1)-1)
+
+ar12_yields_M2<-lm(yields[,2] ~ lag(yields[,2],12)-1)
+ar12_yields_M3<-lm(yields[,3] ~ lag(yields[,3],12)-1)
+ar12_yields_M9<-lm(yields[,9] ~ lag(yields[,9],12)-1)
+ar12_yields_M12<-lm(yields[,12] ~ lag(yields[,12],12)-1)
+ar12_yields_M24<-lm(yields[,24] ~ lag(yields[,24],12)-1)
+ar12_yields_M48<-lm(yields[,48] ~ lag(yields[,48],12)-1)
+ar12_yields_M72<-lm(yields[,72] ~ lag(yields[,72],12)-1)
+ar12_yields_M96<-lm(yields[,96] ~ lag(yields[,96],12)-1)
+
+Table1.1_diebold<-matrix(c(
 	mean(yields$M2)*100*12,
 	mean(yields$M3)*100*12,
 	mean(yields$M9)*100*12,
@@ -336,11 +357,92 @@ Table1_diebold<-matrix(c(
 	sd(yields$M24*100*12),
 	sd(yields$M48*100*12),
 	sd(yields$M72*100*12),
-	sd(yields$M96*100*12)
-		),8,2)
+	sd(yields$M96*100*12),
+	ar1_yields_M2$coefficients[2],
+	ar1_yields_M3$coefficients[2],
+	ar1_yields_M9$coefficients[2],
+	ar1_yields_M12$coefficients[2],
+	ar1_yields_M24$coefficients[2],
+	ar1_yields_M48$coefficients[2],
+	ar1_yields_M72$coefficients[2],
+	ar1_yields_M96$coefficients[2],
+	ar12_yields_M2$coefficients[2],
+	ar12_yields_M3$coefficients[2],
+	ar12_yields_M9$coefficients[2],
+	ar12_yields_M12$coefficients[2],
+	ar12_yields_M24$coefficients[2],
+	ar12_yields_M48$coefficients[2],
+	ar12_yields_M72$coefficients[2],
+	ar12_yields_M96$coefficients[2]
+		),8,4)
 
-colnames(Table1_diebold)<- c("mean","sd")
-row.names<- c("M2","M3","M9","M12","M24","M48","M72","M96")
+colnames(Table1.1_diebold)<- c("overline{y}","hat{sigma}_y", "hat{rho}_{y}(1)","hat{rho}_{y}(12)")
+row.names(Table1.1_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
+
+
+#===================diebold table1.2=======================
+
+
+
+yield_spread120<-as.matrix(yields_M2M96*100*12-as.matrix(rep(yields_M2M96[,8],8))*100*12)
+
+
+ar1_spread_M2<-lm(yield_spread120[,1] ~ lag(yield_spread120[,1],1)-1)
+ar1_spread_M3<-lm(yield_spread120[,2] ~ lag(yield_spread120[,2],1)-1)
+ar1_spread_M9<-lm(yield_spread120[,3] ~ lag(yield_spread120[,3],1)-1)
+ar1_spread_M12<-lm(yield_spread120[,4] ~ lag(yield_spread120[,4],1)-1)
+ar1_spread_M24<-lm(yield_spread120[,5] ~ lag(yield_spread120[,5],1)-1)
+ar1_spread_M48<-lm(yield_spread120[,6] ~ lag(yield_spread120[,6],1)-1)
+ar1_spread_M72<-lm(yield_spread120[,7] ~ lag(yield_spread120[,7],1)-1)
+ar1_spread_M96<-lm(yield_spread120[,8] ~ lag(yield_spread120[,8],1)-1)
+
+ar12_spread_M2<-lm(yield_spread120[,1] ~ lag(yield_spread120[,1],12)-1)
+ar12_spread_M3<-lm(yield_spread120[,2] ~ lag(yield_spread120[,2],12)-1)
+ar12_spread_M9<-lm(yield_spread120[,3] ~ lag(yield_spread120[,3],12)-1)
+ar12_spread_M12<-lm(yield_spread120[,4] ~ lag(yield_spread120[,4],12)-1)
+ar12_spread_M24<-lm(yield_spread120[,5] ~ lag(yield_spread120[,5],12)-1)
+ar12_spread_M48<-lm(yield_spread120[,6] ~ lag(yield_spread120[,6],12)-1)
+ar12_spread_M72<-lm(yield_spread120[,7] ~ lag(yield_spread120[,7],12)-1)
+ar12_spread_M96<-lm(yield_spread120[,8] ~ lag(yield_spread120[,8],12)-1)
+
+
+Table1.2_diebold<-matrix(c(
+	mean(yield_spread120[,1]),
+	mean(yield_spread120[,2]),
+	mean(yield_spread120[,3]),
+	mean(yield_spread120[,4]),
+	mean(yield_spread120[,5]),
+	mean(yield_spread120[,6]),
+	mean(yield_spread120[,7]),
+	mean(yield_spread120[,8]),
+	sd(yield_spread120[,1]),
+	sd(yield_spread120[,2]),
+	sd(yield_spread120[,3]),
+	sd(yield_spread120[,4]),
+	sd(yield_spread120[,5]),
+	sd(yield_spread120[,6]),
+	sd(yield_spread120[,7]),
+	sd(yield_spread120[,8]),
+	coef(ar1_spread_M2),
+	coef(ar1_spread_M3),
+	coef(ar1_spread_M9),
+	coef(ar1_spread_M12),
+	coef(ar1_spread_M24),
+	coef(ar1_spread_M48),
+	coef(ar1_spread_M72),
+	coef(ar1_spread_M96),
+	coef(ar12_spread_M2),
+	coef(ar12_spread_M3),
+	coef(ar12_spread_M9),
+	coef(ar12_spread_M12),
+	coef(ar12_spread_M24),
+	coef(ar12_spread_M48),
+	coef(ar12_spread_M72),
+	coef(ar12_spread_M96)
+		),8,4)
+
+colnames(Table1.2_diebold)<- c("overline{s}","hat{sigma}_s", "hat{rho}_{s}(1)","hat{rho}_{s}(12)")
+row.names(Table1.2_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 #===================stargazer=======================
 
