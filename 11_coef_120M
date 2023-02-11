@@ -444,6 +444,75 @@ Table1.2_diebold<-matrix(c(
 colnames(Table1.2_diebold)<- c("overline{s}","hat{sigma}_s", "hat{rho}_{s}(1)","hat{rho}_{s}(12)")
 row.names(Table1.2_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
 
+
+
+
+
+#===================diebold table1.r_xs=======================
+
+
+
+
+
+
+
+
+
+
+#===================diebold figure 1.2=======================
+
+
+
+
+# Plot a graph with time_data1
+plot(yields_clmn$DATE,                          
+     yields_clmn$M2*12*100,
+     type = "l",
+     col = 2,
+     ylim = c(0, 20),
+     xlab = "Month",
+     ylab = "Yields")
+
+lines(yields_clmn$DATE,                          
+     yields_clmn$M3*12*100,
+     type = "l",
+     col = 3)     
+lines(yields_clmn$DATE,                          
+     yields_clmn$M9*12*100,
+     type = "l",
+     col = 4)     
+lines(yields_clmn$DATE,                          
+     yields_clmn$M12*12*100,
+     type = "l",
+     col = 5)    
+lines(yields_clmn$DATE,                          
+     yields_clmn$M24*12*100,
+     type = "l",
+     col = 6)     
+lines(yields_clmn$DATE,                          
+     yields_clmn$M48*12*100,
+     type = "l",
+     col = 7)     
+lines(yields_clmn$DATE,                          
+     yields_clmn$M72*12*100,
+     type = "l",
+     col = 8)     
+lines(yields_clmn$DATE,                          
+     yields_clmn$M96*12*100,
+     type = "l",
+     col = 9)
+
+
+
+# Add legend in top right corner
+legend("topright",                          
+       c("M2","M3","M9","M12","M24","M48","M72","M96"),
+       lty = 1,
+       col = 2:9)
+       
+       
+   
+       
 #===================stargazer=======================
 
 lm_rh1mo_xphyp_M2<-lm(formula = as.matrix(r_h1mo$M2) ~ rf)
