@@ -514,6 +514,11 @@ colnames(Table1.1_diebold)<- c("overline{y}","hat{sigma}_y", "hat{rho}_{y}(1)","
 row.names(Table1.1_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
 View(Table1.1_diebold)
 
+
+#print(xtable(Table1.1_diebold, type = "latex", file = "diebold11.tex", digits=c(0,4,4,4,4,4,4)))
+
+
+
 #===================diebold table1.2=======================
 
 
