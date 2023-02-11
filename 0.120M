@@ -197,8 +197,8 @@ pc_scores_daily_clmn<-cbind(dates_daily,rownames_to_column(pc_scores_daily))
 pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
 colnames(pc_scores_daily_clmn)[1]<-"DATE"
 
-pc_scores<-inner_join(last_days,pc_scores_daily_clmn, by = "DATE")
-pc_scores<-column_to_rownames(inner_join(last_days,pc_scores_daily_clmn, by = "DATE"),var = "DATE")
+pc_scores_clmn<-inner_join(last_days,pc_scores_daily_clmn, by = "DATE")
+pc_scores<-column_to_rownames(pc_scores_clmn,var = "DATE")
 
 pc5_ini<-as.matrix(pc_scores[1:198,1:5])
 
@@ -476,22 +476,22 @@ ar12_yields_M72<-lm(yields[,72] ~ lag(yields[,72],12)-1)
 ar12_yields_M96<-lm(yields[,96] ~ lag(yields[,96],12)-1)
 
 Table1.1_diebold<-matrix(c(
-	mean(yields$M2)*100*12,
-	mean(yields$M3)*100*12,
-	mean(yields$M9)*100*12,
-	mean(yields$M12)*100*12,
-	mean(yields$M24)*100*12,
-	mean(yields$M48)*100*12,
-	mean(yields$M72)*100*12,
-	mean(yields$M96)*100*12,
-	sd(yields$M2*100*12),
-	sd(yields$M3*100*12),
-	sd(yields$M9*100*12),
-	sd(yields$M12*100*12),
-	sd(yields$M24*100*12),
-	sd(yields$M48*100*12),
-	sd(yields$M72*100*12),
-	sd(yields$M96*100*12),
+	mean(yields$M2)*100,
+	mean(yields$M3)*100,
+	mean(yields$M9)*100,
+	mean(yields$M12)*100,
+	mean(yields$M24)*100,
+	mean(yields$M48)*100,
+	mean(yields$M72)*100,
+	mean(yields$M96)*100,
+	sd(yields$M2*100),
+	sd(yields$M3*100),
+	sd(yields$M9*100),
+	sd(yields$M12*100),
+	sd(yields$M24*100),
+	sd(yields$M48*100),
+	sd(yields$M72*100),
+	sd(yields$M96*100),
 	ar1_yields_M2$coefficients[2],
 	ar1_yields_M3$coefficients[2],
 	ar1_yields_M9$coefficients[2],
@@ -541,22 +541,22 @@ ar12_spread_M96<-lm(yield_spread120[,8] ~ lag(yield_spread120[,8],12)-1)
 
 
 Table1.2_diebold<-matrix(c(
-	mean(yield_spread120[,1]),
-	mean(yield_spread120[,2]),
-	mean(yield_spread120[,3]),
-	mean(yield_spread120[,4]),
-	mean(yield_spread120[,5]),
-	mean(yield_spread120[,6]),
-	mean(yield_spread120[,7]),
-	mean(yield_spread120[,8]),
-	sd(yield_spread120[,1]),
-	sd(yield_spread120[,2]),
-	sd(yield_spread120[,3]),
-	sd(yield_spread120[,4]),
-	sd(yield_spread120[,5]),
-	sd(yield_spread120[,6]),
-	sd(yield_spread120[,7]),
-	sd(yield_spread120[,8]),
+	mean(yield_spread120[,1]*100),
+	mean(yield_spread120[,2]*100),
+	mean(yield_spread120[,3]*100),
+	mean(yield_spread120[,4]*100),
+	mean(yield_spread120[,5]*100),
+	mean(yield_spread120[,6]*100),
+	mean(yield_spread120[,7]*100),
+	mean(yield_spread120[,8]*100),
+	sd(yield_spread120[,1]*100),
+	sd(yield_spread120[,2]*100),
+	sd(yield_spread120[,3]*100),
+	sd(yield_spread120[,4]*100),
+	sd(yield_spread120[,5]*100),
+	sd(yield_spread120[,6]*100),
+	sd(yield_spread120[,7]*100),
+	sd(yield_spread120[,8]*100),
 	coef(ar1_spread_M2),
 	coef(ar1_spread_M3),
 	coef(ar1_spread_M9),
@@ -607,22 +607,22 @@ ar12_rxs_M72<-lm(rxs_M2M96[,7] ~ lag(rxs_M2M96[,7],12)-1)
 ar12_rxs_M96<-lm(rxs_M2M96[,8] ~ lag(rxs_M2M96[,8],12)-1)
 
 Table1.rxs_diebold<-matrix(c(
-	mean(rxs_M2M96[,1]),
-	mean(rxs_M2M96[,2]),
-	mean(rxs_M2M96[,3]),
-	mean(rxs_M2M96[,4]),
-	mean(rxs_M2M96[,5]),
-	mean(rxs_M2M96[,6]),
-	mean(rxs_M2M96[,7]),
-	mean(rxs_M2M96[,8]),
-	sd(rxs_M2M96[,1]),
-	sd(rxs_M2M96[,2]),
-	sd(rxs_M2M96[,3]),
-	sd(rxs_M2M96[,4]),
-	sd(rxs_M2M96[,5]),
-	sd(rxs_M2M96[,6]),
-	sd(rxs_M2M96[,7]),
-	sd(rxs_M2M96[,8]),
+	mean(rxs_M2M96[,1]*100),
+	mean(rxs_M2M96[,2]*100),
+	mean(rxs_M2M96[,3]*100),
+	mean(rxs_M2M96[,4]*100),
+	mean(rxs_M2M96[,5]*100),
+	mean(rxs_M2M96[,6]*100),
+	mean(rxs_M2M96[,7]*100),
+	mean(rxs_M2M96[,8]*100),
+	sd(rxs_M2M96[,1]*100),
+	sd(rxs_M2M96[,2]*100),
+	sd(rxs_M2M96[,3]*100),
+	sd(rxs_M2M96[,4]*100),
+	sd(rxs_M2M96[,5]*100),
+	sd(rxs_M2M96[,6]*100),
+	sd(rxs_M2M96[,7]*100),
+	sd(rxs_M2M96[,8]*100),
 	coef(ar1_rxs_M2),
 	coef(ar1_rxs_M3),
 	coef(ar1_rxs_M9),
@@ -648,44 +648,114 @@ row.names(Table1.rxs_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 
 plot(yields_clmn$DATE,                          
-     yields_clmn$M2*12*100,
+     yields_clmn$M2*100,
      type = "l",
      col = 2,
-     ylim = c(0, 20),
+     ylim = c(0, 2),
      xlab = "Month",
      ylab = "Yields")
 lines(yields_clmn$DATE,                          
-     yields_clmn$M3*12*100,
+     yields_clmn$M3*100,
      type = "l",
      col = 3)     
 lines(yields_clmn$DATE,                          
-     yields_clmn$M9*12*100,
+     yields_clmn$M9*100,
      type = "l",
      col = 4)     
 lines(yields_clmn$DATE,                          
-     yields_clmn$M12*12*100,
+     yields_clmn$M12*100,
      type = "l",
      col = 5)    
 lines(yields_clmn$DATE,                          
-     yields_clmn$M24*12*100,
+     yields_clmn$M24*100,
      type = "l",
      col = 6)     
 lines(yields_clmn$DATE,                          
-     yields_clmn$M48*12*100,
+     yields_clmn$M48*100,
      type = "l",
      col = 7)     
 lines(yields_clmn$DATE,                          
-     yields_clmn$M72*12*100,
+     yields_clmn$M72*100,
      type = "l",
      col = 8)     
 lines(yields_clmn$DATE,                          
-     yields_clmn$M96*12*100,
+     yields_clmn$M96*100,
      type = "l",
      col = 9)
 legend("topright",                          
        c("M2","M3","M9","M12","M24","M48","M72","M96"),
        lty = 1,
        col = 2:9)
+
+
+#===================diebold figure 1.3============
+
+plot(pc_scores_clmn$DATE,                          
+     pc_scores_clmn[,2]*100,
+     type = "l",
+     col = 2,
+     ylim = c(-6, 6),
+     xlab = "Month",
+     ylab = "Yields")
+lines(pc_scores_clmn$DATE,                          
+      pc_scores_clmn[,3]*100,
+      type = "l",
+      col = 3)     
+lines(pc_scores_clmn$DATE,                          
+      pc_scores_clmn[,4]*100,
+      type = "l",
+      col = 4)     
+lines(pc_scores_clmn$DATE,                          
+      pc_scores_clmn[,5]*100,
+      type = "l",
+      col = 5)     
+lines(pc_scores_clmn$DATE,                          
+      pc_scores_clmn[,6]*100,
+      type = "l",
+      col = 6)     
+legend("topright",                          
+       c("PC1","PC2","PC3","PC4","PC5"),
+       lty = 1,
+       col = 2:6)
+
+#===================diebold table 1.3============
+
+
+ar1_pc1<-lm(pc_scores[,1] ~ lag(pc_scores[,1],1)-1)
+ar1_pc2<-lm(pc_scores[,2] ~ lag(pc_scores[,2],1)-1)
+ar1_pc3<-lm(pc_scores[,3] ~ lag(pc_scores[,3],1)-1)
+ar1_pc4<-lm(pc_scores[,4] ~ lag(pc_scores[,4],1)-1)
+ar1_pc5<-lm(pc_scores[,5] ~ lag(pc_scores[,5],1)-1)
+
+ar12_pc1<-lm(pc_scores[,1] ~ lag(pc_scores[,1],12)-1)
+ar12_pc2<-lm(pc_scores[,2] ~ lag(pc_scores[,2],12)-1)
+ar12_pc3<-lm(pc_scores[,3] ~ lag(pc_scores[,3],12)-1)
+ar12_pc4<-lm(pc_scores[,4] ~ lag(pc_scores[,4],12)-1)
+ar12_pc5<-lm(pc_scores[,5] ~ lag(pc_scores[,5],12)-1)
+
+
+Table1.3_diebold<-matrix(c(
+	sd(pc_scores[,1]*100),
+	sd(pc_scores[,2]*100),
+	sd(pc_scores[,3]*100),
+	sd(pc_scores[,4]*100),
+	sd(pc_scores[,5]*100),
+	coef(ar1_pc1),
+	coef(ar1_pc2),
+	coef(ar1_pc3),
+	coef(ar1_pc4),
+	coef(ar1_pc5),
+	coef(ar12_pc1),
+	coef(ar12_pc2),
+	coef(ar12_pc3),
+	coef(ar12_pc4),
+	coef(ar12_pc5)
+	),5,3)
+
+colnames(Table1.3_diebold)<-c("hat{sigma}","hat{rho}(1)","hat{rho}(12)")
+row.names(Table1.3_diebold)<- c("PC1","PC2","PC3","PC4","PC5")
+View(Table1.3_diebold)
+
 
 #======== EXCESS RETURNS - EXPECTATION HIPOTHESIS ===========
 
