@@ -1,0 +1,4 @@
+
+#pq esses dois estão dando coefs diferentes?:
+arima(pc_scores[,1],order = c(ar(pc_scores[,1])$order, 0, 0))
+ar(pc_scores[,1])
