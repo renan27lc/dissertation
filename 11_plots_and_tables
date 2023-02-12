@@ -1,4 +1,21 @@
 
+install.packages("gridExtra")
+install.packages( "Hmisc")
+install.packages("xtable")
+
+library(dplyr)
+library(tibble)
+library(tidyverse)
+library(lubridate)
+#library(pwt)
+library(tidyr)
+library(purrr)
+library(broom)
+#library(pander)
+library(Hmisc)
+library(xtable)
+
+
 #======= table yield means and sds==========
 
 plot(c(2,3,8,12,24,48,72,96),                          
@@ -105,6 +122,7 @@ row.names(Table1_bmstr_rh1mo_complete)<-c("M2","M3","M9","M12","M24","M48","M72"
 
 #===================diebold table1.1=======================
 
+#@@@@@@@@@@@@@@@@  POR RF!!!!!!!!%$$#$#%$$#$$@
 
 yields_M2M96_y100<- cbind(yields[c(2,3,9,12,24,48,72,96)])*1200
 
