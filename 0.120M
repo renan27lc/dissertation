@@ -2,6 +2,7 @@
 
 install.packages("gridExtra")
 install.packages( "Hmisc")
+install.packages("xtable")
 
 library(dplyr)
 library(tibble)
@@ -13,6 +14,7 @@ library(purrr)
 library(broom)
 #library(pander)
 library(Hmisc)
+library(xtable)
 
 # ===================== DOWNLOAD DATA ==========================
 # Author: Werley Cordeiro
@@ -516,7 +518,7 @@ row.names(Table1.1_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
 View(Table1.1_diebold)
 
 
-#print(xtable(Table1.1_diebold, type = "latex", file = "diebold11.tex", digits=c(0,4,4,4,4,4,4)))
+#print(xtable(Table1_bmstr_rh1mo_complete, type = "latex", file = "Table1.tex", digits=2))
 
 
 
