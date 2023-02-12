@@ -1,0 +1,38 @@
+
+#======= table yield means and sds==========
+
+plot(c(2,3,8,12,24,48,72,96),                          
+     mean(yields_M2M96_y100[,1]),
+     type = "p",
+     col = 2,
+     ylim = c(0, 1.5),
+     xlab = "Month",
+     ylab = "Yields")
+lines(c(2,3,8,12,24,48,72,96),                          
+      mean(yields_M2M96_y100[,2]),
+      type = "p",
+      col = 3)     
+lines(c(2,3,8,12,24,48,72,96),                          
+      mean(yields_M2M96_y100[,3]),
+      type = "p",
+      col = 4)     
+lines(c(2,3,8,12,24,48,72,96),                          
+      mean(yields_M2M96_y100[,4]),
+      type = "p",
+      col = 5)    
+lines(c(2,3,8,12,24,48,72,96),                          
+      mean(yields_M2M96_y100[5]),
+      type = "p",
+      col = 6)     
+lines(c(2,3,8,12,24,48,72,96),                          
+      mean(yields_M2M96_y100[,6]),
+      type = "p",
+      col = 7)     
+lines(c(2,3,8,12,24,48,72,96),                          
+      mean(yields_M2M96_y100[,7]),
+      type = "p",
+      col = 8)     
+lines(c(2,3,8,12,24,48,72,96),                          
+      mean(yields_M2M96_y100[,8]),
+      type = "p",
+      col = 9)
