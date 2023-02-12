@@ -126,6 +126,7 @@ row.names(Table1_bmstr_rh1mo_complete)<-c("M2","M3","M9","M12","M24","M48","M72"
 
 yields_M2M96_y100<- cbind(yields[c(2,3,9,12,24,48,72,96)])*1200
 
+ar1_rf<-lm(rf ~ Lag(rf,1))
 ar1_yields_M2<-lm(yields[,2] ~ Lag(yields[,2],1))
 ar1_yields_M3<-lm(yields[,3] ~ Lag(yields[,3],1))
 ar1_yields_M9<-lm(yields[,9] ~ Lag(yields[,9],1))
@@ -135,6 +136,7 @@ ar1_yields_M48<-lm(yields[,48] ~ Lag(yields[,48],1))
 ar1_yields_M72<-lm(yields[,72] ~ Lag(yields[,72],1))
 ar1_yields_M96<-lm(yields[,96] ~ Lag(yields[,96],1))
 
+ar12_rf<-lm(rf ~ Lag(rf,12))
 ar12_yields_M2<-lm(yields[,2] ~ Lag(yields[,2],12))
 ar12_yields_M3<-lm(yields[,3] ~ Lag(yields[,3],12))
 ar12_yields_M9<-lm(yields[,9] ~ Lag(yields[,9],12))
@@ -145,6 +147,7 @@ ar12_yields_M72<-lm(yields[,72] ~ Lag(yields[,72],12))
 ar12_yields_M96<-lm(yields[,96] ~ Lag(yields[,96],12))
 
 Table1.1_diebold<-matrix(c(
+	mean(rf*1200),
 	mean(yields_M2M96_y100$M2),
 	mean(yields_M2M96_y100$M3),
 	mean(yields_M2M96_y100$M9),
@@ -153,6 +156,7 @@ Table1.1_diebold<-matrix(c(
 	mean(yields_M2M96_y100$M48),
 	mean(yields_M2M96_y100$M72),
 	mean(yields_M2M96_y100$M96),
+	sd(rf*1200),
 	sd(yields_M2M96_y100$M2),
 	sd(yields_M2M96_y100$M3),
 	sd(yields_M2M96_y100$M9),
@@ -161,6 +165,7 @@ Table1.1_diebold<-matrix(c(
 	sd(yields_M2M96_y100$M48),
 	sd(yields_M2M96_y100$M72),
 	sd(yields_M2M96_y100$M96),
+	ar1_rf$coefficients[2],
 	ar1_yields_M2$coefficients[2],
 	ar1_yields_M3$coefficients[2],
 	ar1_yields_M9$coefficients[2],
@@ -169,6 +174,7 @@ Table1.1_diebold<-matrix(c(
 	ar1_yields_M48$coefficients[2],
 	ar1_yields_M72$coefficients[2],
 	ar1_yields_M96$coefficients[2],
+	ar12_rf$coefficients[2],
 	ar12_yields_M2$coefficients[2],
 	ar12_yields_M3$coefficients[2],
 	ar12_yields_M9$coefficients[2],
@@ -177,10 +183,10 @@ Table1.1_diebold<-matrix(c(
 	ar12_yields_M48$coefficients[2],
 	ar12_yields_M72$coefficients[2],
 	ar12_yields_M96$coefficients[2]
-		),8,4)
+		),9,4)
 
 colnames(Table1.1_diebold)<- c("overline{y}","hat{sigma}_y", "hat{rho}_{y}(1)","hat{rho}_{y}(12)")
-row.names(Table1.1_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
+row.names(Table1.1_diebold)<- c("r^*","M2","M3","M9","M12","M24","M48","M72","M96")
 View(Table1.1_diebold)
 
 
@@ -256,7 +262,7 @@ row.names(Table1.2_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
 #===================diebold table1.r_h1mo=======================
 
 
-rh1mo_M2M96_100<- cbind(r_h1mo[c(2,3,9,12,24,48,72,96)])*100
+rh1mo_M2M96_100<- cbind(r_h1mo[c(2,3,9,12,24,48,72,96)])*1200
 
 ar1_rh1mo_M2<-lm(rh1mo_M2M96_100[,1] ~ Lag(rh1mo_M2M96_100[,1],1))
 ar1_rh1mo_M3<-lm(rh1mo_M2M96_100[,2] ~ Lag(rh1mo_M2M96_100[,2],1))
@@ -319,7 +325,7 @@ row.names(Table1.rh1mo_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96"
 #===================diebold table1.r_xs=======================
 
 
-rxs_M2M96_100<- cbind(r_xs[c(2,3,9,12,24,48,72,96)])*100
+rxs_M2M96_100<- cbind(r_xs[c(2,3,9,12,24,48,72,96)])*1200
 
 ar1_rxs_M2<-lm(rxs_M2M96_100[,1] ~ Lag(rxs_M2M96_100[,1],1))
 ar1_rxs_M3<-lm(rxs_M2M96_100[,2] ~ Lag(rxs_M2M96_100[,2],1))
@@ -372,7 +378,7 @@ Table1.rxs_diebold<-matrix(c(
 	coef(ar12_rxs_M24)[2],
 	coef(ar12_rxs_M48)[2],
 	coef(ar12_rxs_M72)[2],
-	coef(ar12_rxs_M96[2])
+	coef(ar12_rxs_M96)[2]
 	),8,4)
 
 colnames(Table1.rxs_diebold)<- c("overline{rx}","hat{sigma}_{rx}", "hat{rho}_{rx}(1)","hat{rho}_{rx}(12)")
