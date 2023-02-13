@@ -526,7 +526,7 @@ plot(pc_scores_clmn$DATE,
      type = "l",
      col = 2,
      ylim = c(-6, 6),
-     xlab = "Month",
+     xlab = "Year",
      ylab = "PC scores")
 lines(pc_scores_clmn$DATE,                          
       pc_scores_clmn[,3]*100,
