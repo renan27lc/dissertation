@@ -391,41 +391,41 @@ row.names(Table1.rxs_diebold)<- c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 
 plot(yields_clmn$DATE,                          
-     yields_clmn$M2*100,
+     yields_clmn$M2*1200,
      type = "l",
      col = 2,
-     ylim = c(0, 1.5),
-     xlab = "Month",
+     ylim = c(0, 18),
+     xlab = "Year",
      ylab = "Yields")
 lines(yields_clmn$DATE,                          
-     yields_clmn$M3*100,
+     yields_clmn$M3*1200,
      type = "l",
      col = 3)     
 lines(yields_clmn$DATE,                          
-     yields_clmn$M9*100,
+     yields_clmn$M9*1200,
      type = "l",
      col = 4)     
 lines(yields_clmn$DATE,                          
-     yields_clmn$M12*100,
+     yields_clmn$M12*1200,
      type = "l",
      col = 5)    
 lines(yields_clmn$DATE,                          
-     yields_clmn$M24*100,
+     yields_clmn$M24*1200,
      type = "l",
      col = 6)     
 lines(yields_clmn$DATE,                          
-     yields_clmn$M48*100,
+     yields_clmn$M48*1200,
      type = "l",
      col = 7)     
 lines(yields_clmn$DATE,                          
-     yields_clmn$M72*100,
+     yields_clmn$M72*1200,
      type = "l",
      col = 8)     
 lines(yields_clmn$DATE,                          
-     yields_clmn$M96*100,
+     yields_clmn$M96*1200,
      type = "l",
      col = 9)
-legend("topright",                          
+legend("bottomleft",                          
        c("M2","M3","M9","M12","M24","M48","M72","M96"),
        lty = 1,
        col = 2:9)
@@ -434,38 +434,38 @@ legend("topright",
 
 
 plot(yields_clmn[2:199,1],                          
-     r_h1mo$M2*100,
+     r_h1mo$M2*1200,
      type = "l",
      col = 2,
-     ylim = c(-30, 30),
-     xlab = "Month",
+     ylim = c(-350, 400),
+     xlab = "Year",
      ylab = "1 month return")
 lines(yields_clmn[2:199,1],                          
-     r_h1mo$M3*100,
+     r_h1mo$M3*1200,
      type = "l",
      col = 3)     
 lines(yields_clmn[2:199,1],                          
-     r_h1mo$M9*100,
+     r_h1mo$M9*1200,
      type = "l",
      col = 4)     
 lines(yields_clmn[2:199,1],                          
-     r_h1mo$M12*100,
+     r_h1mo$M12*1200,
      type = "l",
      col = 5)    
 lines(yields_clmn[2:199,1],                          
-     r_h1mo$M24*100,
+     r_h1mo$M24*1200,
      type = "l",
      col = 6)     
 lines(yields_clmn[2:199,1],                          
-     r_h1mo$M48*100,
+     r_h1mo$M48*1200,
      type = "l",
      col = 7)     
 lines(yields_clmn[2:199,1],                          
-     r_h1mo$M72*100,
+     r_h1mo$M72*1200,
      type = "l",
      col = 8)     
 lines(yields_clmn[2:199,1],                          
-     r_h1mo$M96*100,
+     r_h1mo$M96*1200,
      type = "l",
      col = 9)
 legend("topright",                          
