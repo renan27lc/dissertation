@@ -299,15 +299,17 @@ E_rxs_rw<-as.data.frame(r_xs[1:197,])
 rxs_rw<-as.data.frame(r_xs[2:198,])
 
 MSPErw_6M<-matrix(c(
-  mean(as.matrix(rxs_rw[,1]-E_rxs_rw[,1])^2),
   mean(as.matrix(rxs_rw[,2]-E_rxs_rw[,2])^2),
   mean(as.matrix(rxs_rw[,3]-E_rxs_rw[,3])^2),
-  mean(as.matrix(rxs_rw[,4]-E_rxs_rw[,4])^2),
-  mean(as.matrix(rxs_rw[,5]-E_rxs_rw[,5])^2),
-  mean(as.matrix(rxs_rw[,6]-E_rxs_rw[,6])^2))
-    ,1,6)
+  mean(as.matrix(rxs_rw[,9]-E_rxs_rw[,9])^2),
+  mean(as.matrix(rxs_rw[,12]-E_rxs_rw[,12])^2),
+  mean(as.matrix(rxs_rw[,24]-E_rxs_rw[,24])^2),
+  mean(as.matrix(rxs_rw[,48]-E_rxs_rw[,48])^2),
+  mean(as.matrix(rxs_rw[,72]-E_rxs_rw[,72])^2),
+  mean(as.matrix(rxs_rw[,96]-E_rxs_rw[,96])^2))
+    ,1,8)
 
-colnames(MSPErw_6M)<-c("M1","M2","M3","M4","M5","M6")	
+colnames(MSPErw_6M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")	
 
 #MSPE_rw<-mean(as.matrix(rxs_rw-E_rxs_rw)^2)
 
@@ -316,15 +318,17 @@ colnames(MSPErw_6M)<-c("M1","M2","M3","M4","M5","M6")
 E_rxs_xphyp<-0
 
 MSPExphyp_6M<-matrix(c(
-  mean(as.matrix(r_xs[,1])^2),
   mean(as.matrix(r_xs[,2])^2),
   mean(as.matrix(r_xs[,3])^2),
-  mean(as.matrix(r_xs[,4])^2),
-  mean(as.matrix(r_xs[,5])^2),
-  mean(as.matrix(r_xs[,6])^2)
-    ),1,6)
+  mean(as.matrix(r_xs[,9])^2),
+  mean(as.matrix(r_xs[,12])^2),
+  mean(as.matrix(r_xs[,24])^2),
+  mean(as.matrix(r_xs[,48])^2),
+  mean(as.matrix(r_xs[,72])^2),
+  mean(as.matrix(r_xs[,96])^2)
+    ),1,8)
 
-colnames(MSPExphyp_6M)<-c("M1","M2","M3","M4","M5","M6")
+colnames(MSPExphyp_6M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 #MSPE_xphyp<-mean(as.matrix(r_xs)^2)
 
@@ -338,15 +342,17 @@ i_198<-as.data.frame(rep(1, 198))
 E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(lm_pc5_beta_hat,t(pc5_ini))))
 
 MSPEpc5_6M<-matrix(c(
-  mean(as.matrix(r_xs[,1]-E_rxs_pc5[,1])^2),
   mean(as.matrix(r_xs[,2]-E_rxs_pc5[,2])^2),
   mean(as.matrix(r_xs[,3]-E_rxs_pc5[,3])^2),
-  mean(as.matrix(r_xs[,4]-E_rxs_pc5[,4])^2),
-  mean(as.matrix(r_xs[,5]-E_rxs_pc5[,5])^2),
-  mean(as.matrix(r_xs[,6]-E_rxs_pc5[,6])^2))
-      ,1,6)
+  mean(as.matrix(r_xs[,9]-E_rxs_pc5[,9])^2),
+  mean(as.matrix(r_xs[,12]-E_rxs_pc5[,12])^2),
+  mean(as.matrix(r_xs[,24]-E_rxs_pc5[,24])^2),
+  mean(as.matrix(r_xs[,48]-E_rxs_pc5[,48])^2),
+  mean(as.matrix(r_xs[,72]-E_rxs_pc5[,72])^2),
+  mean(as.matrix(r_xs[,96]-E_rxs_pc5[,96])^2))
+      ,1,8)
 
-colnames(MSPEpc5_6M)<-c("M1","M2","M3","M4","M5","M6")
+colnames(MSPEpc5_6M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")	
 row.names(MSPEpc5_6M)<-"MSPE_rxs_pc5"
 
 #MSPE_pc5<-mean(as.matrix(r_xs-E_rxs_pc5)^2)
