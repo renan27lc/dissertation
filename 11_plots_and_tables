@@ -55,6 +55,7 @@ lines(c(2,3,8,12,24,48,72,96),
       col = 9)
 
 
+#===================Table1_bmstr_rh1mo=======================
 
 
 Table1_bmstr_rh1mo_complete<-matrix(c(
@@ -597,4 +598,122 @@ Table1.3_diebold<-matrix(c(
 colnames(Table1.3_diebold)<-c("hat{sigma}","hat{rho}(1)","hat{rho}(12)", "R2")
 row.names(Table1.3_diebold)<- c("PC1","PC2","PC3","PC4","PC5")
 View(Table1.3_diebold)
+
+
+
+
+#===================Table1_bmstr_lmpc5=======================
+
+summary_lmpc5<-summary(lm_pc5)
+
+Table_lm_pc5<-matrix(c(
+	pf(summary(lm_pc5)$`Response M2`$fstatistic[1],summary(lm_pc5)$`Response M2`$fstatistic[2],summary(lm_pc5)$`Response M2`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_pc5)$`Response M3`$fstatistic[1],summary(lm_pc5)$`Response M3`$fstatistic[2],summary(lm_pc5)$`Response M3`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_pc5)$`Response M9`$fstatistic[1],summary(lm_pc5)$`Response M9`$fstatistic[2],summary(lm_pc5)$`Response M9`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_pc5)$`Response M12`$fstatistic[1],summary(lm_pc5)$`Response M12`$fstatistic[2],summary(lm_pc5)$`Response M12`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_pc5)$`Response M24`$fstatistic[1],summary(lm_pc5)$`Response M24`$fstatistic[2],summary(lm_pc5)$`Response M24`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_pc5)$`Response M48`$fstatistic[1],summary(lm_pc5)$`Response M48`$fstatistic[2],summary(lm_pc5)$`Response M48`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_pc5)$`Response M72`$fstatistic[1],summary(lm_pc5)$`Response M72`$fstatistic[2],summary(lm_pc5)$`Response M72`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_pc5)$`Response M96`$fstatistic[1],summary(lm_pc5)$`Response M96`$fstatistic[2],summary(lm_pc5)$`Response M96`$fstatistic[3],lower.tail=F),
+	summary(lm_pc5)$`Response M2`$adj.r.squared,
+	summary(lm_pc5)$`Response M3`$adj.r.squared,
+	summary(lm_pc5)$`Response M9`$adj.r.squared,
+	summary(lm_pc5)$`Response M12`$adj.r.squared,
+	summary(lm_pc5)$`Response M24`$adj.r.squared,
+	summary(lm_pc5)$`Response M48`$adj.r.squared,
+	summary(lm_pc5)$`Response M72`$adj.r.squared,
+	summary(lm_pc5)$`Response M96`$adj.r.squared
+	),8,2)
+
+colnames(Table_lm_pc5)<-c("H0: alpha, beta = 0 P_value","Adj R2")
+row.names(Table_lm_pc5)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
+
+
+
+
+
+
+
+
+cbind(
+	coef(lm_pc5)[2],
+	coef(lm_pc5)[3],
+	coef(lm_pc5)[9],
+	coef(lm_pc5)[12],
+	coef(lm_pc5)[24],
+	coef(lm_pc5)[48],
+	coef(lm_pc5)[72],
+	coef(lm_pc5)[96])
+	
+
+
+  lm_A14$coefficients[7:11,1],
+	    lm_A14$coefficients[7:11,2],
+	    lm_A14$coefficients[7:11,3],
+	    lm_A14$coefficients[7:11,4],
+	    lm_A14$coefficients[7:11,5],
+	    lm_A14$coefficients[7:11,6])
+
+
+Table1_bmstr_rh1mo_complete<-matrix(c(
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[1,1],		#1 alpha_hat
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M12`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M48`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M72`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M96`$coefficients[1,1],
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,1],		#2 beta_hat
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M12`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M48`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M72`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M96`$coefficients[2,1],
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,2],		#3 betahat_StdError
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M12`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M48`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M72`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M96`$coefficients[2,2],
+	summary_lm_rh1mo_xphyp$`Response M2`$coefficients[2,4],		#4 H0: alpha=0, beta=0 P_value
+	summary_lm_rh1mo_xphyp$`Response M3`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M9`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M12`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M24`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M48`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M72`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp$`Response M96`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M2`$coefficients[2,4],	#5 H0: beta=1 P_value
+	summary_lm_rh1mo_xphyp_ab1$`Response M3`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M9`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M12`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M24`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M48`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M72`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_ab1$`Response M96`$coefficients[2,4],
+	summary_lm_rh1mo_xphyp_a0b1$`Response M2`$coefficients[1,4],	#6 H0:alpha=0, beta=1 P_value
+	summary_lm_rh1mo_xphyp_a0b1$`Response M3`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0b1$`Response M9`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0b1$`Response M12`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0b1$`Response M24`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0b1$`Response M48`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0b1$`Response M72`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp_a0b1$`Response M96`$coefficients[1,4],
+	summary_lm_rh1mo_xphyp$`Response M2`$adj.r.squared,		#7 Adj R2
+	summary_lm_rh1mo_xphyp$`Response M3`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M9`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M12`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M24`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M48`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M72`$adj.r.squared,
+	summary_lm_rh1mo_xphyp$`Response M96`$adj.r.squared
+			),8,7)
+
+colnames(Table1_bmstr_rh1mo_complete)<-c("alpha_hat","beta_hat","betahat_StdError","H0: alpha=0, beta=0 P_value","H0: beta=1 P_value","H0:alpha=0, beta=1 P_value","Adj R2")
+row.names(Table1_bmstr_rh1mo_complete)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
