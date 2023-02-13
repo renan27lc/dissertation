@@ -15,3 +15,43 @@ rf.rep<-as.data.frame(rep(as.data.frame(yields[1:198,1])[1],120))
 
 
 r_xs = yields_ini*mat_ini.rep - yields_fin*mat_fin.rep - rep(as.data.frame(yields[1:198,1])[1],120)
+
+
+p.a.: usar isso pra enxugar mais meu código
+lmp <- function (modelobject) {
+    if (class(modelobject) != "lm") stop("Not an object of class 'lm' ")
+    f <- summary(modelobject)$`Response M2`$fstatistic
+    p <- pf(summary(modelobject)$`Response M2`$fstatistic[1],summary(modelobject)$`Response M2`$fstatistic[2],summary(modelobject)$`Response M2`$fstatistic[3],lower.tail=F)
+    attributes(p) <- NULL
+    return(p)
+    }
+lmp(lm_pc5)
+
+
+lmp <- function (modelobject) {
+    if (class(modelobject) != "lm") stop("Not an object of class 'lm' ")
+    f <- summary(modelobject)$`Response M2`$fstatistic
+    p <- pf(f[1],f[2],f[3],lower.tail=F)
+    attributes(p) <- NULL
+    return(p)
+    }
+
+pf(summary(lm_pc5)$`Response M2`$fstatistic[1],summary(lm_pc5)$`Response M2`$fstatistic[2],summary(lm_pc5)$`Response M2`$fstatistic[3],lower.tail=F)
+pf(summary(lm_pc5)$`Response M3`$fstatistic[1],summary(lm_pc5)$`Response M3`$fstatistic[2],summary(lm_pc5)$`Response M3`$fstatistic[3],lower.tail=F)
+pf(summary(lm_pc5)$`Response M9`$fstatistic[1],summary(lm_pc5)$`Response M9`$fstatistic[2],summary(lm_pc5)$`Response M9`$fstatistic[3],lower.tail=F)
+pf(summary(lm_pc5)$`Response M12`$fstatistic[1],summary(lm_pc5)$`Response M12`$fstatistic[2],summary(lm_pc5)$`Response M12`$fstatistic[3],lower.tail=F)
+pf(summary(lm_pc5)$`Response M24`$fstatistic[1],summary(lm_pc5)$`Response M24`$fstatistic[2],summary(lm_pc5)$`Response M24`$fstatistic[3],lower.tail=F)
+pf(summary(lm_pc5)$`Response M48`$fstatistic[1],summary(lm_pc5)$`Response M48`$fstatistic[2],summary(lm_pc5)$`Response M48`$fstatistic[3],lower.tail=F)
+pf(summary(lm_pc5)$`Response M72`$fstatistic[1],summary(lm_pc5)$`Response M72`$fstatistic[2],summary(lm_pc5)$`Response M72`$fstatistic[3],lower.tail=F)
+pf(summary(lm_pc5)$`Response M96`$fstatistic[1],summary(lm_pc5)$`Response M96`$fstatistic[2],summary(lm_pc5)$`Response M96`$fstatistic[3],lower.tail=F)
+
+
+
+MSPE_ratio<-rbind(
+	MSPExphyp_6M/MSPErw_6M,
+	MSPEpc5_6M/MSPErw_6M,
+  
+  
+  
+  
+
