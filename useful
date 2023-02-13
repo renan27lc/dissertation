@@ -1,2 +1,17 @@
 options(digits=5)
 options(scipen = n)
+
+
+
+
+r_xs<- r_h1mo - rf.rep       # excess returns
+
+r_h1mo<- mns.lnP_ini - mns.lnP_fin
+
+mns.lnP_fin<-as.data.frame(yields_fin*mat_fin.rep)	#minus lnP
+mns.lnP_ini<-as.data.frame(yields_ini*mat_ini.rep)
+
+rf.rep<-as.data.frame(rep(as.data.frame(yields[1:198,1])[1],120))
+
+
+r_xs = yields_ini*mat_ini.rep - yields_fin*mat_fin.rep - rep(as.data.frame(yields[1:198,1])[1],120)
