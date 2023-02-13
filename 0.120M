@@ -70,7 +70,7 @@ yields_daily_100_yr
 yields_daily_chrctr<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100/(100*12))))
 colnames(yields_daily_chrctr)[1]<-"DATE"
 
-plot(colMeans(yields_daily_100/100))
+plot(colMeans(yields_daily_100),xlab = "Maturity",ylab = "Yields (%)")
 
 
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
