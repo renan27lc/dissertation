@@ -187,14 +187,7 @@ pc_scores_daily<-as.data.frame(pca_yields$scores)
 
 pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
 
-
-
-# ===================== LM() EXCESS RETURN ~ PC YIELDS ==========================
-
-
-r_xs<- r_h1mo - rf.rep       # excess returns
-rownames(r_xs)<-rownames(mns.lnP_fin)
-colnames(r_xs)<-colnames(mns.lnP_fin)
+# ===================== LM() YIELDS ~ PC OF YIELDS ==========================
 
 pc_scores_daily_clmn<-cbind(dates_daily,rownames_to_column(pc_scores_daily))
 pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
@@ -204,6 +197,16 @@ pc_scores_clmn<-inner_join(last_days,pc_scores_daily_clmn, by = "DATE")
 pc_scores<-column_to_rownames(pc_scores_clmn,var = "DATE")
 
 pc5_ini<-as.matrix(pc_scores[1:198,1:5])
+
+lm_yields_pc5<-lm(as.matrix(yields_fin) ~ as.matrix(pc5_ini))
+
+
+# ===================== LM() EXCESS RETURN ~ PC OF YIELDS ==========================
+
+
+r_xs<- r_h1mo - rf.rep       # excess returns
+rownames(r_xs)<-rownames(mns.lnP_fin)
+colnames(r_xs)<-colnames(mns.lnP_fin)
 
 lm_pc5<-lm(as.matrix(r_xs) ~ as.matrix(pc5_ini))
 
