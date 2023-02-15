@@ -1,0 +1,338 @@
+\documentclass[12pt]{article} 
+\usepackage{amsmath,amsfonts} 
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage[brazilian]{babel}
+\usepackage{natbib}
+
+%\usepackage{biblatex}
+\bibliographystyle{unsrtnat}
+\usepackage{aeguill}
+\usepackage{amsmath}
+
+
+
+\begin{document} 
+
+%%%%%%%%%%%%%%%%%%%
+A: 
+B: 
+R: 
+
+\\
+\begin{equation} \label{A1_B5} %1 pus no word    %1
+X_{t+1}  =  \mu + \Phi X_{t} + v_{t+1} \qquad \qquad  u_{t} \sim \mathcal{N}(0,\,\Sigma)\,
+\end{equation}
+\\
+
+\\
+X_{t} se refere a um vetor $Kx1$ de proxies observáveis ou fatores de risco latentes.
+A: =
+B: x    !
+R: pc5_ini
+\\
+
+\\
+\mu
+A: =
+B: c
+R: 
+\\
+
+\\
+$Phi$
+A: =
+B: rho  !
+R: 
+\\
+
+\\
+$v_t$ inovação no estado
+A: =
+B: Sigma*u
+R: v_hat
+\\
+
+
+\Sigma é a matriz de covariância desse termo $v_t$
+A: =
+B: 1
+R: Sigma_hat
+\\
+
+\\
+\begin{equation} \label{A21_B6}  pus no word        %2
+\ln P_t(n)  =  A_n + B^{\prime}_n X_t + u_t(n) \,
+\end{equation}
+\\
+
+\\
+lnP_t(n) 
+
+A: =
+B: f_t^h    !
+R: -(mns.lnP)
+\\
+
+
+\\
+A_n
+
+A: =
+B: \alpha_h
+R: 
+\\
+
+\\
+B^{\prime}_n
+
+
+A: =
+B: \beta
+R:
+\\
+
+\\
+u_t(n)
+
+A: =
+B: não tem
+R: 
+\\
+
+
+\\
+
+Substituindo \ref{A21_B6} em \ref{A1_B5} e recursivamente, temos:    %3
+
+\begin{equation} % R(1) 
+\ln P_{t+1}(h-1)  =  A(n-1) + B^{\prime}_{n-1} (\mu + \Phi X_t + v_{t+1}) + u(h-1)_{t+1} \,
+\end{equation}
+\\
+
+\\
+Assim, é possível derivar o excesso de retorno de manter um título por $h$ períodos, $r*^{h-1}_{t+1}$ 
+
+\begin{equation} % A(6)      %4
+r^{*}_{t+1}(n-1)  =  \ln P_{t+1}(h-1) - \ln P_{t+1}(h-1) - rf_t \,
+\end{equation}
+
+Onde $rf_t$ refere-se à taxa livre de risco 
+\\
+
+
+
+\\
+r^{*}_{t+1}(n-1)
+
+A: =
+B: f_{t+1}^{h-1} - f_t^h
+R: r_xs 
+\\
+
+\\
+rf_t
+
+A: r_t
+B: $f^1_t$ 
+R: rf
+\\
+
+\\
+\\
+\begin{equation} \label{R(2)}          %5
+rx_{t+1}(n-1)  = \alpha_{h-1} + \beta^{\prime}_{h-1} (c+\rho x_t + u_{t+1}) + v^{h-1}_{t+1} -\alpha_h - \beta^{\prime}{_h} x_t - v^h_t - r^*_t\,
+\end{equation}
+
+\begin{equation} \label{A25_B7}         %6
+A_n=A_n-1 + B^{\prime}_{n-1}(\mu-\lambda_0) + \frac{1}{2}(B^{\prime}_{n-1} \Sigma B^{\prime}_{n-1} + \sigma^2) - \delta_0
+\end{equation}
+\\
+\\
+
+\\
+
+\\
+
+\\
+\alpha
+
+
+A: !
+B: 
+R: 
+\\
+
+\\
+\beta
+
+
+A: !
+B: 
+R:
+\\
+
+\\
+v
+
+A: !
+B: 
+R: 
+\\v
+
+
+\\
+---------------------------------------------
+
+\\
+
+
+%%%%%%%%%%%%%%%%%
+
+
+$F^h_t$ representa o contrato futuro negociado no tempo 
+
+\\$t$ com maturidade 
+
+\\$h$
+\\
+\\
+
+$S_{t}$ o preço spot do ativo no período $t$
+\\
+\\
+
+$M_{t+h}$, chamada “fator de desconto estocástico”
+\\
+\\
+
+ $RP^h_t$ prêmio de risco
+\\
+\\
+
+$\gamma$ captura alguns erros sistemáticos de expectativas 
+\\
+\\
+
+O DFM expressa um vetor 
+\\
+
+$X_t$ de $N$ variáveis de séries temporais observadas (N=17 séries, Cada X é a série de uma  maturidade)  
+\\
+
+$X_{k,t}$ representa um vetor que contém $K$ variáveis preditivas, disponíveis aos agentes no tempo $t$: 
+\\
+
+$ X_{k,t}$ como fatores de risco 
+\\    
+
+
+
+$q$ de fatores não-observáveis ou latentes $f_t$ 
+  \\
+ 
+ $e_t$componente idiossincrático de média zero
+\\
+
+  $\lambda (L)$ matrizes $N \times q$ polinomiais de defasagem\ 
+  \\
+  
+ $\Psi (L)  $ as matrizes $q \times q$ polinomiais de defasageme  
+ \\
+ 
+ $\eta$ é o vetor $q \times 1$ de inovações de média zero (serialmente não correlacionadas) aos fatores. 
+ \\
+ 
+ $\eta_t$ são distúrbios Gaussianas
+ \\
+ 
+$\eta^{\prime}_{h-1} = \beta^{\prime}_{h-1} \lambda_1 + \delta_1$
+\\
+
+ As perturbações idiossincráticas são assumidas como não correlacionadas com as inovações dos fatores em todos os avanços e defasagens, isto é $E(e_t) \eta^{\prime}_{t-k} = 0$ para todo $k$. 
+\\
+
+$r$ fatores estáticos $F_t$ 
+\\
+
+ $p$ o grau da matriz polinomial de defasagem
+\\
+
+ $F_t = (f^{\prime}_{t}$ , $f^{\prime}_{t-1} ,...,f^{\prime}_{t-p})$ um vetor $r \times 1$ dos fatores estáticos. 
+\\
+
+ $\Lambda = (\lambda_0 , \lambda_1 ,...,  \lambda_p )$,  onde 
+ \\
+ 
+ $\lambda_h$ é a matrix $N \times q$ de coeficientes na $h$-ésima defasagem em $\lambda (L)$. 
+ \\
+
+
+ $\Phi (L)$ uma matriz de 1s, 0s e os elementos de $\Psi (L)$
+\\
+
+ $G = [I_q \quad 0_{q \times (r - q) } ]^{\prime}$.
+\\
+
+$v_t$ são distúrbios Gaussianas
+\\
+
+ $\alpha^F_i = \Lambda_i \Phi (L) - \delta_i (L) \Lambda_i$. 
+\\
+
+$Q$ é qualquer matriz $r \times r$ inversível
+\\
+
+ $\overline{A} = N^{-1} \sum_{i=1}^{N} A_i$, a média cross-sectional
+\\
+
+$V_t (\Lambda , F) = \frac{1}{N T} \sum_{t=1}^{T} (X_t - \Lambda F_t)^{\prime} (X_t - \Lambda F_t)$
+\\
+
+$m $ fatores latentes ou observados $x_t$ determina conjuntamente todos os preços de ativos na economia de uma forma internamente consistente
+\\
+
+\label{A1_B5}   c+\rho 
+\\
+
+} \label{A21_B6} \alpha_h + \beta^{\prime}{_h}  + v^h_t \,
+\\
+
+com factor loadings dados por:
+\\
+
+$A_n=A_n-1 + B^{\prime}_{n-1}(\mu-\lambda_0) + \frac{1}{2}(B^{\prime}_{n-1} \Sigma B^{\prime}_{n-1} + \sigma^2) - \delta_0$
+\\
+
+\label{A26_B8} \Phi
+\\
+
+sob uma lei de movimento modificada para os fatores:
+\\
+
+$x_{t+1}  =  c^Q + \rho^Q x_{t}+u^Q_{t+1} \qquad \qquad  u^Q_{t} \sim \mathcal{N}(0,\,\Sigma_{m})$
+\\
+
+
+\\
+$c^Q = c - \lambda$ e $\rho^Q = \rho- \Lambda$ ajustes que resultam da aversão ao risco. 
+
+
+$k_{h-1} = \beta ^{\prime}_{h-1}\lambda_0 - \frac{1}{2}(\beta^{\prime}_{h-1} \Sigma \beta_{h-1} + \sigma^2) - \delta_o$
+\\
+
+
+$\epsilon^{h-1}_{t+1} = \beta^{\prime}_{h-1} u_ {t+1} + v^ {h-1}_{t+1} -v^h_t$
+\\
+
+$\delta_0$ e 
+\\
+
+$\delta_1$ são obtidos por MQO: $r^F_t  = \delta_0 + \delta^{\prime}_1 x_t$
+\\
+
+$r^{"*"}_t$ retorno em excesso
+\\
+
+\citep{bmstr2021}
+\end{document}
