@@ -3,9 +3,9 @@
 
 
 
-u_hat<-lm_yini_pc5$residuals
+U_hat<-lm_yini_pc5$residuals
 
-
+beta
 
 
 
