@@ -1,0 +1,103 @@
+\documentclass[12pt]{article} 
+\usepackage{amsmath,amsfonts} 
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage[brazilian]{babel}
+%\usepackage{natbib}
+\bibliographystyle{chicago}
+\usepackage{aeguill}
+\usepackage{amsmath}
+
+\begin{document} 
+
+\section{Derivação}
+\label{sub_sect}
+
+
+%\begin{equation} \label{B1}
+%F^h_t = \frac{(S_{t+h} - S_t)}{S_t} = \alpha + \beta \frac {(F^h_t - S_t)}{S_t} + \epsilon_{t+h}
+%\end{equation}
+
+O uso de contratos futuros como preditores do preço spot de ativos baseia-se na hipótese de expectativas racionais em mercados financeiros eficientes, os quais inviabilizam ganhos com arbitragem. Nestas circunstâncias, presume-se que os agentes negociam de modo que se gerem preços de equilíbrio nos contratos futuros que exprimam suas reais expectativas quanto ao preço spot no futuro, dado o conjunto de informações disponíveis no presente. Em outras palavras, $ F^h_t = E_t [S_{t+h}]$, onde $F^h_t$ representa o contrato futuro negociado no tempo $t$ com maturidade $h$, $S_{t+h}$ o preço spot do ativo no período $t+h$, e $E_t$ operador de esperança, representando as expectativas dos agentes no tempo $t$   . 
+
+
+
+\begin{equation} \label{A1_B5} %1 pus no word
+X_{t+1}  =  \mu + \Phi X_{t} + v_{t+1} \qquad \qquad  u_{t} \sim \mathcal{N}(0,\,\Sigma)\,
+\end{equation}
+
+\begin{equation} \label{A21_B6} %2 pus no word
+\ln P_t(n)  =  A_h + B^{\prime}_n X_t + u_t(n) \,
+\end{equation}
+
+Substituindo \ref{A21_B6} em \ref{A1_B5} e recursivamente, temos: %3
+
+\begin{equation} % R(1) 
+\ln P_{t+1}(h-1)  =  A(n-1) + B^{\prime}_{n-1} (\mu + \Phi X_t + v_{t+1}) + u_{t+1}(h-1) \,
+\end{equation}
+
+Assim, é possível derivar o excesso de retorno de manter um título por $h$ períodos, $rx_{t+1}(n-1)$ 
+
+\begin{equation} % A(6) #4
+rx_{t+1}(n-1)  =  \ln P_{t+1}(h-1) - \ln P_{t+1}(h-1) - r^*_t \,
+\end{equation}
+
+Onde $r^*_t$ refere-se à taxa livre de risco %representada como em Baumeister (2022) $f^1_t$ 
+
+\begin{equation} \label{R(2)}
+rx_{t+1}(n-1)  = \alpha_{h-1} + \beta^{\prime}_{h-1} (c+\rho x_t + u_{t+1}) + v^{h-1}_{t+1} -\alpha_h - \beta^{\prime}{_h} x_t - v^h_t - r^F_t\,
+\end{equation}
+
+\begin{equation} \label{A25_B7}
+A_n=A_n-1 + B^{\prime}_{n-1}(\mu-\lambda_0) + \frac{1}{2}(B^{\prime}_{n-1} \Sigma B^{\prime}_{n-1} + \sigma^2) - \delta_0
+\end{equation}
+
+
+onde $A_h$ depende de $A_{h-1}$ para restringir arbitragem. 
+\\
+
+\begin{equation} \label{A26_B8}
+B^{\prime}_n = B^{\prime}_{n-1}(\Phi-\lambda_1) - \delta^{\prime}_1
+\end{equation}
+\\
+
+Aplicando \ref{A25_B7} e \ref{A26_B8} a \ref{R(2)}, temos:
+
+
+\begin{equation}  \label{R3}
+\begin{split}
+rx_{t+1}(n-1)  = \beta^{\prime}_{h-1} u_{t+1} + \beta^{\prime}_{h-1}\lambda_0 - \frac{1}{2}(\beta^{\prime}_{h-1} \Sigma \beta_{h-1} + \sigma^2) - \delta_o \\ + \beta^{\prime}_{h-1} \lambda_1 x_t + \delta_1 x_t + v^{h-1}_{t+1} - v^h_t
+\end{split}
+\end{equation}
+\\
+
+Considerando:
+
+\begin{equation}
+k_{h-1} = \beta^{\prime}_{h-1}\lambda_0 - \frac{1}{2}(\beta^{\prime}_{h-1} \Sigma \beta_{h-1} + \sigma^2) - \delta_o
+\end{equation} 
+
+\begin{equation} 
+\eta^{\prime}_{h-1} = \beta^{\prime}_{h-1} \lambda_1 + \delta_1
+\end{equation} 
+
+\begin{equation} 
+\epsilon^{h-1}_{t+1} = \beta^{\prime}_{h-1} u_{t+1} + v^{h-1}_{t+1} -v^h_t
+\end{equation} 
+
+
+Temos:
+
+\begin{equation} \label{B9}
+rx_{t+1}(n-1) = k_{h-1} + \eta^{\prime}_{h-1} x_t + \epsilon^{h-1}_{t+1} 
+\end{equation} 
+\\
+
+onde $\delta_0$ e $\delta_1$ são obtidos por MQO:
+
+
+\begin{equation} 
+r^F_t = \delta_0 + \delta^{\prime}_1 x_t
+\end{equation} 
+
+\end{document} 
