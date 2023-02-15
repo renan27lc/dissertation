@@ -301,6 +301,92 @@ lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.ma
 
 
 
+#====== estimando parâmetros Adrian (14):
+
+lm_A14<-lm(as.matrix(r_xs) ~ V_hat[1:198,1:5] + X_[1:198,1:5])
+
+E_hat<-as.matrix(lm_A14$residuals)	#198x6
+
+
+
+#Z_tilde<- t(cbind(i_198,V_hat,X_))	#11x198
+#lm(t_rxs[1,]~Z_tilde[2:6,]+Z_tilde[7:11,])
+
+
+sig2_hat<-sum(diag(crossprod(E_hat)))/(187*6)
+
+
+beta_hat<-coef(lm_A14)[2:6,]			# 5x120
+
+#beta_hat<-matrix(cbind(c(
+	    lm_A14$coefficients[2:6,1],
+	    lm_A14$coefficients[2:6,2],
+	    lm_A14$coefficients[2:6,3],
+	    lm_A14$coefficients[2:6,4],
+	    lm_A14$coefficients[2:6,5],
+	    lm_A14$coefficients[2:6,6])
+	)
+	,5,6)
+
+
+B_ast_M296<-matrix(					# 25x8
+	cbind(
+             crossprod(t(beta_hat[,2])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,3])),
+	     crossprod(t(beta_hat[,9])),
+	     crossprod(t(beta_hat[,12])),
+	     crossprod(t(beta_hat[,24])),
+	     crossprod(t(beta_hat[,48])),
+	     crossprod(t(beta_hat[,72])),
+	     crossprod(t(beta_hat[,96]))
+	       )
+	,25,8)
+
+
+#B_ast<-matrix(
+	cbind(
+             crossprod(t(beta_hat[,1])),
+             crossprod(t(beta_hat[,2])),
+             crossprod(t(beta_hat[,3])),
+             crossprod(t(beta_hat[,4])),
+             crossprod(t(beta_hat[,5])),
+             crossprod(t(beta_hat[,6]))
+	     )
+	,25,6)
+
+
+#============== lambda0_hat ============
+
+c_hat<-matrix(cbind(c(
+	    lm_A14$coefficients[7:11,1],
+	    lm_A14$coefficients[7:11,2],
+	    lm_A14$coefficients[7:11,3],
+	    lm_A14$coefficients[7:11,4],
+	    lm_A14$coefficients[7:11,5],
+	    lm_A14$coefficients[7:11,6])
+		),5,6)
+
+lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
+
+#============== lambda0_hat ============
+
+vec_Sigma<-as.matrix(as.vector(Sigma_hat))	#25x1
+Basc_vecSigma<-crossprod(B_ast,vec_Sigma)		#6x1
+betabeta_inv<- solve(crossprod(t(beta_hat)))	#5x5
+#betabeta<- crossprod(t(beta_hat),t(beta_hat))
+
+a_hat<-matrix(cbind(c(				#1x6
+	    lm_A14$coefficients[1,1],
+	    lm_A14$coefficients[1,2],
+	    lm_A14$coefficients[1,3],
+	    lm_A14$coefficients[1,4],
+	    lm_A14$coefficients[1,5],
+	    lm_A14$coefficients[1,6])
+		),1,6)
+
+i_6<-as.data.frame(rep(1,6))
+
+lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( t(a_hat) + Basc_vecSigma/2 + sig2_hat*i_6))))
 
 u_hat<-lm_yini_pc5$residuals
 
