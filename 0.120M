@@ -198,7 +198,12 @@ pc_scores<-column_to_rownames(pc_scores_clmn,var = "DATE")
 
 pc5_ini<-as.matrix(pc_scores[1:198,1:5])
 
-lm_yields_pc5<-lm(as.matrix(yields_fin) ~ as.matrix(pc5_ini))
+# y(t) ~ pc(t)
+lm_yini_pc5<-lm(as.matrix(yields_ini) ~ as.matrix(pc5_ini))
+
+# y(t+1) ~ pc(t)
+lm_yfin_pc5<-lm(as.matrix(yields_fin) ~ as.matrix(pc5_ini))
+
 
 
 # ===================== LM() EXCESS RETURN ~ PC OF YIELDS ==========================
@@ -291,6 +296,36 @@ a_hat<-matrix(cbind(c(				#1x6
 i_6<-as.data.frame(rep(1,6))
 
 lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( t(a_hat) + Basc_vecSigma/2 + sig2_hat*i_6))))
+
+#============================  ============================
+
+
+
+
+u_hat<-lm_yini_pc5$residuals
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #============================ MSPE R_XS ============================
@@ -389,6 +424,15 @@ MSPE_ratio<-rbind(
 row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian3steps")
 
 #View(MSPE_ratio)
+
+
+
+
+
+
+
+
+
 
 
 
