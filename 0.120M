@@ -198,8 +198,8 @@ pc_scores<-column_to_rownames(pc_scores_clmn,var = "DATE")
 
 pc5_ini<-as.matrix(pc_scores[1:198,1:5])
 
-# y(t) ~ pc(t)
-lm_yini_pc5<-lm(as.matrix(yields_ini) ~ as.matrix(pc5_ini))
+# y(1:7/22,1:121) ~ pc()
+lm_yields_pc5<-lm(as.matrix(yields) ~ as.matrix(pc_scores[,1:5]))
 
 # y(t+1) ~ pc(t)
 lm_yfin_pc5<-lm(as.matrix(yields_fin) ~ as.matrix(pc5_ini))
@@ -222,19 +222,19 @@ library("vars")
 
 var1_pc5 <- VAR(pc_scores[,1:5], p = 1, type = "const",ic = "SC")
 
-V_hat<-as.matrix(residuals(var1_pc5))
+V_hat<-as.matrix(residuals(var1_pc5))			#198 x 5; t+1 (2/06 a 7/22)
 
 Sigma_hat<-crossprod(V_hat)/192 # Covariance matrix of residuals (198-6)df	# 5x5
 
 
 
-X_<-pc5_ini
+X_<-pc5_ini			#198 x 5; t (1/06 a 6/22)
 
 #====== estimando parâmetros Adrian (14):
 
 lm_A14<-lm(as.matrix(r_xs) ~ V_hat[1:198,1:5] + X_[1:198,1:5])
 
-E_hat<-as.matrix(lm_A14$residuals)	#198x6
+E_hat<-as.matrix(lm_A14$residuals)	#198x120; t+1 (2/06 a 7/22); h-1 (M1 a M120)
 
 
 
@@ -242,10 +242,11 @@ E_hat<-as.matrix(lm_A14$residuals)	#198x6
 #lm(t_rxs[1,]~Z_tilde[2:6,]+Z_tilde[7:11,])
 
 
-sig2_hat<-sum(diag(crossprod(E_hat)))/(187*8)	# verificar denominador
+sig2_hat<-sum(diag(crossprod(E_hat)))/(187*8)		# 1x1
 
 
-beta_hat<-as.matrix(coef(lm_A14)[2:6,])			# 5x120
+beta_hat<-as.matrix(coef(lm_A14)[2:6,])			# 5 x 120; h-1 (M1 a M120)
+
 
 beta_hat_M296<-cbind(			# 5x8
 	coef(lm_A14)[2:6,2],
@@ -309,11 +310,24 @@ a_hat_M296<-cbind(				#1x8
 
 i_8<-as.data.frame(rep(1,8))
 
-lambda_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat_M296),as.matrix( t(a_hat_M296) + BascM296_vecSigma/2 + sig2_hat*i_8))))
+lambda_hat<-crossprod(				# 5x1
+	betabeta_inv,
+	crossprod(
+		t(beta_hat_M296),
+		as.matrix(
+			t(a_hat_M296) + 
+			BascM296_vecSigma/2 + 
+			sig2_hat*i_8)))
 
-u_hat<-as.matrix(lm_yini_pc5$residuals)
+U_hat<-as.matrix(lm_yields_pc5$residuals)	#199 x 121
 
+#============== delta_hat ============
 
+lm_rf_pc<-lm(yields[,1] ~ as.matrix(pc_scores))
+
+delta_hat<-as.matrix(coef(lm_rf_pc))[1]       # 1x1
+Delta_hat<-as.matrix(coef(lm_rf_pc))[-1]      # 120 x 1
+Delta_hat_5pc<-as.matrix(coef(lm_rf_pc))[2:6] # 5x1
 
 
 
