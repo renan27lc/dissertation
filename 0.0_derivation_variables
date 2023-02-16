@@ -2,6 +2,8 @@ fin = t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M120
 ini = t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M121
 lm_yields_pc5<-lm(as.matrix(yields) ~ as.matrix(pc_scores[,1:5]))
 i_5<-as.matrix(rep(1, 5))     #5x1
+i_120<-as.matrix(rep(1, 120))     #120x1
+
 #============================  ============================
 
 
@@ -27,7 +29,7 @@ U_hat_fin <-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
 
 #==Equação final, traduzir pra R:
 
-kappa_hat <-    #120x5
+kappa_hat <-                                                                         #120x5
              crossprod(     #120x5
                        as.matrix(beta_hat),       #5x120
                        t(crossprod(               #5x5
@@ -49,8 +51,7 @@ eta_hat <-crossprod(       #120x5
                                  t(i_5))))               #1x5
           +Delta_hat_5pc   #5x1                                                                            ; h-1 (M1 a M120)
 
-# vai multiplicar com:  t(X_<-pc5_ini)        #5x198                       ; t (1/06 a 6/22)
-# será que são 5 regressões então, uma pra cada pc? ou uma pra cada M?
+View(crossprod(t(X_),t(eta_hat))                                                     #120x198                                                        ; t (1/06 a 6/22)
 
 
 
