@@ -1,11 +1,45 @@
 #============================  ============================
+fin = t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M120
+ini = t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M121
+lm_yields_pc5<-lm(as.matrix(yields) ~ as.matrix(pc_scores[,1:5]))
+
+
+U_hat<-as.matrix(lm_yields_pc5$residuals)    # y ~ pc; 199 x 121
+
+beta_hat<-as.matrix(coef(lm_A14)[2:6,])			# 5 x 120; h-1 (M1 a M120)
+
+lambda_hat<-crossprod(				# 5x1
+
+Sigma_hat<-crossprod(V_hat)/192 # Covariance matrix of residuals (198-6)df	# 5x5
+
+sig2_hat<-sum(diag(crossprod(E_hat)))/(187*8)		# 1x1
 
 
 
+r*_t = delta + Delta'*X_t (MQO para descobrir deltas)
+delta_hat<-
+Delta_hat<-
 
-U_hat<-lm_yini_pc5$residuals
 
-beta
+
+Considerando:
+
+k(n-1) = 
+  beta'(h-1)\lambda 
+  -0.5(beta'(h-1) *Sigma * beta(h-1) + sigma^2) 
+  -delta
+
+
+Gamma'(n-1) = beta'(h-1)*Lambda +\Delta
+
+epsilon_{t+1}(n-1) = beta'(h-1)*v(t+1) + u_{t+1}(n-1) - u_t(n)
+
+Temos:
+
+
+
+rx_{t+1}(n-1) = k(n-1) + Gamma'(n-1)*X_t + epsilon_{t+1}(n-1)
+
 
 
 
