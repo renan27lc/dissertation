@@ -242,86 +242,10 @@ E_hat<-as.matrix(lm_A14$residuals)	#198x6
 #lm(t_rxs[1,]~Z_tilde[2:6,]+Z_tilde[7:11,])
 
 
-sig2_hat<-sum(diag(crossprod(E_hat)))/(192*6)
-
-beta_hat<-matrix(cbind(c(
-	    lm_A14$coefficients[2:6,1],
-	    lm_A14$coefficients[2:6,2],
-	    lm_A14$coefficients[2:6,3],
-	    lm_A14$coefficients[2:6,4],
-	    lm_A14$coefficients[2:6,5],
-	    lm_A14$coefficients[2:6,6])
-	)
-	,5,6)
-
-B_ast<-matrix(
-	cbind(
-             crossprod(t(beta_hat[,1])),
-             crossprod(t(beta_hat[,2])),
-             crossprod(t(beta_hat[,3])),
-             crossprod(t(beta_hat[,4])),
-             crossprod(t(beta_hat[,5])),
-             crossprod(t(beta_hat[,6]))
-	     )
-	,25,6)
+sig2_hat<-sum(diag(crossprod(E_hat)))/(187*8)	# verificar denominador
 
 
-#============== lambda0_hat ============
-
-c_hat<-matrix(cbind(c(
-	    lm_A14$coefficients[7:11,1],
-	    lm_A14$coefficients[7:11,2],
-	    lm_A14$coefficients[7:11,3],
-	    lm_A14$coefficients[7:11,4],
-	    lm_A14$coefficients[7:11,5],
-	    lm_A14$coefficients[7:11,6])
-		),5,6)
-
-lambda1_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat))),crossprod(t(beta_hat),t(c_hat))))
-
-#============== lambda0_hat ============
-
-vec_Sigma<-as.matrix(as.vector(Sigma_hat))	#25x1
-Basc_vecSigma<-crossprod(B_ast,vec_Sigma)		#6x1
-betabeta_inv<- solve(crossprod(t(beta_hat)))	#5x5
-#betabeta<- crossprod(t(beta_hat),t(beta_hat))
-
-a_hat<-coef(lm_A14)[1,]				#1x120
-
-a_hat_M296<-cbind(				#1x8
-	coef(lm_A14)[1,2],
-	coef(lm_A14)[1,3],
-	coef(lm_A14)[1,9],
-	coef(lm_A14)[1,12],
-	coef(lm_A14)[1,24],
-	coef(lm_A14)[1,48],
-	coef(lm_A14)[1,72],
-	coef(lm_A14)[1,96])
-
-i_8<-as.data.frame(rep(1,8))
-
-lambda0_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat),as.matrix( t(a_hat) + Basc_vecSigma/2 + sig2_hat*i_8))))
-
-#============================  ============================
-
-
-
-#====== estimando parâmetros Adrian (14):
-
-lm_A14<-lm(as.matrix(r_xs) ~ V_hat[1:198,1:5] + X_[1:198,1:5])
-
-E_hat<-as.matrix(lm_A14$residuals)	#198x6
-
-
-
-#Z_tilde<- t(cbind(i_198,V_hat,X_))	#11x198
-#lm(t_rxs[1,]~Z_tilde[2:6,]+Z_tilde[7:11,])
-
-
-sig2_hat<-sum(diag(crossprod(E_hat)))/(187*6)
-
-
-beta_hat<-coef(lm_A14)[2:6,]			# 5x120
+beta_hat<-as.matrix(coef(lm_A14)[2:6,])			# 5x120
 
 beta_hat_M296<-cbind(			# 5x8
 	coef(lm_A14)[2:6,2],
@@ -350,7 +274,7 @@ B_ast_M296<-matrix(					# 25x8
 
 #============== Lambda_hat ============
 
-c_hat<-coef(lm_A14)[7:11,]
+c_hat<-as.matrix(coef(lm_A14)[7:11,])
 
 c_hat_M296<-cbind(
      coef(lm_A14)[7:11,2],
@@ -371,7 +295,7 @@ BascM296_vecSigma<-crossprod(B_ast_M296,vec_Sigma)		#8x1
 betabeta_inv<- solve(crossprod(t(beta_hat)))	#5x5
 #betabeta<- crossprod(t(beta_hat),t(beta_hat))
 
-a_hat<-coef(lm_A14)[1,]				#1x120
+a_hat<-as.matrix(coef(lm_A14)[1,])				#1x120
 
 a_hat_M296<-cbind(				#1x8
 	coef(lm_A14)[1,2],
@@ -387,7 +311,7 @@ i_8<-as.data.frame(rep(1,8))
 
 lambda_hat <- as.data.frame(crossprod(betabeta_inv, crossprod(t(beta_hat_M296),as.matrix( t(a_hat_M296) + BascM296_vecSigma/2 + sig2_hat*i_8))))
 
-u_hat<-lm_yini_pc5$residuals
+u_hat<-as.matrix(lm_yini_pc5$residuals)
 
 
 
@@ -460,7 +384,7 @@ colnames(MSPExphyp_6M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 lm_pc5_alpha_hat<-t(lm_pc5$coefficients[1,])
 lm_pc5_beta_hat<-lm_pc5$coefficients[2:6,]
 
-i_198<-as.data.frame(rep(1, 198))
+i_198<-as.matrix(rep(1, 198))
 
 E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(lm_pc5_beta_hat,t(pc5_ini))))
 
@@ -482,8 +406,9 @@ row.names(MSPEpc5_6M)<-"MSPE_rxs_pc5"
 
 #=== adrian 3 steps
 
-E_rxs_a14<-as.data.frame(t(crossprod(a_hat,t(i_198))+crossprod(beta_hat,t(V_hat))+crossprod(c_hat,t(X_)))) # [198x120] = t([1x120]*[1x198] + [5x120]*[5x198] + [5x120]*[5x198])
+E_rxs_a14<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(beta_hat,t(V_hat))+crossprod(c_hat,t(X_)))) # [198x120] = t([1x120]*[1x198] + [5x120]*[5x198] + [5x120]*[5x198])
 
+#MSPE_adrian3steps<-mean(as.matrix(r_xs-E_rxs_a14)^2)
 
 MSPEadrian3steps_296M<-matrix(c(
   mean(as.matrix(r_xs[,2]-E_rxs_a14[,2])^2),
@@ -496,27 +421,7 @@ MSPEadrian3steps_296M<-matrix(c(
   mean(as.matrix(r_xs[,96]-E_rxs_a14[,96])^2))
       ,1,8)
 
-colnames(MSPEadrian3steps_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")	
-#row.names(MSPEpc5_6M)<-"MSPE_rxs_pc5"
-
-#MSPE_adrian3steps<-mean(as.matrix(r_xs-E_rxs_a14)^2)
-
-
-
-#MSPEadrian3steps_6M<-matrix(c(
-#  mean(as.matrix(r_xs[,1]-E_rxs_a14[,1])^2),
-#  mean(as.matrix(r_xs[,2]-E_rxs_a14[,2])^2),
-#  mean(as.matrix(r_xs[,3]-E_rxs_a14[,3])^2),
-# mean(as.matrix(r_xs[,4]-E_rxs_a14[,4])^2),
-#  mean(as.matrix(r_xs[,5]-E_rxs_a14[,5])^2),
-#  mean(as.matrix(r_xs[,6]-E_rxs_a14[,6])^2))
-#      ,1,6)
-
-#colnames(MSPEadrian3steps_6M)<-c("M1","M2","M3","M4","M5","M6")
-#row.names(MSPEpc5_6M)<-"MSPE_rxs_pc5"
-
-#MSPE_adrian3steps<-mean(as.matrix(r_xs-E_rxs_a14)^2)
-
+colnames(MSPEadrian3steps_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 #=== ratio
 
