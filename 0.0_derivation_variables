@@ -4,8 +4,6 @@ ini = t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M121
 lm_yields_pc5<-lm(as.matrix(yields) ~ as.matrix(pc_scores[,1:5]))
 
 
-U_hat<-as.matrix(lm_yields_pc5$residuals)    # y ~ pc; 199 x 121
-
 beta_hat<-as.matrix(coef(lm_A14)[2:6,])			# 5 x 120; h-1 (M1 a M120)
 
 lambda_hat<-crossprod(				# 5x1
@@ -14,12 +12,29 @@ Sigma_hat<-crossprod(V_hat)/192 # Covariance matrix of residuals (198-6)df	# 5x5
 
 sig2_hat<-sum(diag(crossprod(E_hat)))/(187*8)		# 1x1
 
+delta_hat<-as.matrix(coef(lm_rf_pc))[1]       # 1x1
+Delta_hat<-as.matrix(coef(lm_rf_pc))[-1]      # 120 x 1
+Delta_hat_5pc<-as.matrix(coef(lm_rf_pc))[2:6] # 5x1
+
+Lambda_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat_M296))),crossprod(t(beta_hat_M296),t(c_hat_M296))))	# 5x5
+
+V_hat<-as.matrix(residuals(var1_pc5))			#198 x 5; t+1 (2/06 a 7/22)
+
+U_hat<-as.matrix(lm_yields_pc5$residuals)    # y ~ pc; 199 x 121
+U_hat_ini<-as.matrix(lm_yields_pc5$residuals[1:198,2:121])
+U_hat_fin<-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
+
+#==Equação final, traduzir pra R:
+
+k(n-1) = 
+  beta'(h-1)\lambda 
+  -0.5(beta'(h-1) *Sigma * beta(h-1) + sigma^2) 
+  -delta
 
 
-r*_t = delta + Delta'*X_t (MQO para descobrir deltas)
-delta_hat<-
-Delta_hat<-
+Gamma'(n-1) = beta'(h-1)*Lambda +\Delta
 
+epsilon_{t+1}(n-1) = beta'(h-1)*v(t+1) + u_{t+1}(n-1) - u_t(n)
 
 
 Considerando:
