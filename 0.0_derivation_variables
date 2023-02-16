@@ -1,7 +1,8 @@
-#============================  ============================
 fin = t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M120
 ini = t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M121
 lm_yields_pc5<-lm(as.matrix(yields) ~ as.matrix(pc_scores[,1:5]))
+i_5<-as.matrix(rep(1, 5))     #5x1
+#============================  ============================
 
 
 beta_hat<-as.matrix(coef(lm_A14)[2:6,])			# 5 x 120; h-1 (M1 a M120)
@@ -16,42 +17,51 @@ delta_hat<-as.matrix(coef(lm_rf_pc))[1]       # 1x1
 Delta_hat<-as.matrix(coef(lm_rf_pc))[-1]      # 120 x 1
 Delta_hat_5pc<-as.matrix(coef(lm_rf_pc))[2:6] # 5x1
 
-Lambda_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat_M296))),crossprod(t(beta_hat_M296),t(c_hat_M296))))	# 5x5
+Lambda_hat <-as.data.frame(crossprod(solve(crossprod(t(beta_hat_M296))),crossprod(t(beta_hat_M296),t(c_hat_M296))))	# 5x5
 
-V_hat<-as.matrix(residuals(var1_pc5))			#198 x 5; t+1 (2/06 a 7/22)
+V_hat <-as.matrix(residuals(var1_pc5))			#198 x 5; t+1 (2/06 a 7/22)
 
-U_hat<-as.matrix(lm_yields_pc5$residuals)    # y ~ pc; 199 x 121
-U_hat_ini<-as.matrix(lm_yields_pc5$residuals[1:198,2:121])
-U_hat_fin<-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
+U_hat <-as.matrix(lm_yields_pc5$residuals)    # y ~ pc; 199 x 121
+U_hat_ini <-as.matrix(lm_yields_pc5$residuals[1:198,2:121])
+U_hat_fin <-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
 
 #==Equação final, traduzir pra R:
 
-K_hat <- crossprod(as.matrix(beta_hat),as.matrix(lambda_hat))-(crossprod(t(crossprod(beta_hat,Sigma_hat)),beta_hat)/2 + sig2_hat)-delta_hat
+kappa_hat <-    #120x5
+             crossprod(     #120x5
+                       as.matrix(beta_hat),       #5x120
+                       t(crossprod(               #5x5
+                                 t(lambda_hat),           #1x5
+                                 t(i_5))))                #1x5
+             -(crossprod(   #120x120
+                       t(crossprod(               #5x120
+                                   beta_hat,              #5x120
+                                   Sigma_hat)),           #5x5
+                       beta_hat)                  #5x120
+             +sig2_hat)/2   #1x1
+             -delta_hat     #1x1
 
 
-Gamma'(n-1) = beta'(h-1)*Lambda +\Delta
+eta_hat <-crossprod(       #120x5
+                    as.matrix(beta_hat),      #5x120
+                    t(crossprod(               #5x5
+                                t(lambda_hat),           #1x5
+                                 t(i_5))))               #1x5
+          +Delta_hat_5pc   #5x1                                                                            ; h-1 (M1 a M120)
 
-epsilon_{t+1}(n-1) = beta'(h-1)*v(t+1) + u_{t+1}(n-1) - u_t(n)
-
-
-Considerando:
-
-k(n-1) = 
-  beta'(h-1)\lambda 
-  -0.5(beta'(h-1) *Sigma * beta(h-1) + sigma^2) 
-  -delta
+# vai multiplicar com:  t(X_<-pc5_ini)        #5x198                       ; t (1/06 a 6/22)
+# será que são 5 regressões então, uma pra cada pc? ou uma pra cada M?
 
 
-Gamma'(n-1) = beta'(h-1)*Lambda +\Delta
 
-epsilon_{t+1}(n-1) = beta'(h-1)*v(t+1) + u_{t+1}(n-1) - u_t(n)
+
+epsilon_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini    #198x120                   ; t+1 (2/06 a 7/22); h-1 (M1 a M120)
+
 
 Temos:
 
-
-
-rx_{t+1}(n-1) = k(n-1) + Gamma'(n-1)*X_t + epsilon_{t+1}(n-1)
-
+E_rxs_adrian <- kappa_hat + eta_hat*X_t + epsilon_hat     # 198 x 120
+                #kappa_hat * i_198
 
 
 
