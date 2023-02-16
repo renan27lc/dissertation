@@ -26,10 +26,7 @@ U_hat_fin<-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
 
 #==Equação final, traduzir pra R:
 
-k(n-1) = 
-  beta'(h-1)\lambda 
-  -0.5(beta'(h-1) *Sigma * beta(h-1) + sigma^2) 
-  -delta
+K_hat <- crossprod(as.matrix(beta_hat),as.matrix(lambda_hat))-(crossprod(t(crossprod(beta_hat,Sigma_hat)),beta_hat)/2 + sig2_hat)-delta_hat
 
 
 Gamma'(n-1) = beta'(h-1)*Lambda +\Delta
