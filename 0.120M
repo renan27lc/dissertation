@@ -142,22 +142,22 @@ lm_mns.lnPfin_xphyp_M96<-lm(formula = as.matrix(mns.lnP_fin[,120]) ~ as.matrix(m
 
 # ====== E[1 month return] expectations hypothesis
 
-r_h1mo<- mns.lnP_ini - mns.lnP_fin 	#return rate for holding the bond for 1 month
-rownames(r_h1mo)<-rownames(mns.lnP_fin)
-colnames(r_h1mo)<-colnames(mns.lnP_fin)
+r_1mo<- mns.lnP_ini - mns.lnP_fin 	#return rate for holding the bond for 1 month
+rownames(r_1mo)<-rownames(mns.lnP_fin)
+colnames(r_1mo)<-colnames(mns.lnP_fin)
 
-lm_rh1mo_xphyp<-lm(as.matrix(r_h1mo) ~ rf)
-summary_lm_rh1mo_xphyp<-summary(lm_rh1mo_xphyp)
+lm_r1mo_xphyp<-lm(as.matrix(r_1mo) ~ rf)
+summary_lm_r1mo_xphyp<-summary(lm_r1mo_xphyp)
 
-lm_rh1mo_xphyp_ab1<-lm(as.matrix(I(r_h1mo - rf)) ~ rf)
-summary_lm_rh1mo_xphyp_ab1<-summary(lm_rh1mo_xphyp_ab1)
+lm_r1mo_xphyp_ab1<-lm(as.matrix(I(r_1mo - rf)) ~ rf)
+summary_lm_r1mo_xphyp_ab1<-summary(lm_r1mo_xphyp_ab1)
 
-#lm_rh1mo_xphyp_a0<-lm(formula = as.matrix(r_h1mo) ~ rf -1)
-#summary_lm_rh1mo_xphyp_a0<-summary(lm_rh1mo_xphyp_a0)
+#lm_r1mo_xphyp_a0<-lm(formula = as.matrix(r_1mo) ~ rf -1)
+#summary_lm_r1mo_xphyp_a0<-summary(lm_r1mo_xphyp_a0)
 
 
-lm_rh1mo_xphyp_a0b1<-lm(formula = as.matrix(I(r_h1mo - rf)) ~ rf -1)
-summary_lm_rh1mo_xphyp_a0b1<-summary(lm_rh1mo_xphyp_a0b1)
+lm_r1mo_xphyp_a0b1<-lm(formula = as.matrix(I(r_1mo - rf)) ~ rf -1)
+summary_lm_r1mo_xphyp_a0b1<-summary(lm_r1mo_xphyp_a0b1)
 
 # ===================== PCA ==========================
 
@@ -209,7 +209,7 @@ lm_yfin_pc5<-lm(as.matrix(yields_fin) ~ as.matrix(pc5_ini))
 # ===================== LM() EXCESS RETURN ~ PC OF YIELDS ==========================
 
 
-r_xs<- r_h1mo - rf.rep       # excess returns
+r_xs<- r_1mo - rf.rep       # excess returns
 rownames(r_xs)<-rownames(mns.lnP_fin)
 colnames(r_xs)<-colnames(mns.lnP_fin)
 
@@ -259,6 +259,132 @@ beta_hat_M296<-cbind(			# 5x8
 	coef(lm_A14)[2:6,96])
 
 
+B_ast<-matrix(					# 25x120
+	cbind(
+	     crossprod(t(beta_hat[,1])),
+             crossprod(t(beta_hat[,2])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,3])),
+	     crossprod(t(beta_hat[,4])),
+	     crossprod(t(beta_hat[,5])),
+	     crossprod(t(beta_hat[,6])),
+	     crossprod(t(beta_hat[,7])),
+	     crossprod(t(beta_hat[,8])),
+	     crossprod(t(beta_hat[,9])),
+	     crossprod(t(beta_hat[,10])),
+	     crossprod(t(beta_hat[,11])),
+             crossprod(t(beta_hat[,12])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,13])),
+	     crossprod(t(beta_hat[,14])),
+	     crossprod(t(beta_hat[,15])),
+	     crossprod(t(beta_hat[,16])),
+	     crossprod(t(beta_hat[,17])),
+	     crossprod(t(beta_hat[,18])),
+	     crossprod(t(beta_hat[,19])),
+	     crossprod(t(beta_hat[,20])),
+	     crossprod(t(beta_hat[,21])),
+             crossprod(t(beta_hat[,22])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,23])),
+	     crossprod(t(beta_hat[,24])),
+	     crossprod(t(beta_hat[,25])),
+	     crossprod(t(beta_hat[,26])),
+	     crossprod(t(beta_hat[,27])),
+	     crossprod(t(beta_hat[,28])),
+	     crossprod(t(beta_hat[,29])),
+	     crossprod(t(beta_hat[,30])),
+	     crossprod(t(beta_hat[,31])),
+             crossprod(t(beta_hat[,32])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,33])),
+	     crossprod(t(beta_hat[,34])),
+	     crossprod(t(beta_hat[,35])),
+	     crossprod(t(beta_hat[,36])),
+	     crossprod(t(beta_hat[,37])),
+	     crossprod(t(beta_hat[,38])),
+	     crossprod(t(beta_hat[,39])),
+	     crossprod(t(beta_hat[,40])),
+	     crossprod(t(beta_hat[,41])),
+             crossprod(t(beta_hat[,42])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,43])),
+	     crossprod(t(beta_hat[,44])),
+	     crossprod(t(beta_hat[,45])),
+	     crossprod(t(beta_hat[,46])),
+	     crossprod(t(beta_hat[,47])),
+	     crossprod(t(beta_hat[,48])),
+	     crossprod(t(beta_hat[,49])),
+	     crossprod(t(beta_hat[,50])),
+	     crossprod(t(beta_hat[,51])),
+             crossprod(t(beta_hat[,52])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,53])),
+	     crossprod(t(beta_hat[,54])),
+	     crossprod(t(beta_hat[,55])),
+	     crossprod(t(beta_hat[,56])),
+	     crossprod(t(beta_hat[,57])),
+	     crossprod(t(beta_hat[,58])),
+	     crossprod(t(beta_hat[,59])),
+	     crossprod(t(beta_hat[,60])),
+	     crossprod(t(beta_hat[,61])),
+             crossprod(t(beta_hat[,62])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,63])),
+	     crossprod(t(beta_hat[,64])),
+	     crossprod(t(beta_hat[,65])),
+	     crossprod(t(beta_hat[,66])),
+	     crossprod(t(beta_hat[,67])),
+	     crossprod(t(beta_hat[,68])),
+	     crossprod(t(beta_hat[,69])),
+	     crossprod(t(beta_hat[,70])),
+	     crossprod(t(beta_hat[,71])),
+             crossprod(t(beta_hat[,72])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,73])),
+	     crossprod(t(beta_hat[,74])),
+	     crossprod(t(beta_hat[,75])),
+	     crossprod(t(beta_hat[,76])),
+	     crossprod(t(beta_hat[,77])),
+	     crossprod(t(beta_hat[,78])),
+	     crossprod(t(beta_hat[,79])),
+	     crossprod(t(beta_hat[,80])),
+	     crossprod(t(beta_hat[,81])),
+             crossprod(t(beta_hat[,82])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,83])),
+	     crossprod(t(beta_hat[,84])),
+	     crossprod(t(beta_hat[,85])),
+	     crossprod(t(beta_hat[,86])),
+	     crossprod(t(beta_hat[,87])),
+	     crossprod(t(beta_hat[,88])),
+	     crossprod(t(beta_hat[,89])),
+	     crossprod(t(beta_hat[,90])),
+	     crossprod(t(beta_hat[,91])),
+             crossprod(t(beta_hat[,92])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,93])),
+	     crossprod(t(beta_hat[,94])),
+	     crossprod(t(beta_hat[,95])),
+	     crossprod(t(beta_hat[,96])),
+	     crossprod(t(beta_hat[,97])),
+	     crossprod(t(beta_hat[,98])),
+	     crossprod(t(beta_hat[,99])),
+	     crossprod(t(beta_hat[,100])),
+	     crossprod(t(beta_hat[,101])),
+             crossprod(t(beta_hat[,102])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,103])),
+	     crossprod(t(beta_hat[,104])),
+	     crossprod(t(beta_hat[,105])),
+	     crossprod(t(beta_hat[,106])),
+	     crossprod(t(beta_hat[,107])),
+	     crossprod(t(beta_hat[,108])),
+	     crossprod(t(beta_hat[,109])),
+	     crossprod(t(beta_hat[,110])),
+	     crossprod(t(beta_hat[,111])),
+             crossprod(t(beta_hat[,112])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,113])),
+	     crossprod(t(beta_hat[,114])),
+	     crossprod(t(beta_hat[,115])),
+	     crossprod(t(beta_hat[,116])),
+	     crossprod(t(beta_hat[,117])),
+	     crossprod(t(beta_hat[,118])),
+	     crossprod(t(beta_hat[,119])),
+	     crossprod(t(beta_hat[,120]))
+	       )
+	,25,120)
+
+
 B_ast_M296<-matrix(					# 25x8
 	cbind(
              crossprod(t(beta_hat[,2])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
@@ -292,7 +418,8 @@ Lambda_hat<-as.data.frame(crossprod(solve(crossprod(t(beta_hat_M296))),crossprod
 #============== lambda_hat ============
 
 vec_Sigma<-as.matrix(as.vector(Sigma_hat))	#25x1
-BascM296_vecSigma<-crossprod(B_ast_M296,vec_Sigma)		#8x1
+B_ast_vecSigma<-crossprod(B_ast,vec_Sigma)		#120x1
+Bast_M296_vecSigma<-crossprod(B_ast_M296,vec_Sigma)		#8x1
 betabeta_inv<- solve(crossprod(t(beta_hat)))	#5x5
 #betabeta<- crossprod(t(beta_hat),t(beta_hat))
 
@@ -308,16 +435,20 @@ a_hat_M296<-cbind(				#1x8
 	coef(lm_A14)[1,72],
 	coef(lm_A14)[1,96])
 
-i_8<-as.data.frame(rep(1,8))
+i_8<-as.data.frame(rep(1,8))			#8x1
+
+
 
 lambda_hat<-crossprod(				# 5x1
 	betabeta_inv,
 	crossprod(
-		t(beta_hat_M296),
+		t(beta_hat),
 		as.matrix(
-			t(a_hat_M296) + 
-			BascM296_vecSigma/2 + 
-			sig2_hat*i_8)))
+			a_hat + 		#120x1
+			(B_ast_vecSigma + 	#120x1	
+			sig2_hat*i_120)/2)))	#120x1
+
+#lambda_hat_M296<-crossprod(betabeta_inv,crossprod(t(beta_hat_M296),as.matrix(t(a_hat_M296)+(BascM296_vecSigma+sig2_hat*i_8)/2)))
 
 U_hat<-as.matrix(lm_yields_pc5$residuals)	#199 x 121
 
@@ -496,31 +627,31 @@ row.names(Table1_bmstr_mns.lnPfin)<-c("M1","M6")
 
 View(Table1_bmstr_mns.lnPfin)
 
-#===== r_h1mo
+#===== r_1mo
 
-summary_lm_rh1mo_xphyp<-summary(lm_rh1mo_xphyp)
+summary_lm_r1mo_xphyp<-summary(lm_r1mo_xphyp)
 
-Table1_bmstr_rh1mo<-matrix(c(
-	summary_lm_rh1mo_xphyp$`Response M1`$coefficients[1,1],
-	summary_lm_rh1mo_xphyp$`Response M6`$coefficients[1,1],
-	summary_lm_rh1mo_xphyp$`Response M1`$coefficients[1,4],
-	summary_lm_rh1mo_xphyp$`Response M6`$coefficients[1,4],
-	summary_lm_rh1mo_xphyp$`Response M1`$coefficients[2,1],
-	summary_lm_rh1mo_xphyp$`Response M6`$coefficients[2,1],
-	summary_lm_rh1mo_xphyp$`Response M1`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp$`Response M6`$coefficients[2,4],
-	summary_lm_rh1mo_xphyp$`Response M1`$adj.r.squared,
-	summary_lm_rh1mo_xphyp$`Response M6`$adj.r.squared
+Table1_bmstr_r1mo<-matrix(c(
+	summary_lm_r1mo_xphyp$`Response M1`$coefficients[1,1],
+	summary_lm_r1mo_xphyp$`Response M6`$coefficients[1,1],
+	summary_lm_r1mo_xphyp$`Response M1`$coefficients[1,4],
+	summary_lm_r1mo_xphyp$`Response M6`$coefficients[1,4],
+	summary_lm_r1mo_xphyp$`Response M1`$coefficients[2,1],
+	summary_lm_r1mo_xphyp$`Response M6`$coefficients[2,1],
+	summary_lm_r1mo_xphyp$`Response M1`$coefficients[2,4],
+	summary_lm_r1mo_xphyp$`Response M6`$coefficients[2,4],
+	summary_lm_r1mo_xphyp$`Response M1`$adj.r.squared,
+	summary_lm_r1mo_xphyp$`Response M6`$adj.r.squared
 			),2,5)
 
-colnames(Table1_bmstr_rh1mo)<-c("Intercept","P_value","Beta","P_value","R_squared")
-row.names(Table1_bmstr_rh1mo)<-c("M1","M6")
+colnames(Table1_bmstr_r1mo)<-c("Intercept","P_value","Beta","P_value","R_squared")
+row.names(Table1_bmstr_r1mo)<-c("M1","M6")
 
-View(Table1_bmstr_rh1mo)
+View(Table1_bmstr_r1mo)
 
 #3 H0 que ela faz (beta=1, alpha=beta=0 e alpha=0, beta=1):
 
-summary_lm_rh1mo_xphyp_b0<-summary(lm_rh1mo_xphyp_b0)
+summary_lm_r1mo_xphyp_b0<-summary(lm_r1mo_xphyp_b0)
 
 View(MSPE_ratio)
 
@@ -539,8 +670,8 @@ lambdas
 
 #library("gridExtra")
 
-#pdf("lmrh1mo_tbl1.pdf", height=4, width=12)
-#grid.table(lmrh1mo_tbl1)
+#pdf("lmr1mo_tbl1.pdf", height=4, width=12)
+#grid.table(lmr1mo_tbl1)
 #dev.off()
 
 #pdf("MSPE_ratio.pdf", height=4, width=24)
