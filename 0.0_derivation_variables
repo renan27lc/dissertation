@@ -29,36 +29,37 @@ U_hat_fin <-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
 
 #==Equação final, traduzir pra R:
 
-kappa_hat <-                                                                         #120x5
-             crossprod(     #120x5
-                       as.matrix(beta_hat),       #5x120
-                       t(crossprod(               #5x5
-                                 t(lambda_hat),           #1x5
-                                 t(i_5))))                #1x5
-             -(crossprod(   #120x120
-                       t(crossprod(               #5x120
-                                   beta_hat,              #5x120
-                                   crossprod(
-                                             Sigma_hat,             #5x5
-                                             i_120)),               #120x1
-                       beta_hat)                  #5x120
-             +sig2_hat)/2   #1x1
-             -delta_hat     #1x1
 
 
+kappa_hat <-t(crossprod(as.matrix(beta_hat),as.matrix(lambda_hat)) -(B_ast_vecSigma + sig2_hat*i_120)/2 -(delta_hat*i_120))   #1x120
+View(t(crossprod(kappa_hat,t(i_198))))                                                                                             #120x198
+eta_hat <-crossprod(as.matrix(beta_hat),t(crossprod(t(lambda_hat),t(i_5))))+Delta_hat_5pc                         #120x5
+View(crossprod(t(X_),t(eta_hat)))                                                                                             #120x198
+epsilon_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini                                             #198x120
+
+
+
+
+
+kappa_hat <-                                                                         #120x
+             crossprod(                             #120x1
+                       as.matrix(beta_hat),           #5x120
+                       as.matrix(lambda_hat))         #5X1
+             -(B_ast_vecSigma + sig2_hat*i_120)/2   #120x1
+             -(delta_hat*i_120)                    #120x1
+             
 eta_hat <-crossprod(       #120x5
                     as.matrix(beta_hat),      #5x120
                     t(crossprod(               #5x5
                                 t(lambda_hat),           #1x5
                                 t(i_5))))               #1x5
-          +Delta_hat_5pc   #5x1                                                                            ; h-1 (M1 a M120)
-
-View(crossprod(t(X_),t(eta_hat))                                                     #120x198                                                        ; t (1/06 a 6/22)
+          +Delta_hat_5pc   #5x1
 
 
 
 
-epsilon_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini    #198x120                   ; t+1 (2/06 a 7/22); h-1 (M1 a M120)
+
+
 
 
 Temos:
