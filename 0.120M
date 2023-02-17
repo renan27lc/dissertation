@@ -67,10 +67,10 @@ Maturities = c(1:121)
 yields_daily_100_yr = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
 yields_daily_100_yr
 
-yields_daily_chrctr<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100/(100*12))))
+yields_daily_chrctr<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100_yr/(100*12))))
 colnames(yields_daily_chrctr)[1]<-"DATE"
 
-plot(colMeans(yields_daily_100),xlab = "Maturity",ylab = "Yields (%)")
+plot(colMeans(yields_daily_100_yr),xlab = "Maturity",ylab = "Yields (%)")
 
 
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
@@ -92,8 +92,7 @@ yields_clmn<-inner_join(last_days,yields_daily_clmn, by = "DATE")
 yields_daily<-column_to_rownames(yields_daily_clmn,var = "DATE")
 yields<-column_to_rownames(yields_clmn,var = "DATE")
 
-yields_fin<-yields[
-99, 1:120] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M120
+yields_fin<-yields[2:199, 1:120] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M120
 yields_ini<-yields[1:198, 2:121] # t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M121
 
 mat_fin.rep<-t(as.data.frame(rep(as.data.frame(Maturities[1:120])[1],198)))
@@ -427,6 +426,7 @@ B_ast_vecSigma<-crossprod(B_ast,vec_Sigma)		#120x1
 Bast_M296_vecSigma<-crossprod(B_ast_M296,vec_Sigma)		#8x1
 betabeta_inv<- solve(crossprod(t(beta_hat)))	#5x5
 #betabeta<- crossprod(t(beta_hat),t(beta_hat))
+i_120<-as.matrix(rep(1, 120))     #120x1
 
 a_hat<-as.matrix(coef(lm_A14)[1,])				#1x120
 
@@ -556,6 +556,12 @@ row.names(MSPEpc5_296M)<-"MSPE_rxs_pc5"
 
 #=== adrian 3 steps
 
+i_5<-as.matrix(rep(1, 5))     #5x1
+kappa_hat <-t(crossprod(as.matrix(beta_hat),as.matrix(lambda_hat)) -(B_ast_vecSigma + sig2_hat*i_120)/2 -(delta_hat*i_120))   #1x120
+View(t(crossprod(kappa_hat,t(i_198))))                                                                                             #120x198
+eta_hat <-crossprod(as.matrix(beta_hat),t(crossprod(t(lambda_hat),t(i_5))))+Delta_hat_5pc                         #120x5
+View(crossprod(t(X_),t(eta_hat)))                                                                                             #120x198
+epsilon_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini                                             #198x120
 
 E_rxs_adrian <- t(crossprod(kappa_hat,t(i_198))) + crossprod(t(X_),t(eta_hat)) + epsilon_hat     # 198 x 120
 
