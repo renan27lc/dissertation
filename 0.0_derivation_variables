@@ -38,7 +38,9 @@ kappa_hat <-                                                                    
              -(crossprod(   #120x120
                        t(crossprod(               #5x120
                                    beta_hat,              #5x120
-                                   Sigma_hat)),           #5x5
+                                   crossprod(
+                                             Sigma_hat,             #5x5
+                                             i_120)),               #120x1
                        beta_hat)                  #5x120
              +sig2_hat)/2   #1x1
              -delta_hat     #1x1
@@ -48,7 +50,7 @@ eta_hat <-crossprod(       #120x5
                     as.matrix(beta_hat),      #5x120
                     t(crossprod(               #5x5
                                 t(lambda_hat),           #1x5
-                                 t(i_5))))               #1x5
+                                t(i_5))))               #1x5
           +Delta_hat_5pc   #5x1                                                                            ; h-1 (M1 a M120)
 
 View(crossprod(t(X_),t(eta_hat))                                                     #120x198                                                        ; t (1/06 a 6/22)
