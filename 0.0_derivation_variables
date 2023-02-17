@@ -27,15 +27,37 @@ U_hat <-as.matrix(lm_yields_pc5$residuals)    # y ~ pc; 199 x 121
 U_hat_ini <-as.matrix(lm_yields_pc5$residuals[1:198,2:121])
 U_hat_fin <-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
 
-#==Equação final, traduzir pra R:
-
-
+#==Equação final, resolver MSPE bizarro:
 
 kappa_hat <-t(crossprod(as.matrix(beta_hat),as.matrix(lambda_hat)) -(B_ast_vecSigma + sig2_hat*i_120)/2 -(delta_hat*i_120))   #1x120
 View(t(crossprod(kappa_hat,t(i_198))))                                                                                             #120x198
 eta_hat <-crossprod(as.matrix(beta_hat),t(crossprod(t(lambda_hat),t(i_5))))+Delta_hat_5pc                         #120x5
 View(crossprod(t(X_),t(eta_hat)))                                                                                             #120x198
 epsilon_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini                                             #198x120
+
+E_rxs_adrian <- t(crossprod(kappa_hat,t(i_198))) + crossprod(t(X_),t(eta_hat)) + epsilon_hat     # 198 x 120     
+
+MSPEadrian_296M<-matrix(c(
+  mean(as.matrix(r_xs[,2]-E_rxs_adrian[,2])^2),
+  mean(as.matrix(r_xs[,3]-E_rxs_adrian[,3])^2),
+  mean(as.matrix(r_xs[,9]-E_rxs_adrian[,9])^2),
+  mean(as.matrix(r_xs[,12]-E_rxs_adrian[,12])^2),
+  mean(as.matrix(r_xs[,24]-E_rxs_adrian[,24])^2),
+  mean(as.matrix(r_xs[,48]-E_rxs_adrian[,48])^2),
+  mean(as.matrix(r_xs[,72]-E_rxs_adrian[,72])^2),
+  mean(as.matrix(r_xs[,96]-E_rxs_adrian[,96])^2))
+      ,1,8)
+
+
+
+MSPEadrian_296M/MSPErw_296M
+
+
+
+
+
+#==================================OLD==========================================
+
 
 
 
@@ -54,18 +76,5 @@ eta_hat <-crossprod(       #120x5
                                 t(lambda_hat),           #1x5
                                 t(i_5))))               #1x5
           +Delta_hat_5pc   #5x1
-
-
-
-
-
-
-
-
-Temos:
-
-E_rxs_adrian <- kappa_hat + eta_hat*X_t + epsilon_hat     # 198 x 120
-                #kappa_hat * i_198
-
 
 
