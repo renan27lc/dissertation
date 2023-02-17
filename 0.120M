@@ -92,7 +92,8 @@ yields_clmn<-inner_join(last_days,yields_daily_clmn, by = "DATE")
 yields_daily<-column_to_rownames(yields_daily_clmn,var = "DATE")
 yields<-column_to_rownames(yields_clmn,var = "DATE")
 
-yields_fin<-yields[2:199, 1:120] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M120
+yields_fin<-yields[
+99, 1:120] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M120
 yields_ini<-yields[1:198, 2:121] # t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M121
 
 mat_fin.rep<-t(as.data.frame(rep(as.data.frame(Maturities[1:120])[1],198)))
@@ -200,6 +201,10 @@ pc5_ini<-as.matrix(pc_scores[1:198,1:5])
 
 # y(1:7/22,1:121) ~ pc()
 lm_yields_pc5<-lm(as.matrix(yields) ~ as.matrix(pc_scores[,1:5]))
+
+U_hat <-as.matrix(lm_yields_pc5$residuals)    # y ~ pc; 199 x 121
+U_hat_ini <-as.matrix(lm_yields_pc5$residuals[1:198,2:121])
+U_hat_fin <-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
 
 # y(t+1) ~ pc(t)
 lm_yfin_pc5<-lm(as.matrix(yields_fin) ~ as.matrix(pc5_ini))
@@ -490,7 +495,7 @@ Delta_hat_5pc<-as.matrix(coef(lm_rf_pc))[2:6] # 5x1
 E_rxs_rw<-as.data.frame(r_xs[1:197,])
 rxs_rw<-as.data.frame(r_xs[2:198,])
 
-MSPErw_6M<-matrix(c(
+MSPErw_296M<-matrix(c(
   mean(as.matrix(rxs_rw[,2]-E_rxs_rw[,2])^2),
   mean(as.matrix(rxs_rw[,3]-E_rxs_rw[,3])^2),
   mean(as.matrix(rxs_rw[,9]-E_rxs_rw[,9])^2),
@@ -501,7 +506,7 @@ MSPErw_6M<-matrix(c(
   mean(as.matrix(rxs_rw[,96]-E_rxs_rw[,96])^2))
     ,1,8)
 
-colnames(MSPErw_6M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")	
+colnames(MSPErw_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")	
 
 #MSPE_rw<-mean(as.matrix(rxs_rw-E_rxs_rw)^2)
 
@@ -509,7 +514,7 @@ colnames(MSPErw_6M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 E_rxs_xphyp<-0
 
-MSPExphyp_6M<-matrix(c(
+MSPExphyp_296M<-matrix(c(
   mean(as.matrix(r_xs[,2])^2),
   mean(as.matrix(r_xs[,3])^2),
   mean(as.matrix(r_xs[,9])^2),
@@ -520,7 +525,7 @@ MSPExphyp_6M<-matrix(c(
   mean(as.matrix(r_xs[,96])^2)
     ),1,8)
 
-colnames(MSPExphyp_6M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
+colnames(MSPExphyp_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 #MSPE_xphyp<-mean(as.matrix(r_xs)^2)
 
@@ -533,7 +538,7 @@ i_198<-as.matrix(rep(1, 198))
 
 E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(lm_pc5_beta_hat,t(pc5_ini))))
 
-MSPEpc5_6M<-matrix(c(
+MSPEpc5_296M<-matrix(c(
   mean(as.matrix(r_xs[,2]-E_rxs_pc5[,2])^2),
   mean(as.matrix(r_xs[,3]-E_rxs_pc5[,3])^2),
   mean(as.matrix(r_xs[,9]-E_rxs_pc5[,9])^2),
@@ -544,40 +549,55 @@ MSPEpc5_6M<-matrix(c(
   mean(as.matrix(r_xs[,96]-E_rxs_pc5[,96])^2))
       ,1,8)
 
-colnames(MSPEpc5_6M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")	
-row.names(MSPEpc5_6M)<-"MSPE_rxs_pc5"
+colnames(MSPEpc5_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")	
+row.names(MSPEpc5_296M)<-"MSPE_rxs_pc5"
 
 #MSPE_pc5<-mean(as.matrix(r_xs-E_rxs_pc5)^2)
 
 #=== adrian 3 steps
 
-E_rxs_a14<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(beta_hat,t(V_hat))+crossprod(c_hat,t(X_)))) # [198x120] = t([1x120]*[1x198] + [5x120]*[5x198] + [5x120]*[5x198])
 
-#MSPE_adrian3steps<-mean(as.matrix(r_xs-E_rxs_a14)^2)
+E_rxs_adrian <- t(crossprod(kappa_hat,t(i_198))) + crossprod(t(X_),t(eta_hat)) + epsilon_hat     # 198 x 120
 
-MSPEadrian3steps_296M<-matrix(c(
-  mean(as.matrix(r_xs[,2]-E_rxs_a14[,2])^2),
-  mean(as.matrix(r_xs[,3]-E_rxs_a14[,3])^2),
-  mean(as.matrix(r_xs[,9]-E_rxs_a14[,9])^2),
-  mean(as.matrix(r_xs[,12]-E_rxs_a14[,12])^2),
-  mean(as.matrix(r_xs[,24]-E_rxs_a14[,24])^2),
-  mean(as.matrix(r_xs[,48]-E_rxs_a14[,48])^2),
-  mean(as.matrix(r_xs[,72]-E_rxs_a14[,72])^2),
-  mean(as.matrix(r_xs[,96]-E_rxs_a14[,96])^2))
+
+MSPEadrian_296M<-matrix(c(
+  mean(as.matrix(r_xs[,2]-E_rxs_adrian[,2])^2),
+  mean(as.matrix(r_xs[,3]-E_rxs_adrian[,3])^2),
+  mean(as.matrix(r_xs[,9]-E_rxs_adrian[,9])^2),
+  mean(as.matrix(r_xs[,12]-E_rxs_adrian[,12])^2),
+  mean(as.matrix(r_xs[,24]-E_rxs_adrian[,24])^2),
+  mean(as.matrix(r_xs[,48]-E_rxs_adrian[,48])^2),
+  mean(as.matrix(r_xs[,72]-E_rxs_adrian[,72])^2),
+  mean(as.matrix(r_xs[,96]-E_rxs_adrian[,96])^2))
       ,1,8)
+      
+colnames(MSPEadrian_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
-colnames(MSPEadrian3steps_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
+
+#E_rxs_a14<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(beta_hat,t(V_hat))+crossprod(c_hat,t(X_)))) # [198x120] = t([1x120]*[1x198] + [5x120]*[5x198] + [5x120]*[5x198])
+#MSPE_adrian3steps<-mean(as.matrix(r_xs-E_rxs_a14)^2)
+#MSPEadrian3steps_296M<-matrix(c(
+#  mean(as.matrix(r_xs[,2]-E_rxs_a14[,2])^2),
+# mean(as.matrix(r_xs[,3]-E_rxs_a14[,3])^2),
+#  mean(as.matrix(r_xs[,9]-E_rxs_a14[,9])^2),
+#  mean(as.matrix(r_xs[,12]-E_rxs_a14[,12])^2),
+#  mean(as.matrix(r_xs[,24]-E_rxs_a14[,24])^2),
+#  mean(as.matrix(r_xs[,48]-E_rxs_a14[,48])^2),
+#  mean(as.matrix(r_xs[,72]-E_rxs_a14[,72])^2),
+#  mean(as.matrix(r_xs[,96]-E_rxs_a14[,96])^2))
+#      ,1,8)
+#colnames(MSPEadrian3steps_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 #=== ratio
 
 MSPE_ratio<-rbind(
-	MSPExphyp_6M/MSPErw_6M,
-	MSPEpc5_6M/MSPErw_6M,
-	MSPEadrian3steps_6M/MSPErw_6M)
+	MSPExphyp_296M/MSPErw_296M,
+	MSPEpc5_296M/MSPErw_296M,
+	MSPEadrian_296M/MSPErw_296M)
 	
-row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian3steps")
+row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian")
 
-#View(MSPE_ratio)
+View(MSPE_ratio)
 
 
 
