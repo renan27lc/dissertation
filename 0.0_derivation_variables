@@ -6,7 +6,6 @@ i_120<-as.matrix(rep(1, 120))     #120x1
 
 #============================  ============================
 
-
 beta_hat<-as.matrix(coef(lm_A14)[2:6,])			# 5 x 120; h-1 (M1 a M120)
 
 lambda_hat<-crossprod(				# 5x1
@@ -27,7 +26,9 @@ U_hat <-as.matrix(lm_yields_pc5$residuals)    # y ~ pc; 199 x 121
 U_hat_ini <-as.matrix(lm_yields_pc5$residuals[1:198,2:121])
 U_hat_fin <-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
 
-#==Equação final, resolver MSPE bizarro:
+
+#======================Equação final, resolver MSPE bizarro:====================================
+
 
 kappa_hat <-t(crossprod(as.matrix(beta_hat),as.matrix(lambda_hat)) -(B_ast_vecSigma + sig2_hat*i_120)/2 -(delta_hat*i_120))   #1x120
 View(t(crossprod(kappa_hat,t(i_198))))                                                                                             #120x198
