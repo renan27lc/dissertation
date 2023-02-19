@@ -1,0 +1,94 @@
+# get yields from St. Louis Fed FRED
+yield_curve <- list("DTB3", "DGS2", "DGS5", "DGS10", "DGS30") %>%
+  map(
+    ~getSymbols(.x, auto.assign=FALSE, src="FRED")
+  ) %>%
+  do.call(merge,.)
+
+# create our 3d surface yield curve
+yields%>%
+  # convert to numeric matrix
+  data.matrix() %>% 
+  # transpose
+  t() %>%
+  # draw our Plotly 3d surface
+  plot_ly(
+    x=yields_clmn$Date,
+    y=c(1:121),
+    z=.,
+    type="surface"
+  ) %>%
+  plotly::layout(
+    scene=list(
+      xaxis=list(title="date"),
+      yaxis=list(title="term"),
+      zaxis=list(title="yield")
+    )
+  )
+
+  
+# 3d scatter chart
+yield_curve_tidy <- yields %>%
+  data.frame() %>%
+  add_rownames(var="date") %>%
+  gather(symbol,yield,-date) %>%
+  mutate(term=c(0.25,2,5,10,30)[match(symbol,colnames(yield_curve))])
+
+yield_curve_tidy[which(!is.na(yield_curve_tidy$yield)),] %>%
+  group_by(symbol) %>%
+  plot_ly(
+    x = ~date, y = ~term, z = ~yield,
+    type="scatter3d",
+    mode="markers",
+    size=3,
+    color=~yield
+  )
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  yields_daily_100_yr %>%
+  # convert to numeric matrix
+  data.matrix() %>% 
+  # transpose
+  t() %>%
+  # draw our Plotly 3d surface
+  plot_ly(
+    x=dates_daily,
+    y=c(0:121),
+    z=.,
+    type="surface"
+  ) %>%
+  plotly::layout(
+    scene=list(
+      xaxis=list(title="date"),
+      yaxis=list(title="term"),
+      zaxis=list(title="yield")
+    )
+  )
+
+  
+# 3d scatter chart
+yield_curve_tidy <- yields_daily_100_yr %>%
+  data.frame() %>%
+  add_rownames(var="date") %>%
+  gather(symbol,yield,-date) %>%
+  mutate(term=c(0.25,2,5,10,30)[match(symbol,colnames(yield_curve))])
+
+yield_curve_tidy[which(!is.na(yield_curve_tidy$yield)),] %>%
+  group_by(symbol) %>%
+  plot_ly(
+    x = ~date, y = ~term, z = ~yield,
+    type="scatter3d",
+    mode="markers",
+    size=3,
+    color=~yield
+  )
