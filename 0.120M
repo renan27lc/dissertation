@@ -70,7 +70,7 @@ yields_daily_100_yr
 yields_daily_chrctr<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100_yr/(100*12))))
 colnames(yields_daily_chrctr)[1]<-"DATE"
 
-plot(colMeans(yields_daily_100_yr),xlab = "Maturity",ylab = "Yields (%)")
+#plot(colMeans(yields_daily_100_yr),xlab = "Maturity",ylab = "Yields (%)")
 
 
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
@@ -166,8 +166,8 @@ f_draw_factor_loading<-function(m.loadings,var,title){
     
     x11(width=16/3,height=5);
     matplot(mat,m.loadings,type="l",xaxt="n",lwd=5,lty=1,
-            main=title,col=rainbow(5),ylim=c(-0.3,0.5),
-            xlab="Maturity (month)",ylab="Factor loadings")
+            ,col=rainbow(5),ylim=c(-0.3,0.5),
+            xlab="Maturidade (meses)",ylab="Peso dos Fatores")
     legend('bottomright',max(m.loadings),col=rainbow(5),lty=1,lwd=3,
            legend=paste0(c("PC1","PC2","PC3","PC4","PC5"),var))
     axis(1,mat,mat)
