@@ -403,7 +403,6 @@ zaxis=list(title="Taxa (% a.a.)")))
 
 #===================diebold figure 1.2=======================
 
-
 plot(yields_clmn$DATE,                          
      yields_clmn$M2*1200,
      type = "l",
