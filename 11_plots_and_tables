@@ -690,9 +690,39 @@ colnames(Table_lm_pc5)<-c("H0: alpha, beta = 0 P_value","Adj R2")
 row.names(Table_lm_pc5)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 
+#================table 6 yield curves===============
 
-
-
+plot(c(1:121),                          
+     yields[3,]*1200, 
+     type = "l",
+     col = 2,
+     ylim = c(0, 18),
+     xlab = "Ano",
+     ylab = "Taxa Interna de Retorno - YTM (% a.a.)")
+lines(c(1:121),                          
+      yields[37,]*1200,
+      type = "l",
+      col = 3)     
+lines(c(1:121),                          
+      yields[130,]*1200,
+      type = "l",
+      col = 4)    
+lines(c(1:121),                          
+      yields[172,]*1200,
+      type = "l",
+      col = 5)    
+lines(c(1:121),                          
+      yields[183,]*1200,
+      type = "l",
+      col = 6)     
+lines(c(1:121),                          
+      colMeans(yields)*1200,
+      type = "l",
+      col = 7) 
+legend("bottomright",                          
+       c("mar/06","jan/09","out/16","abr/20","mar/21","média (jan/06 a jul/22)"),
+       lty = 1,
+       col = 2:7)
 
 
 
