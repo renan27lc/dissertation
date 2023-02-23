@@ -236,7 +236,7 @@ E_hat<-as.matrix(lm_A14$residuals)	#198x120; t+1 (2/06 a 7/22); h-1 (M1 a M120)
 #Z_tilde<- t(cbind(i_198,V_hat,X_))	#11x198
 #lm(t_rxs[1,]~Z_tilde[2:6,]+Z_tilde[7:11,])
 
-sig2_hat<-sum(diag(crossprod(E_hat)))/(187*8)		# 1x1
+sig2_hat<-sum(diag(crossprod(E_hat)))/(120*198)		# 1x1
 
 beta_hat<-as.matrix(coef(lm_A14)[2:6,])			# 5 x 120; h-1 (M1 a M120)
 
@@ -252,8 +252,8 @@ beta_hat_M296<-cbind(			# 5x8
 
 B_ast<-matrix(					# 25x120
 	cbind(
-	     crossprod(t(beta_hat[,1])),
-             crossprod(t(beta_hat[,2])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+	     crossprod(t(beta_hat[,1])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,2])),
 	     crossprod(t(beta_hat[,3])),
 	     crossprod(t(beta_hat[,4])),
 	     crossprod(t(beta_hat[,5])),
@@ -263,7 +263,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,9])),
 	     crossprod(t(beta_hat[,10])),
 	     crossprod(t(beta_hat[,11])),
-             crossprod(t(beta_hat[,12])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,12])),
 	     crossprod(t(beta_hat[,13])),
 	     crossprod(t(beta_hat[,14])),
 	     crossprod(t(beta_hat[,15])),
@@ -273,7 +273,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,19])),
 	     crossprod(t(beta_hat[,20])),
 	     crossprod(t(beta_hat[,21])),
-             crossprod(t(beta_hat[,22])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,22])),
 	     crossprod(t(beta_hat[,23])),
 	     crossprod(t(beta_hat[,24])),
 	     crossprod(t(beta_hat[,25])),
@@ -283,7 +283,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,29])),
 	     crossprod(t(beta_hat[,30])),
 	     crossprod(t(beta_hat[,31])),
-             crossprod(t(beta_hat[,32])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,32])),
 	     crossprod(t(beta_hat[,33])),
 	     crossprod(t(beta_hat[,34])),
 	     crossprod(t(beta_hat[,35])),
@@ -293,7 +293,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,39])),
 	     crossprod(t(beta_hat[,40])),
 	     crossprod(t(beta_hat[,41])),
-             crossprod(t(beta_hat[,42])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,42])),
 	     crossprod(t(beta_hat[,43])),
 	     crossprod(t(beta_hat[,44])),
 	     crossprod(t(beta_hat[,45])),
@@ -303,7 +303,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,49])),
 	     crossprod(t(beta_hat[,50])),
 	     crossprod(t(beta_hat[,51])),
-             crossprod(t(beta_hat[,52])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,52])),
 	     crossprod(t(beta_hat[,53])),
 	     crossprod(t(beta_hat[,54])),
 	     crossprod(t(beta_hat[,55])),
@@ -313,7 +313,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,59])),
 	     crossprod(t(beta_hat[,60])),
 	     crossprod(t(beta_hat[,61])),
-             crossprod(t(beta_hat[,62])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,62])),
 	     crossprod(t(beta_hat[,63])),
 	     crossprod(t(beta_hat[,64])),
 	     crossprod(t(beta_hat[,65])),
@@ -323,7 +323,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,69])),
 	     crossprod(t(beta_hat[,70])),
 	     crossprod(t(beta_hat[,71])),
-             crossprod(t(beta_hat[,72])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,72])),
 	     crossprod(t(beta_hat[,73])),
 	     crossprod(t(beta_hat[,74])),
 	     crossprod(t(beta_hat[,75])),
@@ -333,7 +333,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,79])),
 	     crossprod(t(beta_hat[,80])),
 	     crossprod(t(beta_hat[,81])),
-             crossprod(t(beta_hat[,82])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,82])),
 	     crossprod(t(beta_hat[,83])),
 	     crossprod(t(beta_hat[,84])),
 	     crossprod(t(beta_hat[,85])),
@@ -343,7 +343,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,89])),
 	     crossprod(t(beta_hat[,90])),
 	     crossprod(t(beta_hat[,91])),
-             crossprod(t(beta_hat[,92])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,92])),
 	     crossprod(t(beta_hat[,93])),
 	     crossprod(t(beta_hat[,94])),
 	     crossprod(t(beta_hat[,95])),
@@ -353,7 +353,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,99])),
 	     crossprod(t(beta_hat[,100])),
 	     crossprod(t(beta_hat[,101])),
-             crossprod(t(beta_hat[,102])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,102])),
 	     crossprod(t(beta_hat[,103])),
 	     crossprod(t(beta_hat[,104])),
 	     crossprod(t(beta_hat[,105])),
@@ -363,7 +363,7 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,109])),
 	     crossprod(t(beta_hat[,110])),
 	     crossprod(t(beta_hat[,111])),
-             crossprod(t(beta_hat[,112])),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             crossprod(t(beta_hat[,112])),
 	     crossprod(t(beta_hat[,113])),
 	     crossprod(t(beta_hat[,114])),
 	     crossprod(t(beta_hat[,115])),
@@ -374,6 +374,133 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,120]))
 	       )
 	,25,120)
+
+
+B_ast<-matrix(					# 25x120
+	cbind(
+	     as.matrix(as.vector(crossprod(t(beta_hat[,1])))),	#= lm_A14$coefficients[2:6,1]*lm_A14$coefficients[2:6,1]
+             as.matrix(as.vector(crossprod(t(beta_hat[,2])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,3])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,4])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,5])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,6])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,7])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,8])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,9])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,10])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,11])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,12])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,13])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,14])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,15])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,16])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,17])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,18])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,19])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,20])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,21])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,22])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,23])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,24])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,25])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,26])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,27])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,28])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,29])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,30])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,31])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,32])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,33])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,34])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,35])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,36])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,37])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,38])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,39])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,40])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,41])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,42])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,43])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,44])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,45])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,46])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,48])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,49])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,50])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,51])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,52])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,53])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,54])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,55])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,56])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,57])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,58])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,59])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,60])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,61])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,62])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,63])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,64])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,65])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,66])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,67])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,68])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,69])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,70])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,71])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,72])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,73])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,74])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,75])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,76])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,77])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,78])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,79])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,80])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,81])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,82])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,83])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,84])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,85])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,86])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,87])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,88])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,89])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,90])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,91])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,92])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,93])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,94])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,95])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,96])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,97])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,98])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,99])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,100])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,101])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,102])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,103])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,104])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,105])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,106])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,107])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,108])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,109])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,110])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,111])))),
+             as.matrix(as.vector(crossprod(t(beta_hat[,112])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,113])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,114])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,115])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,116])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,117])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,118])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,119])))),
+	     as.matrix(as.vector(crossprod(t(beta_hat[,120]))))
+	       )
+	,25,120)
+
+
 
 B_ast_M296<-matrix(					# 25x8
 	cbind(
