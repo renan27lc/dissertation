@@ -1,0 +1,107 @@
+i_5<-as.matrix(rep(1, 5))   #5x1
+
+kappa_hat <-t(crossprod(as.matrix(beta_hat),as.matrix(lambda_hat)) -(B_ast_vecSigma + sig2_hat*i_120)/2) # -t(delta_hat*i_120)    #1x120
+
+Kappa_hat <-crossprod(as.matrix(beta_hat),as.matrix(Lambda_hat)) # +t(crossprod(t(Delta_hat_5pc),t(i_120)))   #120x5
+
+csi_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini
+
+E_rxs_adrian <- t(crossprod(kappa_hat,t(i_198))) + crossprod(t(X_),t(Kappa_hat)) # + csi_hat      #198x120
+
+
+#=========== A23 =================
+
+
+A_hat<-as.matrix(coef(lm_yields_pc5)[1,])
+
+B_hat<-coef(lm_yields_pc5)[2:6,]
+
+mu_hat<-(as.matrix(cbind(coefvar1pc5$Comp.1[6,1],
+			coefvar1pc5$Comp.2[6,1],
+			coefvar1pc5$Comp.3[6,1],
+			coefvar1pc5$Comp.4[6,1],
+			coefvar1pc5$Comp.5[6,1])))
+
+Phi_hat<-(as.matrix(cbind(coefvar1pc5$Comp.1[1:5,1],
+			coefvar1pc5$Comp.2[1:5,1],
+			coefvar1pc5$Comp.3[1:5,1],
+			coefvar1pc5$Comp.4[1:5,1],
+			coefvar1pc5$Comp.5[1:5,1])))
+
+mFX<- crossprod(mu_hat,t(i_198)) + crossprod(Phi_hat,t(X_))
+#mtFX<- crossprod(mu_hat,t(i_198)) + crossprod(t(Phi_hat),t(X_))
+mFXv<- crossprod(mu_hat,t(i_198)) +  crossprod(Phi_hat,t(X_)) + t(V_hat)
+
+E_rxs_adrian<-(t(crossprod(t(A_hat[1:120]),t(i_198)))
+	+ t(crossprod(B_hat[,1:120],mFXv))
+	- t(crossprod(t(A_hat[2:121]),t(i_198)))
+	- t(crossprod(B_hat[,2:121],t(X_)))
+	- U_hat_ini
+	- delta_hat*matrix(1,198,120)
+	- crossprod(crossprod(Delta_hat_5pc,t(X_)),(t(i_120))))
+
+
+#=========== A24 =================
+
+
+lLx<- crossprod(t(lambda_hat),t(i_198)) + crossprod(Phi_hat,t(X_))
+
+E_rxs_A24<-(t(crossprod(t(A_hat[1:120]),t(i_198)))
+	+ t(crossprod(B_hat[,1:120],mFX))
+	- t(crossprod(t(A_hat[2:121]),t(i_198)))
+	- t(crossprod(B_hat[,2:121],t(X_)))
+	- U_hat_ini
+	- delta_hat*matrix(1,198,120)
+	- crossprod(crossprod(Delta_hat_5pc,t(X_)),(t(i_120))))
+
+
+#=================calcular================
+
+
+MSPEadrian_296M<-matrix(c(
+  mean(as.matrix(r_xs[2:198,2]-E_rxs_adrian[2:198,2])^2),
+  mean(as.matrix(r_xs[2:198,3]-E_rxs_adrian[2:198,3])^2),
+  mean(as.matrix(r_xs[2:198,9]-E_rxs_adrian[2:198,9])^2),
+  mean(as.matrix(r_xs[2:198,12]-E_rxs_adrian[2:198,12])^2),
+  mean(as.matrix(r_xs[2:198,24]-E_rxs_adrian[2:198,24])^2),
+  mean(as.matrix(r_xs[2:198,48]-E_rxs_adrian[2:198,48])^2),
+  mean(as.matrix(r_xs[2:198,72]-E_rxs_adrian[2:198,72])^2),
+  mean(as.matrix(r_xs[2:198,96]-E_rxs_adrian[2:198,96])^2))
+      ,1,8)
+
+MSPE_ratio<-rbind(
+	MSPExphyp_296M/MSPErw_296M,
+	MSPEpc5_296M/MSPErw_296M,
+	MSPEadrian_296M/MSPErw_296M)
+	
+row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian")
+
+View(MSPE_ratio)
+
+
+#================= calcular t-1 ================
+
+
+i_197<-as.matrix(rep(1, 197))
+
+E_rxs_adrian <- t(crossprod(kappa_hat,t(i_197))) + crossprod(t(X_[2:198,]),t(Kappa_hat)) + csi_hat[1:197,]				#198x120
+
+MSPEadrian_296M<-matrix(c(
+  mean(as.matrix(r_xs[2:198,2]-E_rxs_adrian[1:197,2])^2),
+  mean(as.matrix(r_xs[2:198,3]-E_rxs_adrian[1:197,3])^2),
+  mean(as.matrix(r_xs[2:198,9]-E_rxs_adrian[1:197,9])^2),
+  mean(as.matrix(r_xs[2:198,12]-E_rxs_adrian[1:197,12])^2),
+  mean(as.matrix(r_xs[2:198,24]-E_rxs_adrian[1:197,24])^2),
+  mean(as.matrix(r_xs[2:198,48]-E_rxs_adrian[1:197,48])^2),
+  mean(as.matrix(r_xs[2:198,72]-E_rxs_adrian[1:197,72])^2),
+  mean(as.matrix(r_xs[2:198,96]-E_rxs_adrian[1:197,96])^2))
+      ,1,8)
+      
+MSPE_ratio<-rbind(
+	MSPExphyp_296M/MSPErw_296M,
+	MSPEpc5_296M/MSPErw_296M,
+	MSPEadrian_296M/MSPErw_296M)
+	
+row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian")
+
+View(MSPE_ratio)
