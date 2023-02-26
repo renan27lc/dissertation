@@ -232,17 +232,44 @@ View(MSPE_ratio)
 lm_yields_pc5<-lm(as.matrix(yields) ~ as.matrix(pc_scores[,1:5]))
 View(as.matrix(coef(lm_yields_pc5)))
 A_hat<-as.matrix(coef(lm_yields_pc5)[1,])
-B_hat<-as.matrix(coef(lm_yields_pc5)[2:6,])
+B_hat<-coef(lm_yields_pc5)[2:6,]
 
 var1_pc5 <- VAR(pc_scores[,1:5], p = 1, type = "const",ic = "SC")
 
 View(as.matrix(coef(var1_pc5)))
 
-mu_hat<-as.matrix(coef(var1_pc5)[1,])
+mu_hat<-as.matrix(cbind(coefvar1pc5$Comp.1[6,1],
+			coefvar1pc5$Comp.2[6,1],
+			coefvar1pc5$Comp.3[6,1],
+			coefvar1pc5$Comp.4[6,1],
+			coefvar1pc5$Comp.5[6,1]))
+
+Phi_hat<-as.matrix(cbind(coefvar1pc5$Comp.1[1:5,1],
+			coefvar1pc5$Comp.2[1:5,1],
+			coefvar1pc5$Comp.3[1:5,1],
+			coefvar1pc5$Comp.4[1:5,1],
+			coefvar1pc5$Comp.5[1:5,1])
+
+mFX<- crossprod(mu_hat,t(i_198)) + crossprod(Phi_hat,t(X_))
+mtFX<- crossprod(mu_hat,t(i_198)) + crossprod(t(Phi_hat),t(X_))
+
+#mFXv<- mu_hat + crossprod(Phi_hat,X_) + V_hat
+
+E_rxs_A23<-(t(crossprod(t(A_hat[1:120]),t(i_198)))
+	+ t(crossprod(B_hat[,1:120],mtFX))
+	- t(crossprod(t(A_hat[2:121]),t(i_198)))
+	- t(crossprod(B_hat[,2:121],t(X_)))
+	- U_hat_ini
+	- delta_hat*matrix(1,198,120)
+	- crossprod(crossprod(Delta_hat_5pc,t(X_)),(t(i_120))))
+
+
+
 
 
 
 i_197<-as.matrix(rep(1, 197))
+
 E_rxs_adrian <- t(crossprod(kappa_hat,t(i_197))) + crossprod(t(X_[2:198,]),t(Kappa_hat)) + csi_hat[1:197,]				#198x120
 
 MSPEadrian_296M<-matrix(c(
@@ -255,8 +282,6 @@ MSPEadrian_296M<-matrix(c(
   mean(as.matrix(r_xs[2:198,72]-E_rxs_adrian[1:197,72])^2),
   mean(as.matrix(r_xs[2:198,96]-E_rxs_adrian[1:197,96])^2))
       ,1,8)
-
-
 
 
 
