@@ -579,18 +579,13 @@ Delta_hat_5pc<-as.matrix(coef(lm_rf_pc))[2:6] # 5x1
 
 i_5<-as.matrix(rep(1, 5))     													#5x1
 
-kappa_hat <-t(crossprod(as.matrix(beta_hat),as.matrix(lambda_hat)) -(B_ast_vecSigma + sig2_hat*i_120)/2) # -t(delta_hat*i_120)	#1x120
-				(n-1)					(n-1)		
-#View(t(crossprod(kappa_hat,t(i_198))))                                                                                        		#198x120
-Kappa_hat <-crossprod(as.matrix(beta_hat),as.matrix(Lambda_hat)) # +t(crossprod(t(Delta_hat_5pc),t(i_120)))			#120x5
-				(n-1)
-#X_<-pc5_ini															#198x5
-#View(crossprod(t(X_),t(eta_hat)))                                                                                             		#198x120
-csi_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini                                             		#198x120
-#					(n-1)	(t+1)	   (t+1, n-1)	(t,n)
+kappa_hat <-t(crossprod(as.matrix(beta_hat),as.matrix(lambda_hat)) -(B_ast_vecSigma + sig2_hat*i_120)/2) # -t(delta_hat*i_120)    #1x120
 
-E_rxs_adrian <- t(crossprod(kappa_hat,t(i_198))) + crossprod(t(X_),t(Kappa_hat)) + csi_hat				#198x120
-#				(n-1)				t			t+1
+Kappa_hat <-crossprod(as.matrix(beta_hat),as.matrix(Lambda_hat)) # +t(crossprod(t(Delta_hat_5pc),t(i_120)))   #120x5
+
+csi_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini
+
+E_rxs_adrian <- t(crossprod(kappa_hat,t(i_198))) + crossprod(t(X_),t(Kappa_hat)) + U_hat_ini # + csi_hat      #198x120
 
 MSPEadrian_296M<-matrix(c(
   mean(as.matrix(r_xs[2:198,2]-E_rxs_adrian[2:198,2])^2),
