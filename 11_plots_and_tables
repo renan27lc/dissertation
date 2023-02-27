@@ -491,6 +491,8 @@ legend("topright",
 #===================diebold figure 1.2rxs=======================
 
 
+
+
 plot(yields_clmn[2:199,1],                          
      r_xs$M2*100,
      type = "l",
@@ -530,6 +532,28 @@ legend("topright",
        c("M2","M3","M9","M12","M24","M48","M72","M96"),
        lty = 1,
        col = 2:9)
+
+
+plot(yields_clmn[2:199,1],                          
+     r_xs$M3*100,
+     type = "l",
+     col = 2,
+     ylim = c(-30, 30),
+     xlab = "Ano",
+     ylab = "Retorno em Excesso (p.p.)")
+lines(yields_clmn[2:199,1],                          
+     r_xs$M12*100,
+     type = "l",
+     col = 3)    
+lines(yields_clmn[2:199,1],                          
+     r_xs$M48*100,
+     type = "l",
+     col = 4)     
+legend("topright",                          
+       c("M3","M12","M48"),
+       lty = 1,
+       col = 2:4)
+
 
 
 #===================diebold figure 1.3============
@@ -723,6 +747,158 @@ legend("bottomright",
        c("mar/06","jan/09","out/16","abr/20","mar/21","média (jan/06 a jul/22)"),
        lty = 1,
        col = 2:7)
+
+
+#================ erro de previsão ===============
+
+
+#====== 2008 - M3
+
+
+plot(yields_clmn$DATE[30:42],                          
+     PE_xphyp[29:41,3],
+     type = "l",
+     col = 2,
+     ylim = c(0, 0.002),
+     xlab = "Data",
+     ylab = "Erro de previsão (módulo)")
+lines(yields_clmn$DATE[30:42],                          
+     PE_pc5[29:41,3],
+     type = "l",
+     col = 3)    
+lines(yields_clmn$DATE[30:42],                          
+     PE_adrian[29:41,3],
+     type = "l",
+     col = 4)     
+legend("topleft",                          
+       c("Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:4)
+
+
+#====== 2008 - M12
+
+
+plot(yields_clmn$DATE[30:42],                          
+     PE_xphyp[29:41,12],
+     type = "l",
+     col = 2,
+     ylim = c(0, 0.018),
+     xlab = "Data",
+     ylab = "Erro de previsão (módulo)")
+lines(yields_clmn$DATE[30:42],                          
+     PE_pc5[29:41,12],
+     type = "l",
+     col = 3)    
+lines(yields_clmn$DATE[30:42],                          
+     PE_adrian[29:41,12],
+     type = "l",
+     col = 4)     
+legend("topleft",                          
+       c("Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:4)
+
+#====== 2008 - M48
+
+
+plot(yields_clmn$DATE[30:42],                          
+     PE_xphyp[29:41,48],
+     type = "l",
+     col = 2,
+     ylim = c(0, 0.075),
+     xlab = "Data",
+     ylab = "Erro de previsão (módulo)")
+lines(yields_clmn$DATE[30:42],                          
+     PE_pc5[29:41,48],
+     type = "l",
+     col = 3)    
+lines(yields_clmn$DATE[30:42],                          
+     PE_adrian[29:41,48],
+     type = "l",
+     col = 4)     
+legend("topleft",                          
+       c("Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:4)
+
+#====== 2021 - M3
+
+
+plot(yields_clmn$DATE[182:194],                          
+     PE_xphyp[181:193,3],
+     type = "l",
+     col = 2,
+     ylim = c(0, 0.0025),
+     xlab = "Data",
+     ylab = "Erro de previsão (módulo)")
+lines(yields_clmn$DATE[182:194],                          
+     PE_pc5[181:193,3],
+     type = "l",
+     col = 3)    
+lines(yields_clmn$DATE[182:194],                          
+     PE_adrian[181:193,3],
+     type = "l",
+     col = 4)     
+legend("topleft",                          
+       c("Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:4)
+
+
+#====== 2021 - M12
+
+
+plot(yields_clmn$DATE[182:194],                          
+     PE_xphyp[181:193,12],
+     type = "l",
+     col = 2,
+     ylim = c(0.001, 0.022),
+     xlab = "Data",
+     ylab = "Erro de previsão (módulo)")
+lines(yields_clmn$DATE[182:194],                          
+     PE_pc5[181:193,12],
+     type = "l",
+     col = 3)    
+lines(yields_clmn$DATE[182:194],                          
+     PE_adrian[181:193,12],
+     type = "l",
+     col = 4)     
+legend("topleft",                          
+       c("Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:4)
+
+
+#====== 2021 - M48
+
+
+plot(yields_clmn$DATE[182:194],                          
+     PE_xphyp[181:193,48],
+     type = "l",
+     col = 2,
+     ylim = c(0, 0.05),
+     xlab = "Data",
+     ylab = "Erro de previsão (módulo)")
+lines(yields_clmn$DATE[182:194],                          
+     PE_pc5[181:193,48],
+     type = "l",
+     col = 3)    
+lines(yields_clmn$DATE[182:194],                          
+     PE_adrian[181:193,48],
+     type = "l",
+     col = 4)     
+legend("topleft",                          
+       c("Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:4)
+
+
+
+
+
+
+
 
 
 
