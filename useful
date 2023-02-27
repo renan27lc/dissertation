@@ -300,3 +300,105 @@ MSPEadrian_296M<-matrix(c(
 #  mean(as.matrix(r_xs[2:198,96]-E_rxs_adrian[1:197,96])^2))
 #      ,1,8)
 
+
+#==============20230227=================
+
+
+prices_ini<-as.matrix(prices[1:198,2:121])
+prices_fin<-as.matrix(prices[2:199,1:120])
+E_prices_rw<-exp(E_rxs_rw  - mns.lnP_ini[1:197,] + rf.rep[1:197,])
+E_prices_xphyp<-exp(E_rxs_xphyp  - mns.lnP_ini + rf.rep[1:198,])
+E_prices_pc5<-exp(E_rxs_pc5  - mns.lnP_ini + rf.rep[1:198,])
+E_prices_adrian<-exp(E_rxs_adrian  - mns.lnP_ini + rf.rep[1:198,])
+row.names(E_prices_rw)<-row.names(mns.lnP_fin[2:198,])
+row.names(E_prices_xphyp)<-row.names(mns.lnP_fin)
+row.names(E_prices_pc5)<-row.names(mns.lnP_fin)
+row.names(E_prices_adrian)<-row.names(mns.lnP_fin)
+
+PE_rw<- abs(prices_fin - prices_ini)
+PE_xphyp<- abs(prices_fin - E_prices_xphyp)
+PE_pc5<- abs(prices_fin - E_prices_pc5)
+PE_adrian<- abs(prices_fin - E_prices_adrian)
+
+
+plot(yields_clmn$DATE[2:199],                          
+     prices_fin[,3],
+     type = "l",
+     col = 2,
+     ylim = c(0.94, 1),
+     xlab = "Ano",
+     ylab = "Preço (R$)")
+lines(yields_clmn$DATE[2:199],                          
+     prices_ini[,3],
+     type = "l",
+     col = 3)     
+lines(yields_clmn$DATE[2:199],                          
+     E_prices_xphyp[,3],
+     type = "l",
+     col = 4)     
+lines(yields_clmn$DATE[2:199],                          
+     E_prices_pc5[,3],
+     type = "l",
+     col = 5)    
+lines(yields_clmn$DATE[2:199],                          
+     E_prices_adrian[,3],
+     type = "l",
+     col = 6)     
+legend("bottomleft",                          
+       c("Preços","Passeio Aleatório","Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:6)
+       
+       
+       
+       
+plot(yields_clmn$DATE[183:194],                          
+     prices_fin[182:193,48],
+     type = "l",
+     col = 2,
+     ylim = c(0.6, 0.78),
+     xlab = "Data",
+     ylab = "Preço (R$)")
+lines(yields_clmn$DATE[183:194],                          
+     E_prices_xphyp[182:193,3],
+     type = "l",
+     col = 3)     
+lines(yields_clmn$DATE[183:194],                          
+     E_prices_pc5[182:193,48],
+     type = "l",
+     col = 4)    
+lines(yields_clmn$DATE[183:194],                          
+     E_prices_adrian[182:193,48],
+     type = "l",
+     col = 5)     
+legend("bottomleft",                          
+       c("Preços","Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:5)
+       
+
+       
+plot(yields_clmn$DATE[182:194],                          
+     PE_rw[181:193,3],
+     type = "l",
+     col = 2,
+     ylim = c(0, 0.0025),
+     xlab = "Data",
+     ylab = "Erro de previsão (módulo)")
+lines(yields_clmn$DATE[182:194],                          
+     PE_xphyp[181:193,3],
+     type = "l",
+     col = 3)     
+lines(yields_clmn$DATE[182:194],                          
+     PE_pc5[181:193,3],
+     type = "l",
+     col = 4)    
+lines(yields_clmn$DATE[182:194],                          
+     PE_adrian[181:193,3],
+     type = "l",
+     col = 5)     
+legend("topleft",                          
+       c("Passeio Aleatório","Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:5)
+
