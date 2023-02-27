@@ -749,7 +749,7 @@ legend("bottomright",
        col = 2:7)
 
 
-#================ erro de previsão ===============
+#================ plots erro de previsão ===============
 
 
 #====== 2008 - M3
@@ -760,7 +760,7 @@ plot(yields_clmn$DATE[30:42],
      type = "l",
      col = 2,
      ylim = c(0, 0.002),
-     xlab = "Data",
+     xlab = "Mês (2008-09)",
      ylab = "Erro de previsão (módulo)")
 lines(yields_clmn$DATE[30:42],                          
      PE_pc5[29:41,3],
@@ -784,7 +784,7 @@ plot(yields_clmn$DATE[30:42],
      type = "l",
      col = 2,
      ylim = c(0, 0.018),
-     xlab = "Data",
+   xlab = "Mês (2008-09)",
      ylab = "Erro de previsão (módulo)")
 lines(yields_clmn$DATE[30:42],                          
      PE_pc5[29:41,12],
@@ -807,7 +807,7 @@ plot(yields_clmn$DATE[30:42],
      type = "l",
      col = 2,
      ylim = c(0, 0.075),
-     xlab = "Data",
+   xlab = "Mês (2008-09)",
      ylab = "Erro de previsão (módulo)")
 lines(yields_clmn$DATE[30:42],                          
      PE_pc5[29:41,48],
@@ -830,7 +830,7 @@ plot(yields_clmn$DATE[182:194],
      type = "l",
      col = 2,
      ylim = c(0, 0.0025),
-     xlab = "Data",
+   xlab = "Mês (2021-22)",
      ylab = "Erro de previsão (módulo)")
 lines(yields_clmn$DATE[182:194],                          
      PE_pc5[181:193,3],
@@ -854,7 +854,7 @@ plot(yields_clmn$DATE[182:194],
      type = "l",
      col = 2,
      ylim = c(0.001, 0.022),
-     xlab = "Data",
+   xlab = "Mês (2021-22)",
      ylab = "Erro de previsão (módulo)")
 lines(yields_clmn$DATE[182:194],                          
      PE_pc5[181:193,12],
@@ -878,7 +878,7 @@ plot(yields_clmn$DATE[182:194],
      type = "l",
      col = 2,
      ylim = c(0, 0.05),
-     xlab = "Data",
+   xlab = "Mês (2021-22)",
      ylab = "Erro de previsão (módulo)")
 lines(yields_clmn$DATE[182:194],                          
      PE_pc5[181:193,48],
