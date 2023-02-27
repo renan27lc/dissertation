@@ -6,7 +6,7 @@ Kappa_hat <-crossprod(as.matrix(beta_hat),as.matrix(Lambda_hat)) # +t(crossprod(
 
 csi_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini
 
-E_rxs_adrian <- t(crossprod(kappa_hat,t(i_198))) + crossprod(t(X_),t(Kappa_hat)) # + csi_hat      #198x120
+E_rxs_adrian <- t(crossprod(kappa_hat,t(i_198))) + crossprod(t(X_),t(Kappa_hat)) + U_hat_ini # + csi_hat      #198x120
 
 
 #=========== A23 =================
@@ -44,16 +44,9 @@ E_rxs_adrian<-(t(crossprod(t(A_hat[1:120]),t(i_198)))
 #=========== A24 =================
 
 
-lLx<- crossprod(t(lambda_hat),t(i_198)) + crossprod(Phi_hat,t(X_))
+lLx<- crossprod(t(lambda_hat),t(i_198)) + crossprod(as.matrix(Lambda_hat),t(X_))	#5x198
 
-E_rxs_A24<-(t(crossprod(t(A_hat[1:120]),t(i_198)))
-	+ t(crossprod(B_hat[,1:120],mFX))
-	- t(crossprod(t(A_hat[2:121]),t(i_198)))
-	- t(crossprod(B_hat[,2:121],t(X_)))
-	- U_hat_ini
-	- delta_hat*matrix(1,198,120)
-	- crossprod(crossprod(Delta_hat_5pc,t(X_)),(t(i_120))))
-
+E_rxs_adrian<-(t(crossprod(beta_hat,lLx)) - t(crossprod(t(B_ast_vecSigma + sig2_hat*i_120)/2,t(i_198)))) # + U_hat_ini
 
 #=================calcular================
 
