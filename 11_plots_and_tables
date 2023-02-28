@@ -689,29 +689,29 @@ row.names(Table_lm_yfin_pc5)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 #===================Table_lm_rxs_pc5_stats=======================
 
-summary_lmpc5<-summary(lm_pc5)
+summary_lmpc5<-summary(lm_rxs_pc5)
 
-Table_lm_pc5<-matrix(c(
-	pf(summary(lm_pc5)$`Response M2`$fstatistic[1],summary(lm_pc5)$`Response M2`$fstatistic[2],summary(lm_pc5)$`Response M2`$fstatistic[3],lower.tail=F),
-	pf(summary(lm_pc5)$`Response M3`$fstatistic[1],summary(lm_pc5)$`Response M3`$fstatistic[2],summary(lm_pc5)$`Response M3`$fstatistic[3],lower.tail=F),
-	pf(summary(lm_pc5)$`Response M9`$fstatistic[1],summary(lm_pc5)$`Response M9`$fstatistic[2],summary(lm_pc5)$`Response M9`$fstatistic[3],lower.tail=F),
-	pf(summary(lm_pc5)$`Response M12`$fstatistic[1],summary(lm_pc5)$`Response M12`$fstatistic[2],summary(lm_pc5)$`Response M12`$fstatistic[3],lower.tail=F),
-	pf(summary(lm_pc5)$`Response M24`$fstatistic[1],summary(lm_pc5)$`Response M24`$fstatistic[2],summary(lm_pc5)$`Response M24`$fstatistic[3],lower.tail=F),
-	pf(summary(lm_pc5)$`Response M48`$fstatistic[1],summary(lm_pc5)$`Response M48`$fstatistic[2],summary(lm_pc5)$`Response M48`$fstatistic[3],lower.tail=F),
-	pf(summary(lm_pc5)$`Response M72`$fstatistic[1],summary(lm_pc5)$`Response M72`$fstatistic[2],summary(lm_pc5)$`Response M72`$fstatistic[3],lower.tail=F),
-	pf(summary(lm_pc5)$`Response M96`$fstatistic[1],summary(lm_pc5)$`Response M96`$fstatistic[2],summary(lm_pc5)$`Response M96`$fstatistic[3],lower.tail=F),
-	summary(lm_pc5)$`Response M2`$adj.r.squared,
-	summary(lm_pc5)$`Response M3`$adj.r.squared,
-	summary(lm_pc5)$`Response M9`$adj.r.squared,
-	summary(lm_pc5)$`Response M12`$adj.r.squared,
-	summary(lm_pc5)$`Response M24`$adj.r.squared,
-	summary(lm_pc5)$`Response M48`$adj.r.squared,
-	summary(lm_pc5)$`Response M72`$adj.r.squared,
-	summary(lm_pc5)$`Response M96`$adj.r.squared
+Table_lm_rxs_pc5<-matrix(c(
+	pf(summary(lm_rxs_pc5)$`Response M2`$fstatistic[1],summary(lm_rxs_pc5)$`Response M2`$fstatistic[2],summary(lm_rxs_pc5)$`Response M2`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_rxs_pc5)$`Response M3`$fstatistic[1],summary(lm_rxs_pc5)$`Response M3`$fstatistic[2],summary(lm_rxs_pc5)$`Response M3`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_rxs_pc5)$`Response M9`$fstatistic[1],summary(lm_rxs_pc5)$`Response M9`$fstatistic[2],summary(lm_rxs_pc5)$`Response M9`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_rxs_pc5)$`Response M12`$fstatistic[1],summary(lm_rxs_pc5)$`Response M12`$fstatistic[2],summary(lm_rxs_pc5)$`Response M12`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_rxs_pc5)$`Response M24`$fstatistic[1],summary(lm_rxs_pc5)$`Response M24`$fstatistic[2],summary(lm_rxs_pc5)$`Response M24`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_rxs_pc5)$`Response M48`$fstatistic[1],summary(lm_rxs_pc5)$`Response M48`$fstatistic[2],summary(lm_rxs_pc5)$`Response M48`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_rxs_pc5)$`Response M72`$fstatistic[1],summary(lm_rxs_pc5)$`Response M72`$fstatistic[2],summary(lm_rxs_pc5)$`Response M72`$fstatistic[3],lower.tail=F),
+	pf(summary(lm_rxs_pc5)$`Response M96`$fstatistic[1],summary(lm_rxs_pc5)$`Response M96`$fstatistic[2],summary(lm_rxs_pc5)$`Response M96`$fstatistic[3],lower.tail=F),
+	summary(lm_rxs_pc5)$`Response M2`$adj.r.squared,
+	summary(lm_rxs_pc5)$`Response M3`$adj.r.squared,
+	summary(lm_rxs_pc5)$`Response M9`$adj.r.squared,
+	summary(lm_rxs_pc5)$`Response M12`$adj.r.squared,
+	summary(lm_rxs_pc5)$`Response M24`$adj.r.squared,
+	summary(lm_rxs_pc5)$`Response M48`$adj.r.squared,
+	summary(lm_rxs_pc5)$`Response M72`$adj.r.squared,
+	summary(lm_rxs_pc5)$`Response M96`$adj.r.squared
 	),8,2)
 
-colnames(Table_lm_pc5)<-c("H0: alpha, beta = 0 P_value","Adj R2")
-row.names(Table_lm_pc5)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
+colnames(Table_lm_rxs_pc5)<-c("H0: alpha, beta = 0 P_value","Adj R2")
+row.names(Table_lm_rxs_pc5)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 
 #================table 6 yield curves===============
