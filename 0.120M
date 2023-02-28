@@ -214,7 +214,7 @@ r_xs<- r_1mo - rf.rep       # excess returns
 rownames(r_xs)<-rownames(mns.lnP_fin)
 colnames(r_xs)<-colnames(mns.lnP_fin)
 
-lm_pc5<-lm(as.matrix(r_xs) ~ as.matrix(pc5_ini))
+lm_rxs_pc5<-lm(as.matrix(r_xs) ~ as.matrix(pc5_ini))
 
 # ===================== ADRIAN 3 STEPS ==========================
 #https://www.rdocumentation.org/packages/vars/versions/1.5-6/topics/VAR
@@ -658,12 +658,12 @@ colnames(MSPExphyp_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 #=== r_xs pc5
 
-lm_pc5_alpha_hat<-t(lm_pc5$coefficients[1,])
-lm_pc5_beta_hat<-lm_pc5$coefficients[2:6,]
+lm_rxs_pc5_alpha_hat<-t(lm_rxs_pc5$coefficients[1,])
+lm_rxs_pc5_beta_hat<-lm_rxs_pc5$coefficients[2:6,]
 
 i_198<-as.matrix(rep(1, 198))
 
-E_rxs_pc5<-as.data.frame(t(crossprod(lm_pc5_alpha_hat,t(i_198)))+t(crossprod(lm_pc5_beta_hat,t(pc5_ini))))
+E_rxs_pc5<-as.data.frame(t(crossprod(lm_rxs_pc5_alpha_hat,t(i_198)))+t(crossprod(lm_rxs_pc5_beta_hat,t(pc5_ini))))
 
 MSPEpc5_296M<-matrix(c(
   mean(as.matrix(r_xs[2:198,2]-E_rxs_pc5[2:198,2])^2),
