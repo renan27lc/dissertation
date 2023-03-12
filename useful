@@ -421,5 +421,10 @@ SPE_pc5_rwdiv<-as.matrix(rxs_rw-E_rxs_rw)^2 / as.matrix(r_xs[2:198,]-E_rxs_pc5[2
 SPE_adrian_rwdiv<-as.matrix(rxs_rw-E_rxs_rw)^2 / as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])^2
 
 
-yM2.rep<-as.data.frame(rep(as.data.frame(yields[1:198,1])[1],120))
+yM2.rep<-as.data.frame(rep(as.data.frame(yields[1:198,2])[1],120))
+
 gain <- as.matrix(r_1mo - yM2.rep )
+
+r_xs<- r_1mo - (yM2.rep - rf.rep/21)
+
+
