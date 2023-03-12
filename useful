@@ -427,4 +427,4 @@ gain <- as.matrix(r_1mo - yM2.rep )
 
 r_xs<- r_1mo - (yM2.rep - rf.rep/21)
 
-
+summary(lm(formula = as.matrix(I(E_rxs_adrian[2:198,2] - E_rxs_rw[,2])) ~ E_rxs_rw[,2] -1))
