@@ -3,6 +3,7 @@
 #install.packages("gridExtra")
 #install.packages( "Hmisc")
 #install.packages("xtable")
+#install.packages("forecast")
 
 library(dplyr)
 library(tibble)
@@ -15,12 +16,12 @@ library(broom)
 #library(pander)
 library(Hmisc)
 library(xtable)
+library(forecast)
 
 # ===================== DOWNLOAD DATA ==========================
 # Author: Werley Cordeiro
 # werleycordeiro@gmail.com
 # https://github.com/werleycordeiro/Brazil_Yield_Curve/blob/master/DI-Pre.R
-
 
 # Function
 yieldsbr = function(Initial_Date,Final_Date,Maturities){
@@ -72,9 +73,7 @@ colnames(yields_daily_chrctr)[1]<-"DATE"
 
 #plot(colMeans(yields_daily_100_yr),xlab = "Maturity",ylab = "Yields (%)")
 
-
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
-
 
 last_days<-as.data.frame(as.Date.POSIXct(matrix(c(1138665600, 1140739200, 1143763200, 1146182400, 1149033600, 1151625600, 1154304000, 1156982400, 1159488000, 1162252800, 1164844800, 1167264000, 1170201600, 1172620800, 1175212800, 1177891200, 1180569600, 1183075200, 1185840000, 1188518400, 1190937600, 1193788800, 1196380800, 1198800000, 1201737600, 1204243200, 1206921600, 1209513600, 1212105600, 1214784000, 1217462400, 1219968000, 1222732800, 1225411200, 1227830400, 1230595200, 1233273600, 1235692800, 1238457600, 1241049600, 1243555200, 1246320000, 1248998400, 1251676800, 1254268800, 1256860800, 1259539200, 1262131200, 1264723200, 1267142400, 1269993600, 1272585600, 1275264000, 1277856000, 1280448000, 1283212800, 1285804800, 1288310400, 1291075200, 1293667200, 1296432000, 1298851200, 1301529600, 1304035200, 1306800000, 1309392000, 1311897600, 1314748800, 1317340800, 1320019200, 1322611200, 1325116800, 1327968000, 1330473600, 1333065600, 1335744000, 1338422400, 1340928000, 1343692800, 1346371200, 1348790400, 1351641600, 1354233600, 1356652800, 1359590400, 1362009600, 1364428800, 1367280000, 1369958400, 1372377600, 1375228800, 1377820800, 1380499200, 1383177600, 1385683200, 1388361600, 1391126400, 1393545600, 1396224000, 1398816000, 1401408000, 1404086400, 1406764800, 1409270400, 1412035200, 1414713600, 1417132800, 1419897600, 1422576000, 1424995200, 1427760000, 1430352000, 1432857600, 1435622400, 1438300800, 1440979200, 1443571200, 1446163200, 1448841600, 1451433600, 1454025600, 1456704000, 1459382400, 1461888000, 1464652800, 1467244800, 1469750400, 1472601600, 1475193600, 1477872000, 1480464000, 1482969600, 1485820800, 1487894400, 1490918400, 1493337600, 1496188800, 1498780800, 1501459200, 1504137600, 1506643200, 1509408000, 1512000000, 1514419200, 1517356800, 1519776000, 1522281600, 1525046400, 1527638400, 1530230400, 1532995200, 1535673600, 1538092800, 1540944000, 1543536000, 1545955200, 1548892800, 1551312000, 1553817600, 1556582400, 1559260800, 1561680000, 1564531200, 1567123200, 1569801600, 1572480000, 1574985600, 1577664000, 1580428800, 1582848000, 1585612800, 1588204800, 1590710400, 1593475200, 1596153600, 1598832000, 1601424000, 1604016000, 1606694400, 1609286400, 1611878400, 1614297600, 1617148800, 1619740800, 1622419200, 1625011200, 1627603200, 1630368000, 1632960000, 1635465600, 1638230400, 1640822400, 1643587200, 1645747200, 1648684800, 1651190400, 1653955200, 1656547200, 1659052800),199,1),tz="UTC"))
 last_days<-as.data.frame(as.matrix(last_days))
@@ -155,12 +154,10 @@ summary_lm_r1mo_xphyp_ab1<-summary(lm_r1mo_xphyp_ab1)
 #lm_r1mo_xphyp_a0<-lm(formula = as.matrix(r_1mo) ~ rf -1)
 #summary_lm_r1mo_xphyp_a0<-summary(lm_r1mo_xphyp_a0)
 
-
 lm_r1mo_xphyp_a0b1<-lm(formula = as.matrix(I(r_1mo - rf)) ~ rf -1)
 summary_lm_r1mo_xphyp_a0b1<-summary(lm_r1mo_xphyp_a0b1)
 
 # ===================== PCA ==========================
-
 
 f_draw_factor_loading<-function(m.loadings,var,title){
     
@@ -173,15 +170,12 @@ f_draw_factor_loading<-function(m.loadings,var,title){
     axis(1,mat,mat)
 }
 
-
 mat<-Maturities
-
 
 pca_yields<-princomp(yields_daily)
 f_draw_factor_loading(pca_yields$loadings[,1:5],
                       round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
                       "Yields level PCA - princomp()")
-        
         
 pc_scores_daily<-as.data.frame(pca_yields$scores)
 
@@ -217,6 +211,7 @@ colnames(r_xs)<-colnames(mns.lnP_fin)
 lm_rxs_pc5<-lm(as.matrix(r_xs) ~ as.matrix(pc5_ini))
 
 # ===================== ADRIAN 3 STEPS ==========================
+
 #https://www.rdocumentation.org/packages/vars/versions/1.5-6/topics/VAR
 library("vars")
 
@@ -374,7 +369,6 @@ B_ast<-matrix(					# 25x120
 	     crossprod(t(beta_hat[,120]))
 	       )
 	,25,120)
-
 
 B_ast<-matrix(					# 25x120
 	cbind(
@@ -611,11 +605,7 @@ colnames(MSPEadrian_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 #  mean(as.matrix(r_xs[2:198,96]-E_rxs_adrian[1:197,96])^2))
 #      ,1,8)
 
-
-
-
 #============================ MSPE R_XS ============================
-
 
 #=== no-change (random walk)
 
@@ -681,9 +671,6 @@ row.names(MSPEpc5_296M)<-"MSPE_rxs_pc5"
 
 #MSPE_pc5<-mean(as.matrix(r_xs-E_rxs_pc5)^2)
 
-
-
-
 #E_rxs_a14<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(beta_hat,t(V_hat))+crossprod(c_hat,t(X_)))) # [198x120] = t([1x120]*[1x198] + [5x120]*[5x198] + [5x120]*[5x198])
 #MSPE_adrian3steps<-mean(as.matrix(r_xs-E_rxs_a14)^2)
 #MSPEadrian3steps_296M<-matrix(c(
@@ -700,15 +687,123 @@ row.names(MSPEpc5_296M)<-"MSPE_rxs_pc5"
 
 #=== ratio
 
-MSPE_ratio<-rbind(
+MSPE_ratio<-t(rbind(
 	MSPExphyp_296M/MSPErw_296M,
 	MSPEpc5_296M/MSPErw_296M,
-	MSPEadrian_296M/MSPErw_296M)
+	MSPEadrian_296M/MSPErw_296M))
 	
-row.names(MSPE_ratio)<-c("xp-hyp","pc5","adrian")
+colnames(MSPE_ratio)<-c("xp-hyp","pc5","adrian")
 
 View(MSPE_ratio)
 
+#=== dbld_mrn
+
+PE_rw<-as.matrix(rxs_rw-E_rxs_rw)
+PE_xphyp<-as.matrix(r_xs[2:198,])
+PE_pc5<-as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])
+PE_adrian<-as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])
+
+dm_xphyp_M2<-dm.test(PE_xphyp[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_xphyp_M3<-dm.test(PE_xphyp[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_xphyp_M9<-dm.test(PE_xphyp[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_xphyp_M12<-dm.test(PE_xphyp[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_xphyp_M24<-dm.test(PE_xphyp[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_xphyp_M48<-dm.test(PE_xphyp[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_xphyp_M72<-dm.test(PE_xphyp[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_xphyp_M96<-dm.test(PE_xphyp[,96], PE_rw[,96], alternative = "less",h = 1)
+
+dm_5pc_M2<-dm.test(PE_pc5[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_5pc_M3<-dm.test(PE_pc5[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_5pc_M9<-dm.test(PE_pc5[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_5pc_M12<-dm.test(PE_pc5[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_5pc_M24<-dm.test(PE_pc5[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_5pc_M48<-dm.test(PE_pc5[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_5pc_M72<-dm.test(PE_pc5[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_5pc_M96<-dm.test(PE_pc5[,96], PE_rw[,96], alternative = "less",h = 1)
+
+dm_adrian_M2<-dm.test(PE_adrian[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_adrian_M3<-dm.test(PE_adrian[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_adrian_M9<-dm.test(PE_adrian[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_adrian_M12<-dm.test(PE_adrian[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_adrian_M24<-dm.test(PE_adrian[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_adrian_M48<-dm.test(PE_adrian[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_adrian_M72<-dm.test(PE_adrian[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_adrian_M96<-dm.test(PE_adrian[,96], PE_rw[,96], alternative = "less",h = 1)
+
+dm_xphyp_rw_296M<-matrix(c(
+dm_xphyp_M2$p.value,
+dm_xphyp_M3$p.value,
+dm_xphyp_M9$p.value,
+dm_xphyp_M12$p.value,
+dm_xphyp_M24$p.value,
+dm_xphyp_M48$p.value,
+dm_xphyp_M72$p.value,
+dm_xphyp_M96$p.value)
+    ,1,8)
+
+dm_5pc_rw_296M<-matrix(c(
+dm_5pc_M2$p.value,
+dm_5pc_M3$p.value,
+dm_5pc_M9$p.value,
+dm_5pc_M12$p.value,
+dm_5pc_M24$p.value,
+dm_5pc_M48$p.value,
+dm_5pc_M72$p.value,
+dm_5pc_M96$p.value)
+    ,1,8)
+
+dm_adrian_rw_296M<-matrix(c(
+dm_adrian_M2$p.value,
+dm_adrian_M3$p.value,
+dm_adrian_M9$p.value,
+dm_adrian_M12$p.value,
+dm_adrian_M24$p.value,
+dm_adrian_M48$p.value,
+dm_adrian_M72$p.value,
+dm_adrian_M96$p.value)
+    ,1,8)
+
+dbld_mrn_pv_296M<-t(rbind(
+	dm_xphyp_rw_296M,
+	dm_5pc_rw_296M,
+	dm_adrian_rw_296M))
+	
+colnames(dbld_mrn_pv_296M)<-c("xp-hyp","pc5","adrian")
+
+View(dbld_mrn_pv_296M)
+
+
+
+
+
+
+#======anecdotal========
+
+
+
+
+
+yM2.rep<-as.data.frame(rep(as.data.frame(yields[1:198,2])[1],120))
+#gain <- as.matrix(r_1mo - yM2.rep )
+gain <- as.matrix(r_1mo - (yM2.rep - rf.rep/21))
+#summary(lm(formula = as.matrix(I(E_rxs_adrian[2:198,2] - E_rxs_rw[,2])) ~ E_rxs_rw[,2] -1))
+
+#SPE_rw<-as.matrix(rxs_rw-E_rxs_rw)^2
+#SPE_xphyp<-as.matrix(r_xs[2:198,])^2
+#SPE_pc5<-as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])^2
+#SPE_adrian<-as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])^2
+
+#PE_xphyp_difrw_mdl<-(as.matrix(r_xs[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+#PE_pc5_difrw_mdl<-(as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+#PE_adrian_difrw_mdl<-(as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+
+#PE_xphyp_difrw_mdl<-abs(as.matrix(r_xs[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+#PE_pc5_difrw_mdl<-abs(as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+#PE_adrian_difrw_mdl<-abs(as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+
+#SPE_xphyp_rwdiv<-as.matrix(rxs_rw-E_rxs_rw)^2 / as.matrix(r_xs[2:198,])^2
+#SPE_pc5_rwdiv<-as.matrix(rxs_rw-E_rxs_rw)^2 / as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])^2
+#SPE_adrian_rwdiv<-as.matrix(rxs_rw-E_rxs_rw)^2 / as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])^2
 
 
 
@@ -719,6 +814,12 @@ View(MSPE_ratio)
 
 
 
+
+
+
+
+
+	
 
 #------------------------------------------------
 
