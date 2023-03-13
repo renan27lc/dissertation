@@ -412,6 +412,16 @@ SPE_xphyp<-as.matrix(r_xs[2:198,])^2
 SPE_pc5<-as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])^2
 SPE_adrian<-as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])^2
 
+PE_rw<-as.matrix(rxs_rw-E_rxs_rw)
+PE_xphyp<-as.matrix(r_xs[2:198,])
+PE_pc5<-as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])
+PE_adrian<-as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])
+
+
+PE_xphyp_difrw_mdl<-(as.matrix(r_xs[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+PE_pc5_difrw_mdl<-(as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+PE_adrian_difrw_mdl<-(as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+
 PE_xphyp_difrw_mdl<-abs(as.matrix(r_xs[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
 PE_pc5_difrw_mdl<-abs(as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
 PE_adrian_difrw_mdl<-abs(as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
@@ -428,3 +438,81 @@ gain <- as.matrix(r_1mo - yM2.rep )
 r_xs<- r_1mo - (yM2.rep - rf.rep/21)
 
 summary(lm(formula = as.matrix(I(E_rxs_adrian[2:198,2] - E_rxs_rw[,2])) ~ E_rxs_rw[,2] -1))
+
+
+E_rxs_rw<-as.data.frame(r_xs[1:197,])
+rxs_rw<-as.data.frame(r_xs[2:198,])
+
+PErw_296M<-matrix(c(
+as.matrix(rxs_rw[,2]-E_rxs_rw[,2]),
+as.matrix(rxs_rw[,3]-E_rxs_rw[,3]),
+as.matrix(rxs_rw[,9]-E_rxs_rw[,9]),
+as.matrix(rxs_rw[,12]-E_rxs_rw[,12]),
+as.matrix(rxs_rw[,24]-E_rxs_rw[,24]),
+as.matrix(rxs_rw[,48]-E_rxs_rw[,48]),
+as.matrix(rxs_rw[,72]-E_rxs_rw[,72]),
+as.matrix(rxs_rw[,96]-E_rxs_rw[,96]))
+    ,1,8)
+
+
+dm_xphyp_M2<-dm.test(PE_xphyp[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_xphyp_M3<-dm.test(PE_xphyp[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_xphyp_M9<-dm.test(PE_xphyp[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_xphyp_M12<-dm.test(PE_xphyp[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_xphyp_M24<-dm.test(PE_xphyp[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_xphyp_M48<-dm.test(PE_xphyp[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_xphyp_M72<-dm.test(PE_xphyp[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_xphyp_M96<-dm.test(PE_xphyp[,96], PE_rw[,96], alternative = "less",h = 1)
+
+dm_5pc_M2<-dm.test(PE_pc5[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_5pc_M3<-dm.test(PE_pc5[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_5pc_M9<-dm.test(PE_pc5[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_5pc_M12<-dm.test(PE_pc5[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_5pc_M24<-dm.test(PE_pc5[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_5pc_M48<-dm.test(PE_pc5[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_5pc_M72<-dm.test(PE_pc5[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_5pc_M96<-dm.test(PE_pc5[,96], PE_rw[,96], alternative = "less",h = 1)
+
+dm_adrian_M2<-dm.test(PE_adrian[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_adrian_M3<-dm.test(PE_adrian[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_adrian_M9<-dm.test(PE_adrian[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_adrian_M12<-dm.test(PE_adrian[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_adrian_M24<-dm.test(PE_adrian[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_adrian_M48<-dm.test(PE_adrian[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_adrian_M72<-dm.test(PE_adrian[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_adrian_M96<-dm.test(PE_adrian[,96], PE_rw[,96], alternative = "less",h = 1)
+
+dm_xphyp_rw_296M<-matrix(c(
+dm_xphyp_M2$p.value,
+dm_xphyp_M3$p.value,
+dm_xphyp_M9$p.value,
+dm_xphyp_M12$p.value,
+dm_xphyp_M24$p.value,
+dm_xphyp_M48$p.value,
+dm_xphyp_M72$p.value,
+dm_xphyp_M96$p.value)
+    ,1,8)
+
+dm_5pc_rw_296M<-matrix(c(
+dm_5pc_M2$p.value,
+dm_5pc_M3$p.value,
+dm_5pc_M9$p.value,
+dm_5pc_M12$p.value,
+dm_5pc_M24$p.value,
+dm_5pc_M48$p.value,
+dm_5pc_M72$p.value,
+dm_5pc_M96$p.value)
+    ,1,8)
+
+dm_adrian_rw_296M<-matrix(c(
+dm_adrian_M2$p.value,
+dm_adrian_M3$p.value,
+dm_adrian_M9$p.value,
+dm_adrian_M12$p.value,
+dm_adrian_M24$p.value,
+dm_adrian_M48$p.value,
+dm_adrian_M72$p.value,
+dm_adrian_M96$p.value)
+    ,1,8)
+
+
