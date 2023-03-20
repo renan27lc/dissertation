@@ -704,79 +704,123 @@ PE_xphyp<-as.matrix(r_xs[2:198,])
 PE_pc5<-as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])
 PE_adrian<-as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])
 
-dm_xphyp_M2<-dm.test(PE_xphyp[,2], PE_rw[,2], alternative = "less",h = 1)
-dm_xphyp_M3<-dm.test(PE_xphyp[,3], PE_rw[,3], alternative = "less",h = 1)
-dm_xphyp_M9<-dm.test(PE_xphyp[,9], PE_rw[,9], alternative = "less",h = 1)
-dm_xphyp_M12<-dm.test(PE_xphyp[,12], PE_rw[,12], alternative = "less",h = 1)
-dm_xphyp_M24<-dm.test(PE_xphyp[,24], PE_rw[,24], alternative = "less",h = 1)
-dm_xphyp_M48<-dm.test(PE_xphyp[,48], PE_rw[,48], alternative = "less",h = 1)
-dm_xphyp_M72<-dm.test(PE_xphyp[,72], PE_rw[,72], alternative = "less",h = 1)
-dm_xphyp_M96<-dm.test(PE_xphyp[,96], PE_rw[,96], alternative = "less",h = 1)
+dm_xphyp_rw_M2<-dm.test(PE_xphyp[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_xphyp_rw_M3<-dm.test(PE_xphyp[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_xphyp_rw_M9<-dm.test(PE_xphyp[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_xphyp_rw_M12<-dm.test(PE_xphyp[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_xphyp_rw_M24<-dm.test(PE_xphyp[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_xphyp_rw_M48<-dm.test(PE_xphyp[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_xphyp_rw_M72<-dm.test(PE_xphyp[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_xphyp_rw_M96<-dm.test(PE_xphyp[,96], PE_rw[,96], alternative = "less",h = 1)
 
-dm_5pc_M2<-dm.test(PE_pc5[,2], PE_rw[,2], alternative = "less",h = 1)
-dm_5pc_M3<-dm.test(PE_pc5[,3], PE_rw[,3], alternative = "less",h = 1)
-dm_5pc_M9<-dm.test(PE_pc5[,9], PE_rw[,9], alternative = "less",h = 1)
-dm_5pc_M12<-dm.test(PE_pc5[,12], PE_rw[,12], alternative = "less",h = 1)
-dm_5pc_M24<-dm.test(PE_pc5[,24], PE_rw[,24], alternative = "less",h = 1)
-dm_5pc_M48<-dm.test(PE_pc5[,48], PE_rw[,48], alternative = "less",h = 1)
-dm_5pc_M72<-dm.test(PE_pc5[,72], PE_rw[,72], alternative = "less",h = 1)
-dm_5pc_M96<-dm.test(PE_pc5[,96], PE_rw[,96], alternative = "less",h = 1)
+dm_5pc_rw_M2<-dm.test(PE_pc5[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_5pc_rw_M3<-dm.test(PE_pc5[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_5pc_rw_M9<-dm.test(PE_pc5[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_5pc_rw_M12<-dm.test(PE_pc5[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_5pc_rw_M24<-dm.test(PE_pc5[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_5pc_rw_M48<-dm.test(PE_pc5[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_5pc_rw_M72<-dm.test(PE_pc5[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_5pc_rw_M96<-dm.test(PE_pc5[,96], PE_rw[,96], alternative = "less",h = 1)
 
-dm_adrian_M2<-dm.test(PE_adrian[,2], PE_rw[,2], alternative = "less",h = 1)
-dm_adrian_M3<-dm.test(PE_adrian[,3], PE_rw[,3], alternative = "less",h = 1)
-dm_adrian_M9<-dm.test(PE_adrian[,9], PE_rw[,9], alternative = "less",h = 1)
-dm_adrian_M12<-dm.test(PE_adrian[,12], PE_rw[,12], alternative = "less",h = 1)
-dm_adrian_M24<-dm.test(PE_adrian[,24], PE_rw[,24], alternative = "less",h = 1)
-dm_adrian_M48<-dm.test(PE_adrian[,48], PE_rw[,48], alternative = "less",h = 1)
-dm_adrian_M72<-dm.test(PE_adrian[,72], PE_rw[,72], alternative = "less",h = 1)
-dm_adrian_M96<-dm.test(PE_adrian[,96], PE_rw[,96], alternative = "less",h = 1)
+dm_adrian_rw_M2<-dm.test(PE_adrian[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_adrian_rw_M3<-dm.test(PE_adrian[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_adrian_rw_M9<-dm.test(PE_adrian[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_adrian_rw_M12<-dm.test(PE_adrian[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_adrian_rw_M24<-dm.test(PE_adrian[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_adrian_rw_M48<-dm.test(PE_adrian[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_adrian_rw_M72<-dm.test(PE_adrian[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_adrian_rw_M96<-dm.test(PE_adrian[,96], PE_rw[,96], alternative = "less",h = 1)
 
 dm_xphyp_rw_296M<-matrix(c(
-dm_xphyp_M2$p.value,
-dm_xphyp_M3$p.value,
-dm_xphyp_M9$p.value,
-dm_xphyp_M12$p.value,
-dm_xphyp_M24$p.value,
-dm_xphyp_M48$p.value,
-dm_xphyp_M72$p.value,
-dm_xphyp_M96$p.value)
+dm_xphyp_rw_M2$p.value,
+dm_xphyp_rw_M3$p.value,
+dm_xphyp_rw_M9$p.value,
+dm_xphyp_rw_M12$p.value,
+dm_xphyp_rw_M24$p.value,
+dm_xphyp_rw_M48$p.value,
+dm_xphyp_rw_M72$p.value,
+dm_xphyp_rw_M96$p.value)
     ,1,8)
 
 dm_5pc_rw_296M<-matrix(c(
-dm_5pc_M2$p.value,
-dm_5pc_M3$p.value,
-dm_5pc_M9$p.value,
-dm_5pc_M12$p.value,
-dm_5pc_M24$p.value,
-dm_5pc_M48$p.value,
-dm_5pc_M72$p.value,
-dm_5pc_M96$p.value)
+dm_5pc_rw_M2$p.value,
+dm_5pc_rw_M3$p.value,
+dm_5pc_rw_M9$p.value,
+dm_5pc_rw_M12$p.value,
+dm_5pc_rw_M24$p.value,
+dm_5pc_rw_M48$p.value,
+dm_5pc_rw_M72$p.value,
+dm_5pc_rw_M96$p.value)
     ,1,8)
 
 dm_adrian_rw_296M<-matrix(c(
-dm_adrian_M2$p.value,
-dm_adrian_M3$p.value,
-dm_adrian_M9$p.value,
-dm_adrian_M12$p.value,
-dm_adrian_M24$p.value,
-dm_adrian_M48$p.value,
-dm_adrian_M72$p.value,
-dm_adrian_M96$p.value)
+dm_adrian_rw_M2$p.value,
+dm_adrian_rw_M3$p.value,
+dm_adrian_rw_M9$p.value,
+dm_adrian_rw_M12$p.value,
+dm_adrian__M24$p.value,
+dm_adrian_rw_M48$p.value,
+dm_adrian_rw_M72$p.value,
+dm_adrian_rw_M96$p.value)
     ,1,8)
 
-dbld_mrn_pv_296M<-t(rbind(
+dm_pv_rw_296M<-t(rbind(
 	dm_xphyp_rw_296M,
 	dm_5pc_rw_296M,
 	dm_adrian_rw_296M))
 	
-colnames(dbld_mrn_pv_296M)<-c("xp-hyp","pc5","adrian")
+colnames(dm_pv_rw_296M)<-c("xp-hyp","pc5","adrian")
 
-View(dbld_mrn_pv_296M)
+View(dm_pv_rw_296M)
+
+dm_5pc_EH_M2<-dm.test(PE_pc5[,2], PE_xphyp[,2], alternative = "less",h = 1)
+dm_5pc_EH_M3<-dm.test(PE_pc5[,3], PE_xphyp[,3], alternative = "less",h = 1)
+dm_5pc_EH_M9<-dm.test(PE_pc5[,9], PE_xphyp[,9], alternative = "less",h = 1)
+dm_5pc_EH_M12<-dm.test(PE_pc5[,12], PE_xphyp[,12], alternative = "less",h = 1)
+dm_5pc_EH_M24<-dm.test(PE_pc5[,24], PE_xphyp[,24], alternative = "less",h = 1)
+dm_5pc_EH_M48<-dm.test(PE_pc5[,48], PE_xphyp[,48], alternative = "less",h = 1)
+dm_5pc_EH_M72<-dm.test(PE_pc5[,72], PE_xphyp[,72], alternative = "less",h = 1)
+dm_5pc_EH_M96<-dm.test(PE_pc5[,96], PE_xphyp[,96], alternative = "less",h = 1)
+
+dm_adrian_EH_M2<-dm.test(PE_adrian[,2], PE_xphyp[,2], alternative = "less",h = 1)
+dm_adrian_EH_M3<-dm.test(PE_adrian[,3], PE_xphyp[,3], alternative = "less",h = 1)
+dm_adrian_EH_M9<-dm.test(PE_adrian[,9], PE_xphyp[,9], alternative = "less",h = 1)
+dm_adrian_EH_M12<-dm.test(PE_adrian[,12], PE_xphyp[,12], alternative = "less",h = 1)
+dm_adrian_EH_M24<-dm.test(PE_adrian[,24], PE_xphyp[,24], alternative = "less",h = 1)
+dm_adrian_EH_M48<-dm.test(PE_adrian[,48], PE_xphyp[,48], alternative = "less",h = 1)
+dm_adrian_EH_M72<-dm.test(PE_adrian[,72], PE_xphyp[,72], alternative = "less",h = 1)
+dm_adrian_EH_M96<-dm.test(PE_adrian[,96], PE_xphyp[,96], alternative = "less",h = 1)
 
 
+dm_5pc_EH_296M<-matrix(c(
+dm_5pc_EH_M2$p.value,
+dm_5pc_EH_M3$p.value,
+dm_5pc_EH_M9$p.value,
+dm_5pc_EH_M12$p.value,
+dm_5pc_EH_M24$p.value,
+dm_5pc_EH_M48$p.value,
+dm_5pc_EH_M72$p.value,
+dm_5pc_EH_M96$p.value)
+    ,1,8)
 
+dm_adrian_EH_296M<-matrix(c(
+dm_adrian_EH_M2$p.value,
+dm_adrian_EH_M3$p.value,
+dm_adrian_EH_M9$p.value,
+dm_adrian_EH_M12$p.value,
+dm_adrian_EH_M24$p.value,
+dm_adrian_EH_M48$p.value,
+dm_adrian_EH_M72$p.value,
+dm_adrian_EH_M96$p.value)
+    ,1,8)
 
+dm_pv_EH_296M<-t(rbind(
+	dm_5pc_EH_296M,
+	dm_adrian_EH_296M))
+	
+colnames(dm_pv_EH_296M)<-c("pc5","adrian")
 
+View(dm_pv_EH_296M)
 
 #======anecdotal========
 
