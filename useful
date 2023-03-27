@@ -516,27 +516,21 @@ dm_adrian_M96$p.value)
     ,1,8)
 
 
+#------------------------------------------------------------------------------------------------
+
+#=========================================== 20230312 ==========================================
+
+#------------------------------------------------------------------------------------------------
 
 
-
-#==============20230312=================
-
-
-
-
-
-
-f_draw_factor_loading<-function(m.loadings,var,title){
-    
+f_draw_factor_loading<-function(m.loadings,var,title){    
     x11(width=16/3,height=5);
 	    matplot(mat,m.loadings,type="l",xaxt="n",lwd=5,lty=1,
             ,col=rainbow(5),ylim=c(-0.3,0.5),
             xlab="Maturidade (meses)",ylab="Peso dos Fatores")
     legend('topright',max(m.loadings),col=rainbow(5),lty=1,lwd=3,
            legend=paste0(c("PC1","PC2","PC3","PC4","PC5"),var))
-    axis(1,mat,mat)
-}
-
+    axis(1,mat,mat)}
 mat<-Maturities
 
 yields_daily_wndw1<-as.data.frame(yields_daily[1:2000,])
@@ -567,10 +561,6 @@ pc_scores_daily_wndw2_clmn<-cbind(dates_daily[2001:4104,],rownames_to_column(pc_
 pc_scores_daily_wndw2_clmn<-pc_scores_daily_wndw2_clmn[,-2]
 colnames(pc_scores_daily_wndw2_clmn)[1]<-"DATE"
 
-#mesclar substituir primeiros 2000 dessa base com wndw1, deixar com o mesmo nome e rodar
-pc_scores_daily_clmn<-r.bind(pc_scores_daily_wndw1_clmn,pc_scores_daily_clmn[2001:4104,]
-colnames(pc_scores_daily_clmn)[1]<-"DATE"
-
 #mesclar scores wndw1 com 2
 pc_scores_daily_wndws_clmn<-rbind(pc_scores_daily_wndw1_clmn,pc_scores_daily_wndw2_clmn)
 colnames(pc_scores_daily_wndws_clmn)[1]<-"DATE"
@@ -578,13 +568,13 @@ pc_scores_wndws_clmn<-inner_join(last_days,pc_scores_daily_wndws_clmn, by = "DAT
 pc_wndws_scores<-column_to_rownames(pc_scores_wndws_clmn,var = "DATE")
 
 #mesclar loadings wndw1 com 2
-pc_loadings_daily_wndws<-rbind(pc_loadings_daily_wndw1,pc_loadings_daily_wndw2)
+pc_loadings_daily_wndws<-(pc_loadings_daily_wndw1+pc_loadings_daily_wndw2)/2
 
 plot(as.matrix((pc_wndws_scores$Comp.1 - pc_scores$Comp.1)/pc_scores$Comp.1))
 summary(lm(I(pc_wndws_scores$Comp.1 - pc_scores$Comp.1) ~ pc_scores$Comp.1 - 1))
 
-plot(as.matrix((pc_loadings_daily_wndws$Comp.1 - pc_loadings_daily$Comp.1)/pc_loadings_daily$Comp.1))
-
+plot(as.matrix((pc_loadings_daily_wndw1$Comp.1 - pc_loadings_daily$Comp.1)/pc_loadings_daily$Comp.1))
+plot(as.matrix((pc_loadings_daily_wndw2$Comp.1 - pc_loadings_daily$Comp.1)/pc_loadings_daily$Comp.1))
 
 plot(pc_scores_wndws_clmn$DATE,                          
      pc_scores_wndws_clmn[,2]*100,
@@ -613,8 +603,6 @@ legend("topright",
        c("PC1","PC2","PC3","PC4","PC5"),
        lty = 1,
        col = 2:6)
-
-
 
 plot(pc_scores_wndws_clmn$DATE,                          
      pc_scores_clmn[,2]*100,
