@@ -697,7 +697,7 @@ colnames(MSPE_ratio)<-c("xp-hyp","pc5","adrian")
 View(MSPE_ratio)
 
 #=== dbld_mrn
-https://www.rdocumentation.org/packages/forecast/versions/8.20/topics/dm.test
+#https://www.rdocumentation.org/packages/forecast/versions/8.20/topics/dm.test
 
 PE_rw<-as.matrix(rxs_rw-E_rxs_rw)
 PE_xphyp<-as.matrix(r_xs[2:198,])
