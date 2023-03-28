@@ -672,13 +672,7 @@ solve(pc_loadings_daily)*(yields_daily - matrix(coef( lm(yields_daily$M1 ~ as.ma
 #------------------------------------------------------------------------------------------------
 
 
-View(as.matrix(pc_scores_daily)
-	- (crossprod(
-		t(as.matrix(yields_daily) - alphinha.rep
-		),
-		as.matrix(pc_loadings_daily)
-	)
-))
+
 
 
 pc_loadings_daily_intercept<-cbind(
@@ -805,6 +799,382 @@ pc_loadings_daily_intercept<-cbind(
     coef(lm(yields_daily[,121] ~ as.matrix(pc_scores_daily)))[1])
 
 pc_loadings_daily_intercept.rep<-t(as.data.frame(rep(as.data.frame(t(pc_loadings_daily_intercept))[1],4104)))
+
+
+View(as.matrix(pc_scores_daily)
+	- (crossprod(
+		t(as.matrix(yields_daily) - pc_loadings_daily_intercept.rep
+		),
+		as.matrix(pc_loadings_daily)
+	)
+))
+
+
+pc_loadings_daily_intercept_wndw1<-cbind(
+    coef(lm(yields_daily_wndw1[,1] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,2] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,3] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,4] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,5] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,6] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,7] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,8] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,9] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,10] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,11] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,12] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,13] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,14] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,15] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,16] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,17] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,18] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,19] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,20] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,21] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,22] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,23] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,24] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,25] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,26] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,27] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,28] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,29] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,30] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,31] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,32] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,33] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,34] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,35] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,36] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,37] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,38] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,39] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,40] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,41] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,42] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,43] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,44] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,45] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,46] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,47] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,48] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,49] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,50] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,51] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,52] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,53] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,54] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,55] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,56] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,57] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,58] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,59] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,60] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,61] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,62] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,63] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,64] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,65] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,66] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,67] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,68] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,69] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,70] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,71] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,72] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,73] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,74] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,75] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,76] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,77] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,78] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,79] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,80] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,81] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,82] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,83] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,84] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,85] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,86] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,87] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,88] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,89] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,90] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,91] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,92] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,93] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,94] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,95] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,96] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,97] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,98] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,99] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,100] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,101] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,102] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,103] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,104] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,105] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,106] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,107] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,108] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,109] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,110] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,111] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,112] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,113] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,114] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,115] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,116] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,117] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,118] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,119] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,120] ~ as.matrix(pc_scores_daily_wndw1)))[1],
+    coef(lm(yields_daily_wndw1[,121] ~ as.matrix(pc_scores_daily_wndw1)))[1])
+
+pc_loadings_daily_intercept_wndw1.rep<-t(as.data.frame(rep(as.data.frame(t(pc_loadings_daily_intercept_wndw1))[1],4104)))
+
+
+
+
+pc_scores_daily <-as.data.frame(
+	(crossprod(
+		t(as.matrix(yields_daily) - pc_loadings_daily_intercept_wndw1.rep
+		),
+		as.matrix(pc_loadings_daily_wndw1)
+	)
+))
+
+pc_loadings_daily<-as.data.frame(unclass(pca_yields_wndw1$loadings))
+
+
+
+
+E_rxs_rw<-as.data.frame(r_xs[99:197,])
+rxs_rw<-as.data.frame(r_xs[101:198,])
+
+MSPErw_296M<-matrix(c(
+  mean(as.matrix(rxs_rw[,2]-E_rxs_rw[,2])^2),
+  mean(as.matrix(rxs_rw[,3]-E_rxs_rw[,3])^2),
+  mean(as.matrix(rxs_rw[,9]-E_rxs_rw[,9])^2),
+  mean(as.matrix(rxs_rw[,12]-E_rxs_rw[,12])^2),
+  mean(as.matrix(rxs_rw[,24]-E_rxs_rw[,24])^2),
+  mean(as.matrix(rxs_rw[,48]-E_rxs_rw[,48])^2),
+  mean(as.matrix(rxs_rw[,72]-E_rxs_rw[,72])^2),
+  mean(as.matrix(rxs_rw[,96]-E_rxs_rw[,96])^2))
+    ,1,8)
+
+colnames(MSPErw_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")	
+
+#MSPE_rw<-mean(as.matrix(rxs_rw-E_rxs_rw)^2)
+
+#=== expectation hypothesis
+
+E_rxs_xphyp<-0
+
+MSPExphyp_296M<-matrix(c(
+  mean(as.matrix(r_xs[101:198,2])^2),
+  mean(as.matrix(r_xs[101:198,3])^2),
+  mean(as.matrix(r_xs[101:198,9])^2),
+  mean(as.matrix(r_xs[101:198,12])^2),
+  mean(as.matrix(r_xs[101:198,24])^2),
+  mean(as.matrix(r_xs[101:198,48])^2),
+  mean(as.matrix(r_xs[101:198,72])^2),
+  mean(as.matrix(r_xs[101:198,96])^2)
+    ),1,8)
+
+colnames(MSPExphyp_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
+
+#MSPE_xphyp<-mean(as.matrix(r_xs)^2)
+
+#=== r_xs pc5
+
+lm_rxs_pc5_alpha_hat<-t(lm_rxs_pc5$coefficients[1,])
+lm_rxs_pc5_beta_hat<-lm_rxs_pc5$coefficients[2:6,]
+
+i_98<-as.matrix(rep(1, 98))
+
+E_rxs_pc5<-as.data.frame(t(crossprod(lm_rxs_pc5_alpha_hat,t(i_98)))+t(crossprod(lm_rxs_pc5_beta_hat,t(pc5_ini[101:198,]))))
+
+MSPEpc5_296M<-matrix(c(
+  mean(as.matrix(r_xs[101:198,2]-E_rxs_pc5[,2])^2),
+  mean(as.matrix(r_xs[101:198,3]-E_rxs_pc5[,3])^2),
+  mean(as.matrix(r_xs[101:198,9]-E_rxs_pc5[,9])^2),
+  mean(as.matrix(r_xs[101:198,12]-E_rxs_pc5[,12])^2),
+  mean(as.matrix(r_xs[101:198,24]-E_rxs_pc5[,24])^2),
+  mean(as.matrix(r_xs[101:198,48]-E_rxs_pc5[,48])^2),
+  mean(as.matrix(r_xs[101:198,72]-E_rxs_pc5[,72])^2),
+  mean(as.matrix(r_xs[101:198,96]-E_rxs_pc5[,96])^2))
+      ,1,8)
+
+colnames(MSPEpc5_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")	
+row.names(MSPEpc5_296M)<-"MSPE_rxs_pc5"
+
+
+#============== MSPE adrian ============== 
+
+i_5<-as.matrix(rep(1, 5))     													#5x1
+
+kappa_hat <-t(crossprod(as.matrix(beta_hat),as.matrix(lambda_hat)) -(B_ast_vecSigma + sig2_hat*i_120)/2) # -t(delta_hat*i_120)    #1x120
+
+Kappa_hat <-crossprod(as.matrix(beta_hat),as.matrix(Lambda_hat)) # +t(crossprod(t(Delta_hat_5pc),t(i_120)))   #120x5
+
+csi_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini
+
+E_rxs_adrian <- t(crossprod(kappa_hat,t(i_98))) + crossprod(t(X_[101:198,]),t(Kappa_hat)) + U_hat_ini[101:198,]
+# + csi_hat      
+#198x120
+
+MSPEadrian_296M<-matrix(c(
+  mean(as.matrix(r_xs[101:198,2]-E_rxs_adrian[,2])^2),
+  mean(as.matrix(r_xs[101:198,3]-E_rxs_adrian[,3])^2),
+  mean(as.matrix(r_xs[101:198,9]-E_rxs_adrian[,9])^2),
+  mean(as.matrix(r_xs[101:198,12]-E_rxs_adrian[,12])^2),
+  mean(as.matrix(r_xs[101:198,24]-E_rxs_adrian[,24])^2),
+  mean(as.matrix(r_xs[101:198,48]-E_rxs_adrian[,48])^2),
+  mean(as.matrix(r_xs[101:198,72]-E_rxs_adrian[,72])^2),
+  mean(as.matrix(r_xs[101:198,96]-E_rxs_adrian[,96])^2))
+      ,1,8)
+      
+colnames(MSPEadrian_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
+
+
+MSPE_ratio<-t(rbind(
+	MSPExphyp_296M/MSPErw_296M,
+	MSPEpc5_296M/MSPErw_296M,
+	MSPEadrian_296M/MSPErw_296M))
+	
+colnames(MSPE_ratio)<-c("xp-hyp","pc5","adrian")
+
+View(MSPE_ratio)
+
+#=== dbld_mrn
+#https://www.rdocumentation.org/packages/forecast/versions/8.20/topics/dm.test
+
+PE_rw<-as.matrix(rxs_rw-E_rxs_rw)
+PE_xphyp<-as.matrix(r_xs[2:198,])
+PE_pc5<-as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])
+PE_adrian<-as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])
+
+dm_xphyp_rw_M2<-dm.test(PE_xphyp[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_xphyp_rw_M3<-dm.test(PE_xphyp[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_xphyp_rw_M9<-dm.test(PE_xphyp[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_xphyp_rw_M12<-dm.test(PE_xphyp[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_xphyp_rw_M24<-dm.test(PE_xphyp[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_xphyp_rw_M48<-dm.test(PE_xphyp[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_xphyp_rw_M72<-dm.test(PE_xphyp[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_xphyp_rw_M96<-dm.test(PE_xphyp[,96], PE_rw[,96], alternative = "less",h = 1)
+
+dm_5pc_rw_M2<-dm.test(PE_pc5[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_5pc_rw_M3<-dm.test(PE_pc5[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_5pc_rw_M9<-dm.test(PE_pc5[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_5pc_rw_M12<-dm.test(PE_pc5[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_5pc_rw_M24<-dm.test(PE_pc5[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_5pc_rw_M48<-dm.test(PE_pc5[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_5pc_rw_M72<-dm.test(PE_pc5[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_5pc_rw_M96<-dm.test(PE_pc5[,96], PE_rw[,96], alternative = "less",h = 1)
+
+dm_adrian_rw_M2<-dm.test(PE_adrian[,2], PE_rw[,2], alternative = "less",h = 1)
+dm_adrian_rw_M3<-dm.test(PE_adrian[,3], PE_rw[,3], alternative = "less",h = 1)
+dm_adrian_rw_M9<-dm.test(PE_adrian[,9], PE_rw[,9], alternative = "less",h = 1)
+dm_adrian_rw_M12<-dm.test(PE_adrian[,12], PE_rw[,12], alternative = "less",h = 1)
+dm_adrian_rw_M24<-dm.test(PE_adrian[,24], PE_rw[,24], alternative = "less",h = 1)
+dm_adrian_rw_M48<-dm.test(PE_adrian[,48], PE_rw[,48], alternative = "less",h = 1)
+dm_adrian_rw_M72<-dm.test(PE_adrian[,72], PE_rw[,72], alternative = "less",h = 1)
+dm_adrian_rw_M96<-dm.test(PE_adrian[,96], PE_rw[,96], alternative = "less",h = 1)
+
+dm_xphyp_rw_296M<-matrix(c(
+dm_xphyp_rw_M2$p.value,
+dm_xphyp_rw_M3$p.value,
+dm_xphyp_rw_M9$p.value,
+dm_xphyp_rw_M12$p.value,
+dm_xphyp_rw_M24$p.value,
+dm_xphyp_rw_M48$p.value,
+dm_xphyp_rw_M72$p.value,
+dm_xphyp_rw_M96$p.value)
+    ,1,8)
+
+dm_5pc_rw_296M<-matrix(c(
+dm_5pc_rw_M2$p.value,
+dm_5pc_rw_M3$p.value,
+dm_5pc_rw_M9$p.value,
+dm_5pc_rw_M12$p.value,
+dm_5pc_rw_M24$p.value,
+dm_5pc_rw_M48$p.value,
+dm_5pc_rw_M72$p.value,
+dm_5pc_rw_M96$p.value)
+    ,1,8)
+
+dm_adrian_rw_296M<-matrix(c(
+dm_adrian_rw_M2$p.value,
+dm_adrian_rw_M3$p.value,
+dm_adrian_rw_M9$p.value,
+dm_adrian_rw_M12$p.value,
+dm_adrian_rw_M24$p.value,
+dm_adrian_rw_M48$p.value,
+dm_adrian_rw_M72$p.value,
+dm_adrian_rw_M96$p.value)
+    ,1,8)
+
+dm_pv_rw_296M<-t(rbind(
+	dm_xphyp_rw_296M,
+	dm_5pc_rw_296M,
+	dm_adrian_rw_296M))
+	
+colnames(dm_pv_rw_296M)<-c("xp-hyp","pc5","adrian")
+
+View(dm_pv_rw_296M)
+
+dm_5pc_EH_M2<-dm.test(PE_pc5[,2], PE_xphyp[,2], alternative = "less",h = 1)
+dm_5pc_EH_M3<-dm.test(PE_pc5[,3], PE_xphyp[,3], alternative = "less",h = 1)
+dm_5pc_EH_M9<-dm.test(PE_pc5[,9], PE_xphyp[,9], alternative = "less",h = 1)
+dm_5pc_EH_M12<-dm.test(PE_pc5[,12], PE_xphyp[,12], alternative = "less",h = 1)
+dm_5pc_EH_M24<-dm.test(PE_pc5[,24], PE_xphyp[,24], alternative = "less",h = 1)
+dm_5pc_EH_M48<-dm.test(PE_pc5[,48], PE_xphyp[,48], alternative = "less",h = 1)
+dm_5pc_EH_M72<-dm.test(PE_pc5[,72], PE_xphyp[,72], alternative = "less",h = 1)
+dm_5pc_EH_M96<-dm.test(PE_pc5[,96], PE_xphyp[,96], alternative = "less",h = 1)
+
+dm_adrian_EH_M2<-dm.test(PE_adrian[,2], PE_xphyp[,2], alternative = "less",h = 1)
+dm_adrian_EH_M3<-dm.test(PE_adrian[,3], PE_xphyp[,3], alternative = "less",h = 1)
+dm_adrian_EH_M9<-dm.test(PE_adrian[,9], PE_xphyp[,9], alternative = "less",h = 1)
+dm_adrian_EH_M12<-dm.test(PE_adrian[,12], PE_xphyp[,12], alternative = "less",h = 1)
+dm_adrian_EH_M24<-dm.test(PE_adrian[,24], PE_xphyp[,24], alternative = "less",h = 1)
+dm_adrian_EH_M48<-dm.test(PE_adrian[,48], PE_xphyp[,48], alternative = "less",h = 1)
+dm_adrian_EH_M72<-dm.test(PE_adrian[,72], PE_xphyp[,72], alternative = "less",h = 1)
+dm_adrian_EH_M96<-dm.test(PE_adrian[,96], PE_xphyp[,96], alternative = "less",h = 1)
+
+
+dm_5pc_EH_296M<-matrix(c(
+dm_5pc_EH_M2$p.value,
+dm_5pc_EH_M3$p.value,
+dm_5pc_EH_M9$p.value,
+dm_5pc_EH_M12$p.value,
+dm_5pc_EH_M24$p.value,
+dm_5pc_EH_M48$p.value,
+dm_5pc_EH_M72$p.value,
+dm_5pc_EH_M96$p.value)
+    ,1,8)
+
+dm_adrian_EH_296M<-matrix(c(
+dm_adrian_EH_M2$p.value,
+dm_adrian_EH_M3$p.value,
+dm_adrian_EH_M9$p.value,
+dm_adrian_EH_M12$p.value,
+dm_adrian_EH_M24$p.value,
+dm_adrian_EH_M48$p.value,
+dm_adrian_EH_M72$p.value,
+dm_adrian_EH_M96$p.value)
+    ,1,8)
+
+dm_pv_EH_296M<-t(rbind(
+	dm_5pc_EH_296M,
+	dm_adrian_EH_296M))
+	
+colnames(dm_pv_EH_296M)<-c("pc5","adrian")
+
+View(dm_pv_EH_296M)
+
 
 
 
