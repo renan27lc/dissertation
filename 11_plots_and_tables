@@ -964,3 +964,102 @@ Table1_bmstr_r1mo_complete<-matrix(c(
 
 colnames(Table1_bmstr_r1mo_complete)<-c("alpha_hat","beta_hat","betahat_StdError","H0: alpha=0, beta=0 P_value","H0: beta=1 P_value","H0:alpha=0, beta=1 P_value","Adj R2")
 row.names(Table1_bmstr_r1mo_complete)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
+
+
+
+
+
+
+
+#------------------------------------------------
+
+#=============== VIEW() SUMMARY() #PDF ==============
+
+#------------------------------------------------
+
+
+
+#======== EXCESS RETURNS - EXPECTATION HIPOTHESIS ===========
+
+#====== mns.lnPfin_xphyp
+
+summary_lm_mns.lnPfin_xphyp_M1<-summary(lm_mns.lnPfin_xphyp_M1)
+#summary_lm_mns.lnPfin_xphyp_M2<-summary(lm_mns.lnPfin_xphyp_M2)
+#summary_lm_mns.lnPfin_xphyp_M3<-summary(lm_mns.lnPfin_xphyp_M3)
+#summary_lm_mns.lnPfin_xphyp_M4<-summary(lm_mns.lnPfin_xphyp_M4)
+#summary_lm_mns.lnPfin_xphyp_M5<-summary(lm_mns.lnPfin_xphyp_M5)
+summary_lm_mns.lnPfin_xphyp_M6<-summary(lm_mns.lnPfin_xphyp_M6)
+
+Table1_bmstr_mns.lnPfin<-matrix(c(
+	summary_lm_mns.lnPfin_xphyp_M1$coefficients[1,1],
+	summary_lm_mns.lnPfin_xphyp_M6$coefficients[1,1],
+	summary_lm_mns.lnPfin_xphyp_M1$coefficients[1,4],
+	summary_lm_mns.lnPfin_xphyp_M6$coefficients[1,4],
+	summary_lm_mns.lnPfin_xphyp_M1$coefficients[2,1],
+	summary_lm_mns.lnPfin_xphyp_M6$coefficients[2,1],
+	summary_lm_mns.lnPfin_xphyp_M1$coefficients[2,4],
+	summary_lm_mns.lnPfin_xphyp_M6$coefficients[2,4],
+	summary_lm_mns.lnPfin_xphyp_M1$adj.r.squared,
+	summary_lm_mns.lnPfin_xphyp_M6$adj.r.squared
+			),2,5)
+
+colnames(Table1_bmstr_mns.lnPfin)<-c("Intercept","P_value","Beta","P_value","R_squared")
+row.names(Table1_bmstr_mns.lnPfin)<-c("M1","M6")
+
+View(Table1_bmstr_mns.lnPfin)
+
+#===== r_1mo
+
+summary_lm_r1mo_xphyp<-summary(lm_r1mo_xphyp)
+
+Table1_bmstr_r1mo<-matrix(c(
+	summary_lm_r1mo_xphyp$`Response M1`$coefficients[1,1],
+	summary_lm_r1mo_xphyp$`Response M6`$coefficients[1,1],
+	summary_lm_r1mo_xphyp$`Response M1`$coefficients[1,4],
+	summary_lm_r1mo_xphyp$`Response M6`$coefficients[1,4],
+	summary_lm_r1mo_xphyp$`Response M1`$coefficients[2,1],
+	summary_lm_r1mo_xphyp$`Response M6`$coefficients[2,1],
+	summary_lm_r1mo_xphyp$`Response M1`$coefficients[2,4],
+	summary_lm_r1mo_xphyp$`Response M6`$coefficients[2,4],
+	summary_lm_r1mo_xphyp$`Response M1`$adj.r.squared,
+	summary_lm_r1mo_xphyp$`Response M6`$adj.r.squared
+			),2,5)
+
+colnames(Table1_bmstr_r1mo)<-c("Intercept","P_value","Beta","P_value","R_squared")
+row.names(Table1_bmstr_r1mo)<-c("M1","M6")
+
+View(Table1_bmstr_r1mo)
+
+#3 H0 que ela faz (beta=1, alpha=beta=0 e alpha=0, beta=1):
+
+summary_lm_r1mo_xphyp_b0<-summary(lm_r1mo_xphyp_b0)
+
+View(MSPE_ratio)
+
+# ===================== PRICES OF RISK PARAMETERS ==========================
+
+
+lambdas<-as.data.frame(c(lambda0_hat,lambda1_hat))
+rownames(lambdas)<-c("PC1","PC2","PC3","PC4","PC5")
+colnames(lambdas)<-c("lmbd_0","lmbd_1.1","lmbd_1.2","lmbd_1.3","lmbd_1.4","lmbd_1.5")
+
+lambdas
+
+
+# ===================== TABLES IN .PDF ==========================
+
+
+#library("gridExtra")
+
+#pdf("lmr1mo_tbl1.pdf", height=4, width=12)
+#grid.table(lmr1mo_tbl1)
+#dev.off()
+
+#pdf("MSPE_ratio.pdf", height=4, width=24)
+#grid.table(MSPE_ratio)
+#dev.off()
+
+#pdf("lambdas.pdf", height=4, width=12)
+#grid.table(lambdas)
+#dev.off()
+
