@@ -1,0 +1,23 @@
+
+yM2.rep<-as.data.frame(rep(as.data.frame(yields[1:198,2])[1],120))
+#gain <- as.matrix(r_1mo - yM2.rep )
+gain <- as.matrix(r_1mo - (yM2.rep - rf.rep/21))
+#summary(lm(formula = as.matrix(I(E_rxs_adrian[2:198,2] - E_rxs_rw[,2])) ~ E_rxs_rw[,2] -1))
+
+#SPE_rw<-as.matrix(rxs_rw-E_rxs_rw)^2
+#SPE_xphyp<-as.matrix(r_xs[2:198,])^2
+#SPE_pc5<-as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])^2
+#SPE_adrian<-as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])^2
+
+#PE_xphyp_difrw_mdl<-(as.matrix(r_xs[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+#PE_pc5_difrw_mdl<-(as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+#PE_adrian_difrw_mdl<-(as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+
+#PE_xphyp_difrw_mdl<-abs(as.matrix(r_xs[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+#PE_pc5_difrw_mdl<-abs(as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+#PE_adrian_difrw_mdl<-abs(as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])- as.matrix(rxs_rw-E_rxs_rw))
+
+#SPE_xphyp_rwdiv<-as.matrix(rxs_rw-E_rxs_rw)^2 / as.matrix(r_xs[2:198,])^2
+#SPE_pc5_rwdiv<-as.matrix(rxs_rw-E_rxs_rw)^2 / as.matrix(r_xs[2:198,]-E_rxs_pc5[2:198,])^2
+#SPE_adrian_rwdiv<-as.matrix(rxs_rw-E_rxs_rw)^2 / as.matrix(r_xs[2:198,]-E_rxs_adrian[2:198,])^2
+
