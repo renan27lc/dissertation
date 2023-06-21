@@ -48,3 +48,747 @@ Maturities <- 1:121
 
 # Scrape yield data
 yields_daily_100_yr <- yieldsbr(Initial_Date = Initial_Date, Final_Date = Final_Date, Maturities = Maturities)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
+
+last_days<-as.data.frame(as.Date.POSIXct(matrix(c(1138665600, 1140739200, 1143763200, 1146182400, 1149033600, 1151625600, 1154304000, 1156982400, 1159488000, 1162252800, 1164844800, 1167264000, 1170201600, 1172620800, 1175212800, 1177891200, 1180569600, 1183075200, 1185840000, 1188518400, 1190937600, 1193788800, 1196380800, 1198800000, 1201737600, 1204243200, 1206921600, 1209513600, 1212105600, 1214784000, 1217462400, 1219968000, 1222732800, 1225411200, 1227830400, 1230595200, 1233273600, 1235692800, 1238457600, 1241049600, 1243555200, 1246320000, 1248998400, 1251676800, 1254268800, 1256860800, 1259539200, 1262131200, 1264723200, 1267142400, 1269993600, 1272585600, 1275264000, 1277856000, 1280448000, 1283212800, 1285804800, 1288310400, 1291075200, 1293667200, 1296432000, 1298851200, 1301529600, 1304035200, 1306800000, 1309392000, 1311897600, 1314748800, 1317340800, 1320019200, 1322611200, 1325116800, 1327968000, 1330473600, 1333065600, 1335744000, 1338422400, 1340928000, 1343692800, 1346371200, 1348790400, 1351641600, 1354233600, 1356652800, 1359590400, 1362009600, 1364428800, 1367280000, 1369958400, 1372377600, 1375228800, 1377820800, 1380499200, 1383177600, 1385683200, 1388361600, 1391126400, 1393545600, 1396224000, 1398816000, 1401408000, 1404086400, 1406764800, 1409270400, 1412035200, 1414713600, 1417132800, 1419897600, 1422576000, 1424995200, 1427760000, 1430352000, 1432857600, 1435622400, 1438300800, 1440979200, 1443571200, 1446163200, 1448841600, 1451433600, 1454025600, 1456704000, 1459382400, 1461888000, 1464652800, 1467244800, 1469750400, 1472601600, 1475193600, 1477872000, 1480464000, 1482969600, 1485820800, 1487894400, 1490918400, 1493337600, 1496188800, 1498780800, 1501459200, 1504137600, 1506643200, 1509408000, 1512000000, 1514419200, 1517356800, 1519776000, 1522281600, 1525046400, 1527638400, 1530230400, 1532995200, 1535673600, 1538092800, 1540944000, 1543536000, 1545955200, 1548892800, 1551312000, 1553817600, 1556582400, 1559260800, 1561680000, 1564531200, 1567123200, 1569801600, 1572480000, 1574985600, 1577664000, 1580428800, 1582848000, 1585612800, 1588204800, 1590710400, 1593475200, 1596153600, 1598832000, 1601424000, 1604016000, 1606694400, 1609286400, 1611878400, 1614297600, 1617148800, 1619740800, 1622419200, 1625011200, 1627603200, 1630368000, 1632960000, 1635465600, 1638230400, 1640822400, 1643587200, 1645747200, 1648684800, 1651190400, 1653955200, 1656547200, 1659052800),199,1),tz="UTC"))
+last_days<-as.data.frame(as.matrix(last_days))
+last_days<-as.data.frame(as.Date(last_days[,1]))
+colnames(last_days)[1]<-"DATE"
+
+dates_daily<-as.data.frame(as.Date(yields_daily_chrctr$DATE, "%d - %m - %Y"))
+
+yields_daily_clmn<-bind_cols(dates_daily,yields_daily_chrctr)
+yields_daily_clmn<-as.data.frame(yields_daily_clmn[,-2])
+colnames(yields_daily_clmn)[1]<-"DATE"
+
+yields_clmn<-inner_join(last_days,yields_daily_clmn, by = "DATE")
+
+yields_daily<-column_to_rownames(yields_daily_clmn,var = "DATE")
+yields<-column_to_rownames(yields_clmn,var = "DATE")
+
+yields_fin<-yields[2:199, 1:120] # t(1+1)=fev/16 até t(T)=jul/22; h(1-1)=M1 até h(H-1)=M120
+yields_ini<-yields[1:198, 2:121] # t(1)=jan/06 até t(T-1)=jun/22; h(1)=M2 até h(H)=M121
+
+mat_fin.rep<-t(as.data.frame(rep(as.data.frame(Maturities[1:120])[1],198)))
+mat_ini.rep<-t(as.data.frame(rep(as.data.frame(Maturities[2:121])[1],198)))
+rownames(mat_fin.rep)<-rownames(yields_fin)
+rownames(mat_ini.rep)<-rownames(yields_ini)
+colnames(mat_fin.rep)<-colnames(yields_fin)
+colnames(mat_ini.rep)<-colnames(yields_ini)
+
+rf.rep<-as.data.frame(rep(as.data.frame(yields[1:198,1])[1],120))
+rownames(rf.rep)<-rownames(yields_ini)
+colnames(rf.rep)<-colnames(yields_ini)
+
+rf<- as.matrix(rf.rep[,1]) 	#risk free rate
+colnames(rf)<-"risk_free"
+rownames(rf)<-rownames(yields_ini)
+
+mns.lnP_fin<-as.data.frame(yields_fin*mat_fin.rep)	#minus lnP
+mns.lnP_ini<-as.data.frame(yields_ini*mat_ini.rep)
+rownames(mns.lnP_fin)<-rownames(yields_fin)
+colnames(mns.lnP_fin)<-colnames(yields_fin)
+rownames(mns.lnP_ini)<-rownames(yields_ini)
+colnames(mns.lnP_ini)<-colnames(yields_ini)
+
+prices<-cbind(exp(-rf),exp(-mns.lnP_ini))
+
+# ====== E[mns.lnP_fin] expectations hypothesis
+
+lm_mns.lnPfin_xphyp <- list()
+selected_columns <- c(2, 3, 9, 12, 24, 48, 84, 120)
+
+for (col in selected_columns) {
+  formula <- as.formula(paste0("as.matrix(mns.lnP_fin[,", col, "]) ~ as.matrix(mns.lnPfin_xphyp[,", col, "])"))
+  lm_mns.lnPfin_xphyp[[col]] <- lm(formula, data = data.frame(mns.lnP_fin, mns.lnPfin_xphyp))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+# ====== E[1 month return] expectations hypothesis
+
+r_1mo<- mns.lnP_ini - mns.lnP_fin 	#return rate for holding the bond for 1 month
+rownames(r_1mo)<-rownames(mns.lnP_fin)
+colnames(r_1mo)<-colnames(mns.lnP_fin)
+
+lm_r1mo_xphyp<-lm(as.matrix(r_1mo) ~ rf)
+summary_lm_r1mo_xphyp<-summary(lm_r1mo_xphyp)
+
+lm_r1mo_xphyp_ab1<-lm(as.matrix(I(r_1mo - rf)) ~ rf)
+summary_lm_r1mo_xphyp_ab1<-summary(lm_r1mo_xphyp_ab1)
+
+#lm_r1mo_xphyp_a0<-lm(formula = as.matrix(r_1mo) ~ rf -1)
+#summary_lm_r1mo_xphyp_a0<-summary(lm_r1mo_xphyp_a0)
+
+lm_r1mo_xphyp_a0b1<-lm(formula = as.matrix(I(r_1mo - rf)) ~ rf -1)
+summary_lm_r1mo_xphyp_a0b1<-summary(lm_r1mo_xphyp_a0b1)
+
+# ===================== PCA ==========================
+
+f_draw_factor_loading<-function(m.loadings,var,title){
+    
+    x11(width=16/3,height=5);
+	    matplot(mat,m.loadings,type="l",xaxt="n",lwd=5,lty=1,
+            ,col=rainbow(5),ylim=c(-0.3,0.5),
+            xlab="Maturidade (meses)",ylab="Peso dos Fatores")
+    legend('topright',max(m.loadings),col=rainbow(5),lty=1,lwd=3,
+           legend=paste0(c("PC1","PC2","PC3","PC4","PC5"),var))
+    axis(1,mat,mat)
+}
+
+mat<-Maturities
+
+pca_yields<-princomp(yields_daily)
+f_draw_factor_loading(pca_yields$loadings[,1:5],
+                      round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
+                      "Yields level PCA - princomp()")
+        
+pc_scores_daily<-as.data.frame(pca_yields$scores)
+
+pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
+
+# ===================== LM() YIELDS ~ PC OF YIELDS ==========================
+
+pc_scores_daily_clmn<-cbind(dates_daily,rownames_to_column(pc_scores_daily))
+pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
+colnames(pc_scores_daily_clmn)[1]<-"DATE"
+
+pc_scores_clmn<-inner_join(last_days,pc_scores_daily_clmn, by = "DATE")
+pc_scores<-column_to_rownames(pc_scores_clmn,var = "DATE")
+
+pc5_ini<-as.matrix(pc_scores[1:198,1:5])
+
+# y(1:7/22,1:121) ~ pc()
+lm_yields_pc5<-lm(as.matrix(yields) ~ as.matrix(pc_scores[,1:5]))
+
+U_hat <-as.matrix(lm_yields_pc5$residuals)    # y ~ pc; 199 x 121
+U_hat_ini <-as.matrix(lm_yields_pc5$residuals[1:198,2:121])
+U_hat_fin <-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
+
+# y(t+1) ~ pc(t)
+lm_yfin_pc5<-lm(as.matrix(yields_fin) ~ as.matrix(pc5_ini))
+
+# ===================== LM() EXCESS RETURN ~ PC OF YIELDS ==========================
+
+r_xs<- r_1mo - rf.rep       # excess returns
+rownames(r_xs)<-rownames(mns.lnP_fin)
+colnames(r_xs)<-colnames(mns.lnP_fin)
+
+lm_rxs_pc5<-lm(as.matrix(r_xs) ~ as.matrix(pc5_ini))
+
+# ===================== ADRIAN 3 STEPS ==========================
+
+#https://www.rdocumentation.org/packages/vars/versions/1.5-6/topics/VAR
+library("vars")
+
+var1_pc5 <- VAR(pc_scores[,1:5], p = 1, type = "const",ic = "SC")
+
+V_hat<-as.matrix(residuals(var1_pc5))			#198 x 5; t+1 (2/06 a 7/22)
+Sigma_hat<-crossprod(V_hat)/192 # Covariance matrix of residuals (198-6)df	# 5x5
+
+X_<-pc5_ini			#198 x 5; t (1/06 a 6/22)
+
+#====== estimando parâmetros Adrian (14):
+
+lm_A14<-lm(as.matrix(r_xs) ~ V_hat[1:198,1:5] + X_[1:198,1:5])
+
+E_hat<-as.matrix(lm_A14$residuals)	#198x120; t+1 (2/06 a 7/22); h-1 (M1 a M120)
+
+#Z_tilde<- t(cbind(i_198,V_hat,X_))	#11x198
+#lm(t_rxs[1,]~Z_tilde[2:6,]+Z_tilde[7:11,])
+
+sig2_hat<-sum(diag(crossprod(E_hat)))/(120*198)		# 1x1
+
+beta_hat<-as.matrix(coef(lm_A14)[2:6,])			# 5 x 120; h-1 (M1 a M120)
+#--------------------GPT_begin------------------------
+selected_columns <- c(2, 3, 9, 12, 24, 48, 72, 96)
+num_rows <- 5
+num_cols <- length(selected_columns)
+
+beta_hat_M296 <- matrix(nrow = num_rows, ncol = num_cols)
+
+for (i in 1:num_cols) {
+  beta_hat_M296[, i] <- coef(lm_A14)[2:(num_rows + 1), selected_columns[i]]
+}
+#--------------------GPT------------------------
+num_rows <- 25
+num_cols <- 120
+
+B_ast <- matrix(nrow = num_rows, ncol = num_cols)
+
+for (i in 1:num_cols) {
+  B_ast[, i] <- crossprod(t(beta_hat[, i]))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+num_rows <- 25
+num_cols <- 120
+
+B_ast <- matrix(nrow = num_rows, ncol = num_cols)
+
+for (i in 1:num_cols) {
+  B_ast[, i] <- as.matrix(as.vector(apply(t(beta_hat[, i]), 2, crossprod)))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+num_rows <- 25
+num_cols <- 8
+indices <- c(2, 3, 9, 12, 24, 48, 72, 96)
+
+B_ast_M296 <- matrix(nrow = num_rows, ncol = num_cols)
+
+for (i in 1:num_cols) {
+  B_ast_M296[, i] <- crossprod(t(beta_hat[, indices[i]]))
+}
+
+
+
+
+#============== Lambda_hat ============
+
+c_hat <- as.matrix(coef(lm_A14)[7:11, ])
+
+c_hat_M296 <- matrix(nrow = 5, ncol = 8)
+indices <- c(2, 3, 9, 12, 24, 48, 72, 96)
+
+for (i in 1:8) {
+  c_hat_M296[, i] <- coef(lm_A14)[7:11, indices[i]]
+}
+
+beta_hat_M296 <- beta_hat[, indices]
+
+Lambda_hat <- as.matrix(crossprod(solve(crossprod(t(beta_hat_M296))),
+                                  crossprod(t(beta_hat_M296), t(c_hat_M296))))
+
+#============== lambda_hat ============
+
+vec_Sigma <- matrix(as.vector(Sigma_hat), nrow = 25, ncol = 1)
+B_ast_vecSigma <- crossprod(B_ast, vec_Sigma)
+Bast_M296_vecSigma <- crossprod(B_ast_M296, vec_Sigma)
+
+betabeta_inv <- solve(crossprod(t(beta_hat)))
+i_120 <- matrix(1, nrow = 120, ncol = 1)
+
+a_hat <- as.matrix(coef(lm_A14)[1, ])
+
+a_hat_M296 <- matrix(nrow = 1, ncol = 8)
+indices <- c(2, 3, 9, 12, 24, 48, 72, 96)
+
+for (i in 1:8) {
+  a_hat_M296[, i] <- coef(lm_A14)[1, indices[i]]
+}
+
+i_8 <- matrix(1, nrow = 8, ncol = 1)
+
+lambda_hat <- crossprod(betabeta_inv,
+                        crossprod(t(beta_hat),
+                                 as.matrix(a_hat + (B_ast_vecSigma + sig2_hat * i_120) / 2)))
+
+#lambda_hat_M296 <- crossprod(betabeta_inv, crossprod(t(beta_hat_M296), as.matrix(t(a_hat_M296) + (Bast_M296_vecSigma + sig2_hat * i_8) / 2)))
+
+
+
+
+
+
+
+
+
+U_hat<-as.matrix(lm_yields_pc5$residuals)	#199 x 121
+
+#============== delta_hat ============
+
+lm_rf_pc<-lm(yields[,1] ~ as.matrix(pc_scores))
+
+delta_hat<-as.matrix(coef(lm_rf_pc))[1]       # 1x1
+Delta_hat<-as.matrix(coef(lm_rf_pc))[-1]      # 120 x 1
+Delta_hat_5pc<-as.matrix(coef(lm_rf_pc))[2:6] # 5x1
+
+#============== MSPE adrian ============== 
+
+i_5<-as.matrix(rep(1, 5))     													#5x1
+
+kappa_hat <-t(crossprod(as.matrix(beta_hat),as.matrix(lambda_hat)) -(B_ast_vecSigma + sig2_hat*i_120)/2) # -t(delta_hat*i_120)    #1x120
+
+Kappa_hat <-crossprod(as.matrix(beta_hat),as.matrix(Lambda_hat)) # +t(crossprod(t(Delta_hat_5pc),t(i_120)))   #120x5
+
+csi_hat <- t(crossprod(as.matrix(beta_hat),t(V_hat))) + U_hat_fin - U_hat_ini
+
+E_rxs_adrian <- t(crossprod(kappa_hat,t(i_198))) + crossprod(t(X_),t(Kappa_hat)) + U_hat_ini # + csi_hat      #198x120
+
+MSPEadrian_296M <- matrix(
+  apply(r_xs[2:198, c(2, 3, 9, 12, 24, 48, 72, 96)] - E_rxs_adrian[2:198, c(2, 3, 9, 12, 24, 48, 72, 96)], 2, function(col) mean(col^2)),
+  nrow = 1, ncol = 8
+)
+
+colnames(MSPEadrian_296M) <- c("M2", "M3", "M9", "M12", "M24", "M48", "M72", "M96")
+
+
+
+
+
+
+
+#MSPEadrian_296M<-matrix(c(
+#  mean(as.matrix(r_xs[2:198,2]-E_rxs_adrian[1:197,2])^2),
+#  mean(as.matrix(r_xs[2:198,3]-E_rxs_adrian[1:197,3])^2),
+#  mean(as.matrix(r_xs[2:198,9]-E_rxs_adrian[1:197,9])^2),
+#  mean(as.matrix(r_xs[2:198,12]-E_rxs_adrian[1:197,12])^2),
+#  mean(as.matrix(r_xs[2:198,24]-E_rxs_adrian[1:197,24])^2),
+#  mean(as.matrix(r_xs[2:198,48]-E_rxs_adrian[1:197,48])^2),
+#  mean(as.matrix(r_xs[2:198,72]-E_rxs_adrian[1:197,72])^2),
+#  mean(as.matrix(r_xs[2:198,96]-E_rxs_adrian[1:197,96])^2))
+#      ,1,8)
+
+#============================ MSPE R_XS ============================
+
+#=== no-change (random walk)
+
+E_rxs_rw <- r_xs[1:197, ]
+rxs_rw <- r_xs[2:198, ]
+
+MSPErw_296M <- matrix(
+  apply(rxs_rw[, c(2, 3, 9, 12, 24, 48, 72, 96)] - E_rxs_rw[, c(2, 3, 9, 12, 24, 48, 72, 96)], 2, function(col) mean(col^2)),
+  nrow = 1, ncol = 8
+)
+
+colnames(MSPErw_296M) <- c("M2", "M3", "M9", "M12", "M24", "M48", "M72", "M96")
+
+
+
+
+
+
+
+
+
+#=== expectation hypothesis
+
+E_rxs_xphyp <- 0
+
+MSPExphyp_296M <- matrix(
+  apply(r_xs[2:198, c(2, 3, 9, 12, 24, 48, 72, 96)]^2, 2, mean),
+  nrow = 1, ncol = 8
+)
+
+colnames(MSPExphyp_296M) <- c("M2", "M3", "M9", "M12", "M24", "M48", "M72", "M96")
+
+
+
+
+
+
+
+#MSPE_xphyp<-mean(as.matrix(r_xs)^2)
+
+#=== r_xs pc5
+
+lm_rxs_pc5_alpha_hat <- t(lm_rxs_pc5$coefficients[1, ])
+lm_rxs_pc5_beta_hat <- lm_rxs_pc5$coefficients[2:6, ]
+
+i_198 <- matrix(rep(1, 198))
+
+E_rxs_pc5 <- as.data.frame(t(crossprod(lm_rxs_pc5_alpha_hat, t(i_198))) + t(crossprod(lm_rxs_pc5_beta_hat, t(pc5_ini))))
+
+MSPEpc5_296M <- matrix(
+  apply((r_xs[2:198, c(2, 3, 9, 12, 24, 48, 72, 96)] - E_rxs_pc5[2:198, c(2, 3, 9, 12, 24, 48, 72, 96)])^2, 2, mean),
+  nrow = 1, ncol = 8
+)
+
+colnames(MSPEpc5_296M) <- c("M2", "M3", "M9", "M12", "M24", "M48", "M72", "M96")
+row.names(MSPEpc5_296M) <- "MSPE_rxs_pc5"
+
+
+
+
+
+
+
+#MSPE_pc5<-mean(as.matrix(r_xs-E_rxs_pc5)^2)
+
+#E_rxs_a14<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(beta_hat,t(V_hat))+crossprod(c_hat,t(X_)))) # [198x120] = t([1x120]*[1x198] + [5x120]*[5x198] + [5x120]*[5x198])
+#MSPE_adrian3steps<-mean(as.matrix(r_xs-E_rxs_a14)^2)
+#MSPEadrian3steps_296M<-matrix(c(
+#  mean(as.matrix(r_xs[,2]-E_rxs_a14[,2])^2),
+# mean(as.matrix(r_xs[,3]-E_rxs_a14[,3])^2),
+#  mean(as.matrix(r_xs[,9]-E_rxs_a14[,9])^2),
+#  mean(as.matrix(r_xs[,12]-E_rxs_a14[,12])^2),
+#  mean(as.matrix(r_xs[,24]-E_rxs_a14[,24])^2),
+#  mean(as.matrix(r_xs[,48]-E_rxs_a14[,48])^2),
+#  mean(as.matrix(r_xs[,72]-E_rxs_a14[,72])^2),
+#  mean(as.matrix(r_xs[,96]-E_rxs_a14[,96])^2))
+#      ,1,8)
+#colnames(MSPEadrian3steps_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
+
+#=== ratio
+
+MSPE_ratio<-t(rbind(
+	MSPExphyp_296M/MSPErw_296M,
+	MSPEpc5_296M/MSPErw_296M,
+	MSPEadrian_296M/MSPErw_296M))
+	
+colnames(MSPE_ratio)<-c("xp-hyp","pc5","adrian")
+
+View(MSPE_ratio)
+
+#=== dbld_mrn
+#https://www.rdocumentation.org/packages/forecast/versions/8.20/topics/dm.test
+
+calculate_dm_test <- function(x, y) {
+  dm.test(x, y, alternative = "less", h = 1)
+}
+
+columns <- c(2, 3, 9, 12, 24, 48, 72, 96)
+
+dm_xphyp_rw <- sapply(columns, function(col) calculate_dm_test(PE_xphyp[, col], PE_rw[, col]))
+dm_5pc_rw <- sapply(columns, function(col) calculate_dm_test(PE_pc5[, col], PE_rw[, col]))
+dm_adrian_rw <- sapply(columns, function(col) calculate_dm_test(PE_adrian[, col], PE_rw[, col]))
+
+colnames(dm_xphyp_rw) <- colnames(dm_5pc_rw) <- colnames(dm_adrian_rw) <- paste0("dm_", c("xphyp", "5pc", "adrian"), "_rw")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+dm_xphyp_rw_296M<-matrix(c(
+dm_xphyp_rw_M2$p.value,
+dm_xphyp_rw_M3$p.value,
+dm_xphyp_rw_M9$p.value,
+dm_xphyp_rw_M12$p.value,
+dm_xphyp_rw_M24$p.value,
+dm_xphyp_rw_M48$p.value,
+dm_xphyp_rw_M72$p.value,
+dm_xphyp_rw_M96$p.value)
+    ,1,8)
+
+dm_5pc_rw_296M<-matrix(c(
+dm_5pc_rw_M2$p.value,
+dm_5pc_rw_M3$p.value,
+dm_5pc_rw_M9$p.value,
+dm_5pc_rw_M12$p.value,
+dm_5pc_rw_M24$p.value,
+dm_5pc_rw_M48$p.value,
+dm_5pc_rw_M72$p.value,
+dm_5pc_rw_M96$p.value)
+    ,1,8)
+
+dm_adrian_rw_296M<-matrix(c(
+dm_adrian_rw_M2$p.value,
+dm_adrian_rw_M3$p.value,
+dm_adrian_rw_M9$p.value,
+dm_adrian_rw_M12$p.value,
+dm_adrian_rw_M24$p.value,
+dm_adrian_rw_M48$p.value,
+dm_adrian_rw_M72$p.value,
+dm_adrian_rw_M96$p.value)
+    ,1,8)
+
+dm_pv_rw_296M<-t(rbind(
+	dm_xphyp_rw_296M,
+	dm_5pc_rw_296M,
+	dm_adrian_rw_296M))
+	
+colnames(dm_pv_rw_296M)<-c("xp-hyp","pc5","adrian")
+
+View(dm_pv_rw_296M)
+
+# Initialize empty matrices
+dm_5pc_EH_296M <- matrix(NA, nrow = 1, ncol = 8)
+dm_adrian_EH_296M <- matrix(NA, nrow = 1, ncol = 8)
+
+# Perform calculations for dm_5pc_EH_M and dm_adrian_EH_M
+for (i in 1:8) {
+  dm_5pc_EH_M <- dm.test(PE_pc5[, i], PE_xphyp[, i], alternative = "less", h = 1)
+  dm_adrian_EH_M <- dm.test(PE_adrian[, i], PE_xphyp[, i], alternative = "less", h = 1)
+  
+  dm_5pc_EH_296M[1, i] <- dm_5pc_EH_M$p.value
+  dm_adrian_EH_296M[1, i] <- dm_adrian_EH_M$p.value
+}
+
+# Combine matrices and set column names
+dm_pv_EH_296M <- t(rbind(dm_5pc_EH_296M, dm_adrian_EH_296M))
+colnames(dm_pv_EH_296M) <- c("pc5", "adrian")
+
+# Print the matrix
+print(dm_pv_EH_296M)
