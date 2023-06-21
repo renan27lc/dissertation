@@ -105,13 +105,13 @@ prices<-cbind(exp(-rf),exp(-mns.lnP_ini))
 
 # ====== E[mns.lnP_fin] expectations hypothesis
 
-lm_mns.lnPfin_xphyp <- list()
-selected_columns <- c(2, 3, 9, 12, 24, 48, 84, 120)
+#lm_mns.lnPfin_xphyp <- list()
+#selected_columns <- c(2, 3, 9, 12, 24, 48, 84, 120)
 
-for (col in selected_columns) {
-  formula <- as.formula(paste0("as.matrix(mns.lnP_fin[,", col, "]) ~ as.matrix(mns.lnPfin_xphyp[,", col, "])"))
-  lm_mns.lnPfin_xphyp[[col]] <- lm(formula, data = data.frame(mns.lnP_fin, mns.lnPfin_xphyp))
-}
+#for (col in selected_columns) {
+#  formula <- as.formula(paste0("as.matrix(mns.lnP_fin[,", col, "]) ~ as.matrix(mns.lnPfin_xphyp[,", col, "])"))
+#  lm_mns.lnPfin_xphyp[[col]] <- lm(formula, data = data.frame(mns.lnP_fin, mns.lnPfin_xphyp))
+#}
 
 # ====== E[1 month return] expectations hypothesis
 
@@ -201,6 +201,7 @@ X_<-pc5_ini			#198 x 5; t (1/06 a 6/22)
 lm_A14<-lm(as.matrix(r_xs) ~ V_hat[1:198,1:5] + X_[1:198,1:5])
 
 E_hat<-as.matrix(lm_A14$residuals)	#198x120; t+1 (2/06 a 7/22); h-1 (M1 a M120)
+i_198 <- matrix(rep(1, 198))
 
 #Z_tilde<- t(cbind(i_198,V_hat,X_))	#11x198
 #lm(t_rxs[1,]~Z_tilde[2:6,]+Z_tilde[7:11,])
