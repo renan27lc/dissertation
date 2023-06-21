@@ -1,0 +1,23 @@
+for (i in seq(1, length(time_series_data) - window_size + 1, by = step_size)) {
+  # Extract the window of data
+  window_data <- time_series_data[i:(i + window_size - 1)]
+  
+  # Split the data into training and testing sets
+  train_data <- window_data[1:(window_size - 1)]
+  test_data <- window_data[window_size]
+  
+  # Fit and forecast with Model 1
+  model1 <- forecast(auto.arima(train_data), h = 1)
+  model1_forecast <- as.numeric(model1$mean)
+  
+  # Fit and forecast with Model 2
+  model2 <- forecast(ets(train_data), h = 1)
+  model2_forecast <- as.numeric(model2$mean)
+  
+  # Calculate the evaluation metrics (e.g., RMSE) for each model
+  model1_rmse <- sqrt(mean((model1_forecast - test_data)^2))
+  model2_rmse <- sqrt(mean((model2_forecast - test_data)^2))
+  
+  # Append the results to the dataframe
+  results <- results %>% add_row(Window = i, Model1_RMSE = model1_rmse, Model2_RMSE = model2_rmse)
+}
