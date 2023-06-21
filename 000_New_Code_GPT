@@ -113,17 +113,6 @@ for (col in selected_columns) {
   lm_mns.lnPfin_xphyp[[col]] <- lm(formula, data = data.frame(mns.lnP_fin, mns.lnPfin_xphyp))
 }
 
-
-
-
-
-
-
-
-
-
-
-
 # ====== E[1 month return] expectations hypothesis
 
 r_1mo<- mns.lnP_ini - mns.lnP_fin 	#return rate for holding the bond for 1 month
@@ -239,121 +228,6 @@ for (i in 1:num_cols) {
   B_ast[, i] <- crossprod(t(beta_hat[, i]))
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #num_rows <- 25
 #num_cols <- 120
 
@@ -362,123 +236,6 @@ for (i in 1:num_cols) {
 #for (i in 1:num_cols) {
 #  B_ast[, i] <- as.matrix(as.vector(apply(t(beta_hat[, i]), 2, crossprod)))
 #}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 num_rows <- 25
 num_cols <- 8
@@ -489,9 +246,6 @@ B_ast_M296 <- matrix(nrow = num_rows, ncol = num_cols)
 for (i in 1:num_cols) {
   B_ast_M296[, i] <- crossprod(t(beta_hat[, indices[i]]))
 }
-
-
-
 
 #============== Lambda_hat ============
 
@@ -536,13 +290,6 @@ lambda_hat <- crossprod(betabeta_inv,
 #lambda_hat_M296 <- crossprod(betabeta_inv, crossprod(t(beta_hat_M296), as.matrix(t(a_hat_M296) + (Bast_M296_vecSigma + sig2_hat * i_8) / 2)))
 
 
-
-
-
-
-
-
-
 U_hat<-as.matrix(lm_yields_pc5$residuals)	#199 x 121
 
 #============== delta_hat ============
@@ -572,23 +319,6 @@ MSPEadrian_296M <- matrix(
 
 colnames(MSPEadrian_296M) <- c("M2", "M3", "M9", "M12", "M24", "M48", "M72", "M96")
 
-
-
-
-
-
-
-#MSPEadrian_296M<-matrix(c(
-#  mean(as.matrix(r_xs[2:198,2]-E_rxs_adrian[1:197,2])^2),
-#  mean(as.matrix(r_xs[2:198,3]-E_rxs_adrian[1:197,3])^2),
-#  mean(as.matrix(r_xs[2:198,9]-E_rxs_adrian[1:197,9])^2),
-#  mean(as.matrix(r_xs[2:198,12]-E_rxs_adrian[1:197,12])^2),
-#  mean(as.matrix(r_xs[2:198,24]-E_rxs_adrian[1:197,24])^2),
-#  mean(as.matrix(r_xs[2:198,48]-E_rxs_adrian[1:197,48])^2),
-#  mean(as.matrix(r_xs[2:198,72]-E_rxs_adrian[1:197,72])^2),
-#  mean(as.matrix(r_xs[2:198,96]-E_rxs_adrian[1:197,96])^2))
-#      ,1,8)
-
 #============================ MSPE R_XS ============================
 
 #=== no-change (random walk)
@@ -603,14 +333,6 @@ MSPErw_296M <- matrix(
 
 colnames(MSPErw_296M) <- c("M2", "M3", "M9", "M12", "M24", "M48", "M72", "M96")
 
-
-
-
-
-
-
-
-
 #=== expectation hypothesis
 
 E_rxs_xphyp <- 0
@@ -621,12 +343,6 @@ MSPExphyp_296M <- matrix(
 )
 
 colnames(MSPExphyp_296M) <- c("M2", "M3", "M9", "M12", "M24", "M48", "M72", "M96")
-
-
-
-
-
-
 
 #MSPE_xphyp<-mean(as.matrix(r_xs)^2)
 
@@ -647,27 +363,7 @@ MSPEpc5_296M <- matrix(
 colnames(MSPEpc5_296M) <- c("M2", "M3", "M9", "M12", "M24", "M48", "M72", "M96")
 row.names(MSPEpc5_296M) <- "MSPE_rxs_pc5"
 
-
-
-
-
-
-
 #MSPE_pc5<-mean(as.matrix(r_xs-E_rxs_pc5)^2)
-
-#E_rxs_a14<-as.data.frame(t(crossprod(t(a_hat),t(i_198))+crossprod(beta_hat,t(V_hat))+crossprod(c_hat,t(X_)))) # [198x120] = t([1x120]*[1x198] + [5x120]*[5x198] + [5x120]*[5x198])
-#MSPE_adrian3steps<-mean(as.matrix(r_xs-E_rxs_a14)^2)
-#MSPEadrian3steps_296M<-matrix(c(
-#  mean(as.matrix(r_xs[,2]-E_rxs_a14[,2])^2),
-# mean(as.matrix(r_xs[,3]-E_rxs_a14[,3])^2),
-#  mean(as.matrix(r_xs[,9]-E_rxs_a14[,9])^2),
-#  mean(as.matrix(r_xs[,12]-E_rxs_a14[,12])^2),
-#  mean(as.matrix(r_xs[,24]-E_rxs_a14[,24])^2),
-#  mean(as.matrix(r_xs[,48]-E_rxs_a14[,48])^2),
-#  mean(as.matrix(r_xs[,72]-E_rxs_a14[,72])^2),
-#  mean(as.matrix(r_xs[,96]-E_rxs_a14[,96])^2))
-#      ,1,8)
-#colnames(MSPEadrian3steps_296M)<-c("M2","M3","M9","M12","M24","M48","M72","M96")
 
 #=== ratio
 
