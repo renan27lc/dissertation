@@ -1,0 +1,50 @@
+# Install and load required packages
+if (!require(pacman)) install.packages("pacman")
+pacman::p_load(dplyr, tibble, tidyverse, lubridate, tidyr, purrr, broom, xtable, forecast, httr, rvest)
+
+# Function for scraping yield data
+yieldsbr <- function(Initial_Date, Final_Date, Maturities) {
+  dates <- seq(as.Date(Initial_Date), as.Date(Final_Date), by = "day")
+  mat <- matrix(NA, nrow = length(dates), ncol = length(Maturities))
+
+  pb <- txtProgressBar(min = 1, max = length(dates), style = 3)
+  for (i in seq_along(dates)) {
+    url <- "https://www2.bmf.com.br/pages/portal/bmfbovespa/lumis/lum-taxas-referenciais-bmf-ptBR.asp"
+    query <- list(Data = format(dates[i], format = "%d-%m-%Y"))
+    di <- GET(url = url, query = query)
+    data <- read_html(di) %>% html_nodes("table") %>% html_nodes("td") %>% html_text()
+
+    if (length(data) > 0) {
+      data <- data.frame(matrix(data, ncol = 3, byrow = TRUE))
+      data[, 2:3] <- lapply(data[, 2:3], function(x) as.numeric(gsub(",", ".", gsub("\\.", "", x))))
+
+      t <- as.integer(data[, 1]) / 21
+      y <- data[, 2]
+      mat_row <- numeric(length(Maturities))
+
+      for (j in seq_along(Maturities)) {
+        spl <- smooth.spline(y ~ t)
+        t_new <- Maturities[j]
+        new <- predict(spl, newdata = data.frame(t = t_new))
+        mat_row[j] <- new$y
+      }
+
+      mat[i, ] <- mat_row
+    }
+    setTxtProgressBar(pb, i)
+  }
+  close(pb)
+
+  mat <- mat[apply(mat, 1, Compose(is.finite, all)), ]
+  colnames(mat) <- paste0("M", Maturities)
+  rownames(mat) <- dates
+  return(mat)
+}
+
+# Set initial parameters
+Initial_Date <- as.Date('2006-01-01')
+Final_Date <- as.Date('2022-08-08')
+Maturities <- 1:121
+
+# Scrape yield data
+yields_daily_100_yr <- yieldsbr(Initial_Date = Initial_Date, Final_Date = Final_Date, Maturities = Maturities)
