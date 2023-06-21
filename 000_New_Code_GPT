@@ -1,77 +1,62 @@
-# Install and load required packages
+# ===================== PACKAGES AND LIBRARIES ==========================
+
 if (!require(pacman)) install.packages("pacman")
-pacman::p_load(dplyr, tibble, tidyverse, lubridate, tidyr, purrr, broom, xtable, forecast, httr, rvest)
+pacman::p_load(dplyr, tibble, tidyverse, lubridate, tidyr, purrr, broom, xtable, forecast, httr, rvest, Hmisc)
 
-# Function for scraping yield data
-yieldsbr <- function(Initial_Date, Final_Date, Maturities) {
-  dates <- seq(as.Date(Initial_Date), as.Date(Final_Date), by = "day")
-  mat <- matrix(NA, nrow = length(dates), ncol = length(Maturities))
+# ===================== DOWNLOAD DATA ==========================
+# Author: Werley Cordeiro
+# werleycordeiro@gmail.com
+# https://github.com/werleycordeiro/Brazil_Yield_Curve/blob/master/DI-Pre.R
 
-  pb <- txtProgressBar(min = 1, max = length(dates), style = 3)
-  for (i in seq_along(dates)) {
-    url <- "https://www2.bmf.com.br/pages/portal/bmfbovespa/lumis/lum-taxas-referenciais-bmf-ptBR.asp"
-    query <- list(Data = format(dates[i], format = "%d-%m-%Y"))
-    di <- GET(url = url, query = query)
-    data <- read_html(di) %>% html_nodes("table") %>% html_nodes("td") %>% html_text()
+# Function
+yieldsbr = function(Initial_Date,Final_Date,Maturities){
+ # Packages
+ packages = c("rvest","httr","functional")
+ new.packages = packages[!(packages %in% installed.packages()[,"Package"])]
+ if(length(new.packages)) install.packages(new.packages)
+ suppressMessages(library(rvest))
+ suppressMessages(library(httr))
+ suppressMessages(library(functional))
 
-    if (length(data) > 0) {
-      data <- data.frame(matrix(data, ncol = 3, byrow = TRUE))
-      data[, 2:3] <- lapply(data[, 2:3], function(x) as.numeric(gsub(",", ".", gsub("\\.", "", x))))
-
-      t <- as.integer(data[, 1]) / 21
-      y <- data[, 2]
-      mat_row <- numeric(length(Maturities))
-
-      for (j in seq_along(Maturities)) {
-        spl <- smooth.spline(y ~ t)
-        t_new <- Maturities[j]
-        new <- predict(spl, newdata = data.frame(t = t_new))
-        mat_row[j] <- new$y
-      }
-
-      mat[i, ] <- mat_row
-    }
-    setTxtProgressBar(pb, i)
-  }
-  close(pb)
-
-  mat <- mat[apply(mat, 1, Compose(is.finite, all)), ]
-  colnames(mat) <- paste0("M", Maturities)
-  rownames(mat) <- dates
-  return(mat)
+ dates = format(seq(as.Date(Initial_Date), as.Date(Final_Date), 'day'), format="%d-%m-%Y", tz="UTC")
+ mat = matrix(NA,length(dates),length(Maturities))
+ # Scraping
+ for(i in 1:length(dates)){
+ 	di = GET(url = "https://www2.bmf.com.br/pages/portal/bmfbovespa/lumis/lum-taxas-referenciais-bmf-ptBR.asp",query = list(Data = dates[i]))
+	data = read_html(di) %>% html_nodes("table") %>% html_nodes("td") %>% html_text()
+	if(length(data)==0){i=i
+	}else{
+	data = data.frame(matrix(data, ncol=3, byrow=TRUE))
+	data[,2] = as.numeric(gsub(",", ".", gsub("\\.", "", data[,2])))
+	data[,3] = as.numeric(gsub(",", ".", gsub("\\.", "", data[,3])))
+ # Spline
+	t = as.integer(as.matrix(data[,1]))/21
+	y = as.numeric(as.matrix(data[,2]))
+	spl = smooth.spline(y ~ t)
+	t.new = Maturities
+	new = predict(spl, t.new)
+	mat[i,] = new$y
+	pb = txtProgressBar(min = (1/length(dates)), max = length(dates), style = 3)
+    	setTxtProgressBar(pb,i)
+		}
+	}
+ colnames(mat) = paste0("M",Maturities)
+ rownames(mat) = dates
+ mat = mat[apply(mat, 1, Compose(is.finite, all)),]
+ return(mat)
 }
 
-# Set initial parameters
-Initial_Date <- as.Date('2006-01-01')
-Final_Date <- as.Date('2022-08-08')
-Maturities <- 1:121
+Initial_Date = '2006/01/01' # Available from 2003/08/08. YYYY/MM/DD 
+Final_Date = '2022/08/08'
+Maturities = c(1:121)
 
-# Scrape yield data
-yields_daily_100_yr <- yieldsbr(Initial_Date = Initial_Date, Final_Date = Final_Date, Maturities = Maturities)
+yields_daily_100_yr = yieldsbr(Initial_Date=Initial_Date,Final_Date=Final_Date,Maturities=Maturities)
+yields_daily_100_yr
 
+yields_daily_chrctr<-as.data.frame(rownames_to_column(as.data.frame(yields_daily_100_yr/(100*12))))
+colnames(yields_daily_chrctr)[1]<-"DATE"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+plot(colMeans(yields_daily_100_yr),xlab = "Maturity",ylab = "Yields (%)")
 
 #======================== EXCESS RETURNS - EXPECTATION HIPOTHESIS ========================
 
@@ -521,7 +506,7 @@ for (i in 1:8) {
 
 beta_hat_M296 <- beta_hat[, indices]
 
-Lambda_hat <- as.matrix(crossprod(solve(crossprod(t(beta_hat_M296))),
+Lambda_hat <- (crossprod(solve(crossprod(t(beta_hat_M296))),
                                   crossprod(t(beta_hat_M296), t(c_hat_M296))))
 
 #============== lambda_hat ============
@@ -698,96 +683,35 @@ View(MSPE_ratio)
 #=== dbld_mrn
 #https://www.rdocumentation.org/packages/forecast/versions/8.20/topics/dm.test
 
-calculate_dm_test <- function(x, y) {
-  dm.test(x, y, alternative = "less", h = 1)
-}
+library(forecast)
 
-columns <- c(2, 3, 9, 12, 24, 48, 72, 96)
+PE_rw <- as.matrix(rxs_rw - E_rxs_rw)
+PE_xphyp <- as.matrix(r_xs[2:198, ])
+PE_pc5 <- as.matrix(r_xs[2:198, ] - E_rxs_pc5[2:198, ])
+PE_adrian <- as.matrix(r_xs[2:198, ] - E_rxs_adrian[2:198, ])
 
-dm_xphyp_rw <- sapply(columns, function(col) calculate_dm_test(PE_xphyp[, col], PE_rw[, col]))
-dm_5pc_rw <- sapply(columns, function(col) calculate_dm_test(PE_pc5[, col], PE_rw[, col]))
-dm_adrian_rw <- sapply(columns, function(col) calculate_dm_test(PE_adrian[, col], PE_rw[, col]))
+models <- c(2, 3, 9, 12, 24, 48, 72, 96)
 
-colnames(dm_xphyp_rw) <- colnames(dm_5pc_rw) <- colnames(dm_adrian_rw) <- paste0("dm_", c("xphyp", "5pc", "adrian"), "_rw")
+dm_xphyp_rw <- lapply(models, function(m) dm.test(PE_xphyp[, m], PE_rw[, m], alternative = "less", h = 1))
+dm_5pc_rw <- lapply(models, function(m) dm.test(PE_pc5[, m], PE_rw[, m], alternative = "less", h = 1))
+dm_adrian_rw <- lapply(models, function(m) dm.test(PE_adrian[, m], PE_rw[, m], alternative = "less", h = 1))
 
+dm_xphyp_rw_296M <- matrix(sapply(dm_xphyp_rw, function(x) x$p.value), nrow = 1, ncol = length(models))
+dm_5pc_rw_296M <- matrix(sapply(dm_5pc_rw, function(x) x$p.value), nrow = 1, ncol = length(models))
+dm_adrian_rw_296M <- matrix(sapply(dm_adrian_rw, function(x) x$p.value), nrow = 1, ncol = length(models))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-dm_xphyp_rw_296M<-matrix(c(
-dm_xphyp_rw_M2$p.value,
-dm_xphyp_rw_M3$p.value,
-dm_xphyp_rw_M9$p.value,
-dm_xphyp_rw_M12$p.value,
-dm_xphyp_rw_M24$p.value,
-dm_xphyp_rw_M48$p.value,
-dm_xphyp_rw_M72$p.value,
-dm_xphyp_rw_M96$p.value)
-    ,1,8)
-
-dm_5pc_rw_296M<-matrix(c(
-dm_5pc_rw_M2$p.value,
-dm_5pc_rw_M3$p.value,
-dm_5pc_rw_M9$p.value,
-dm_5pc_rw_M12$p.value,
-dm_5pc_rw_M24$p.value,
-dm_5pc_rw_M48$p.value,
-dm_5pc_rw_M72$p.value,
-dm_5pc_rw_M96$p.value)
-    ,1,8)
-
-dm_adrian_rw_296M<-matrix(c(
-dm_adrian_rw_M2$p.value,
-dm_adrian_rw_M3$p.value,
-dm_adrian_rw_M9$p.value,
-dm_adrian_rw_M12$p.value,
-dm_adrian_rw_M24$p.value,
-dm_adrian_rw_M48$p.value,
-dm_adrian_rw_M72$p.value,
-dm_adrian_rw_M96$p.value)
-    ,1,8)
-
-dm_pv_rw_296M<-t(rbind(
-	dm_xphyp_rw_296M,
-	dm_5pc_rw_296M,
-	dm_adrian_rw_296M))
-	
-colnames(dm_pv_rw_296M)<-c("xp-hyp","pc5","adrian")
+dm_pv_rw_296M <- t(rbind(dm_xphyp_rw_296M, dm_5pc_rw_296M, dm_adrian_rw_296M))
+colnames(dm_pv_rw_296M) <- c("xp-hyp", "pc5", "adrian")
 
 View(dm_pv_rw_296M)
 
-# Initialize empty matrices
-dm_5pc_EH_296M <- matrix(NA, nrow = 1, ncol = 8)
-dm_adrian_EH_296M <- matrix(NA, nrow = 1, ncol = 8)
+dm_5pc_EH <- lapply(models, function(m) dm.test(PE_pc5[, m], PE_xphyp[, m], alternative = "less", h = 1))
+dm_adrian_EH <- lapply(models, function(m) dm.test(PE_adrian[, m], PE_xphyp[, m], alternative = "less", h = 1))
 
-# Perform calculations for dm_5pc_EH_M and dm_adrian_EH_M
-for (i in 1:8) {
-  dm_5pc_EH_M <- dm.test(PE_pc5[, i], PE_xphyp[, i], alternative = "less", h = 1)
-  dm_adrian_EH_M <- dm.test(PE_adrian[, i], PE_xphyp[, i], alternative = "less", h = 1)
-  
-  dm_5pc_EH_296M[1, i] <- dm_5pc_EH_M$p.value
-  dm_adrian_EH_296M[1, i] <- dm_adrian_EH_M$p.value
-}
+dm_5pc_EH_296M <- matrix(sapply(dm_5pc_EH, function(x) x$p.value), nrow = 1, ncol = length(models))
+dm_adrian_EH_296M <- matrix(sapply(dm_adrian_EH, function(x) x$p.value), nrow = 1, ncol = length(models))
 
-# Combine matrices and set column names
 dm_pv_EH_296M <- t(rbind(dm_5pc_EH_296M, dm_adrian_EH_296M))
 colnames(dm_pv_EH_296M) <- c("pc5", "adrian")
 
-# Print the matrix
-print(dm_pv_EH_296M)
+View(dm_pv_EH_296M)
