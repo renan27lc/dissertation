@@ -1,3 +1,8 @@
+window_size <- 99    # Number of observations in each window
+step_size <- 1      # Number of observations to shift the window forward
+
+results <- data.frame(Window = numeric(), Model1_MSPE = numeric(), Model2_MSPE = numeric())
+
 for (i in seq(1, length(time_series_data) - window_size + 1, by = step_size)) {
   # Extract the window of data
   window_data <- time_series_data[i:(i + window_size - 1)]
@@ -22,5 +27,10 @@ for (i in seq(1, length(time_series_data) - window_size + 1, by = step_size)) {
   results <- results %>% add_row(Window = i, Model1_RMSE = model1_rmse, Model2_RMSE = model2_rmse)
 }
 
+lm_rxs_pc5_alpha_hat.198 <- as.data.frame(t(crossprod(lm_rxs_pc5_alpha_hat,t(i_198)))
+lm_rxs_pc5_beta_hat.pc5ini <- t(crossprod(lm_rxs_pc5_beta_hat,t(pc5_ini)))
 
-E_rxs_pc5<-as.data.frame(t(crossprod(lm_rxs_pc5_alpha_hat,t(i_198)))+t(crossprod(lm_rxs_pc5_beta_hat,t(pc5_ini))))
+E_rxs_pc5 <- lm_rxs_pc5_alpha_hat.198 + lm_rxs_pc5_beta_hat.pc5ini)
+
+
+
