@@ -103,16 +103,6 @@ colnames(mns.lnP_ini)<-colnames(yields_ini)
 
 prices<-cbind(exp(-rf),exp(-mns.lnP_ini))
 
-# ====== E[mns.lnP_fin] expectations hypothesis
-
-#lm_mns.lnPfin_xphyp <- list()
-#selected_columns <- c(2, 3, 9, 12, 24, 48, 84, 120)
-
-#for (col in selected_columns) {
-#  formula <- as.formula(paste0("as.matrix(mns.lnP_fin[,", col, "]) ~ as.matrix(mns.lnPfin_xphyp[,", col, "])"))
-#  lm_mns.lnPfin_xphyp[[col]] <- lm(formula, data = data.frame(mns.lnP_fin, mns.lnPfin_xphyp))
-#}
-
 # ====== E[1 month return] expectations hypothesis
 
 r_1mo<- mns.lnP_ini - mns.lnP_fin 	#return rate for holding the bond for 1 month
@@ -209,7 +199,7 @@ i_198 <- matrix(rep(1, 198))
 sig2_hat<-sum(diag(crossprod(E_hat)))/(120*198)		# 1x1
 
 beta_hat<-as.matrix(coef(lm_A14)[2:6,])			# 5 x 120; h-1 (M1 a M120)
-#--------------------GPT_begin------------------------
+
 selected_columns <- c(2, 3, 9, 12, 24, 48, 72, 96)
 num_rows <- 5
 num_cols <- length(selected_columns)
@@ -219,7 +209,7 @@ beta_hat_M296 <- matrix(nrow = num_rows, ncol = num_cols)
 for (i in 1:num_cols) {
   beta_hat_M296[, i] <- coef(lm_A14)[2:(num_rows + 1), selected_columns[i]]
 }
-#--------------------GPT------------------------
+
 num_rows <- 25
 num_cols <- 120
 
