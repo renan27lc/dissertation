@@ -27,6 +27,60 @@ for (i in seq(1, length(time_series_data) - window_size + 1, by = step_size)) {
   results <- results %>% add_row(Window = i, Model1_RMSE = model1_rmse, Model2_RMSE = model2_rmse)
 }
 
+
+
+# ===================== PCA ==========================
+
+f_draw_factor_loading<-function(m.loadings,var,title){
+    
+    x11(width=16/3,height=5);
+	    matplot(mat,m.loadings,type="l",xaxt="n",lwd=5,lty=1,
+            ,col=rainbow(5),ylim=c(-0.3,0.5),
+            xlab="Maturidade (meses)",ylab="Peso dos Fatores")
+    legend('topright',max(m.loadings),col=rainbow(5),lty=1,lwd=3,
+           legend=paste0(c("PC1","PC2","PC3","PC4","PC5"),var))
+    axis(1,mat,mat)
+}
+
+mat<-Maturities
+
+pca_yields<-princomp(yields_daily)
+f_draw_factor_loading(pca_yields$loadings[,1:5],
+                      round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
+                      "Yields level PCA - princomp()")
+        
+pc_scores_daily<-as.data.frame(pca_yields$scores)
+
+pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
+
+# ===================== LM() YIELDS ~ PC OF YIELDS ==========================
+
+pc_scores_daily_clmn<-cbind(dates_daily,rownames_to_column(pc_scores_daily))
+pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
+colnames(pc_scores_daily_clmn)[1]<-"DATE"
+
+pc_scores_clmn<-inner_join(last_days,pc_scores_daily_clmn, by = "DATE")
+pc_scores<-column_to_rownames(pc_scores_clmn,var = "DATE")
+
+pc5_ini<-as.matrix(pc_scores[1:198,1:5])
+
+lm_rxs_pc5<-lm(as.matrix(r_xs) ~ as.matrix(pc5_ini))
+
+lm_rxs_pc5_alpha_hat <- t(lm_rxs_pc5$coefficients[1, ])
+lm_rxs_pc5_beta_hat <- lm_rxs_pc5$coefficients[2:6, ]
+
+i_198 <- matrix(rep(1, 198))
+
+E_rxs_pc5 <- as.data.frame(t(crossprod(lm_rxs_pc5_alpha_hat, t(i_198))) + t(crossprod(lm_rxs_pc5_beta_hat, t(pc5_ini))))
+
+MSPEpc5_296M <- matrix(
+  apply((r_xs[2:198, c(2, 3, 9, 12, 24, 48, 72, 96)] - E_rxs_pc5[2:198, c(2, 3, 9, 12, 24, 48, 72, 96)])^2, 2, mean),
+  nrow = 1, ncol = 8
+)
+
+colnames(MSPEpc5_296M) <- c("M2", "M3", "M9", "M12", "M24", "M48", "M72", "M96")
+row.names(MSPEpc5_296M) <- "MSPE_rxs_pc5"
+
 lm_rxs_pc5_alpha_hat.198 <- as.data.frame(t(crossprod(lm_rxs_pc5_alpha_hat,t(i_198)))
 lm_rxs_pc5_beta_hat.pc5ini <- t(crossprod(lm_rxs_pc5_beta_hat,t(pc5_ini)))
 
@@ -34,3 +88,51 @@ E_rxs_pc5 <- lm_rxs_pc5_alpha_hat.198 + lm_rxs_pc5_beta_hat.pc5ini)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+library(forecast)
+
+window_size <- 99  # Set the window size
+step_size <- 1     # Set the step size for overlapping windows
+
+# Initialize empty lists to store the results
+results <- list()
+start_idx <- seq(2, nrow(pc_scores), by = step_size)
+
+for (i in start_idx) {
+  end_idx <- min(i + window_size - 1, nrow(pc_scores))
+  
+  # Split the data into training and validation sets
+  train_pc_scores <- pc_scores[i:(end_idx - 1), ]
+  train_r_xs <- r_xs[i:(end_idx - 1)]
+  valid_pc_scores <- pc_scores[end_idx, ]
+  valid_r_xs <- r_xs[end_idx]
+  
+  # Fit the linear model on the training data
+  lm_model <- lm(train_r_xs ~ train_pc_scores)
+  
+  # Generate predictions on the validation data
+  valid_predictions <- predict(lm_model, newdata = data.frame(train_pc_scores = valid_pc_scores))
+  
+  # Evaluate the model's performance
+  mspe <- mean((valid_r_xs - valid_predictions)^2)
+  
+  # Store the results
+  results[[i]] <- mspe
+}
+
+# Calculate the overall performance metric
+overall_mspe <- mean(unlist(results))
+
+# Print the overall performance metric
+print(overall_mspe)
