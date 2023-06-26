@@ -66,6 +66,7 @@ last_days<-as.data.frame(as.Date(last_days[,1]))
 colnames(last_days)[1]<-"DATE"
 
 dates_daily<-as.data.frame(as.Date(yields_daily_chrctr$DATE, "%d - %m - %Y"))
+names(dates_daily)[1] <- "DATE"
 
 yields_daily_clmn<-bind_cols(dates_daily,yields_daily_chrctr)
 yields_daily_clmn<-as.data.frame(yields_daily_clmn[,-2])
