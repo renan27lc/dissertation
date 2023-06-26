@@ -136,3 +136,164 @@ overall_mspe <- mean(unlist(results))
 
 # Print the overall performance metric
 print(overall_mspe)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#===============20230623
+
+# Assuming `matrix_dates` is your 200x1 matrix of numeric dates
+# and `data_frame` is your 4104x121 data frame with a POSIXct first column
+
+# Convert numeric dates to POSIXct
+last_days_posix <- as.POSIXct(last_days, origin = "1970-01-01")
+dates_daily_posix <- as.POSIXct(dates_daily, origin = "1970-01-01")
+
+# Extract the first column of the data frame
+first_column <- yields_daily_clmn[, 1]
+first_column_posix <- as.POSIXct(first_column, origin = "1970-01-01")
+
+# Find the positions of matrix dates in the first column
+positions <- match(last_days_posix, first_column_posix)
+
+dates_daily<-as.data.frame(as.Date(yields_daily_chrctr$DATE, "%d - %m - %Y"))
+
+
+# Assuming `matrix_values` is your 200x1 matrix
+# and `data_frame` is your 4104x121 data frame
+
+# Extract the first column of the data frame
+first_column <- as.data.frame(yields_daily_clmn[, 1])
+first_column<-as.data.frame(as.matrix(first_column))
+first_column<-as.data.frame(as.Date(first_column[,1]))
+# Find the positions of matrix values in the first column
+positions <- match(last_days, first_column)
+
+#===============20230625
+
+
+# Get the positions of dates from last_days in dates_daily
+positions <- match(last_days$DATE, dates_daily$DATE)
+
+# Create a 1-column matrix
+matrix_positions <- matrix(positions, ncol = 1)
+
+# Add "1" as the first element in the matrix
+matrix_positions <- rbind(1, matrix_positions)
+
+# Print the matrix
+print(matrix_positions)
+
+# ===================== GPT ==========================
+
+
+
+I want to get the prediction errors of a model using a moving window. 
+### When using the "yields_daily" database, this window should move according to a 200x1 list called "positions", starting from its 1st to 100th value, and moving the window 1 step at a time). 
+This "yields_daily" database will be used to calculate its principal components (PCA) for each window position. Some of its values will be regressed against another database called "r_xs". 
+
+
+
+yields_daily:
+
+head(yields_daily)
+typeof(yields_daily[1,1])
+typeof(yields_daily[2,2])
+typeof(yields_daily)
+
+head(dates_daily)
+typeof(dates_daily[1,1])
+typeof(dates_daily[2,2])
+typeof(dates_daily)
+
+head(last_days)
+typeof(last_days[1,1])
+typeof(last_days[2,2])
+typeof(last_days)
+
+head(r_xs)
+typeof(r_xs[1,1])
+typeof(r_xs[2,2])
+typeof(r_xs)
+
+
+
+pca_yields<-princomp(yields_daily)
+f_draw_factor_loading(pca_yields$loadings[,1:5],
+                      round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
+                      "Yields level PCA - princomp()")
+        
+pc_scores_daily<-as.data.frame(pca_yields$scores)
+
+pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
+
+# ===================== LM() EXCESS RETURN ~ PC OF YIELDS ==========================
+
+pc_scores_daily_clmn<-cbind(dates_daily,rownames_to_column(pc_scores_daily))
+pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
+
+pc_scores_clmn<-inner_join(last_days,pc_scores_daily_clmn, by = "DATE")
+pc_scores<-column_to_rownames(pc_scores_clmn,var = "DATE")
+
+pc5_ini<-as.matrix(pc_scores[1:198,1:5])
+
+
+
+# ===================== PCA ==========================
+
+f_draw_factor_loading<-function(m.loadings,var,title){
+    
+    x11(width=16/3,height=5);
+	    matplot(mat,m.loadings,type="l",xaxt="n",lwd=5,lty=1,
+            ,col=rainbow(5),ylim=c(-0.3,0.5),
+            xlab="Maturidade (meses)",ylab="Peso dos Fatores")
+    legend('topright',max(m.loadings),col=rainbow(5),lty=1,lwd=3,
+           legend=paste0(c("PC1","PC2","PC3","PC4","PC5"),var))
+    axis(1,mat,mat)
+}
+
+mat<-Maturities
+
+pca_yields<-princomp(yields_daily)
+f_draw_factor_loading(pca_yields$loadings[,1:5],
+                      round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
+                      "Yields level PCA - princomp()")
+        
+pc_scores_daily<-as.data.frame(pca_yields$scores)
+
+pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
+
+# ===================== LM() EXCESS RETURN ~ PC OF YIELDS ==========================
+
+pc_scores_daily_clmn<-cbind(dates_daily,rownames_to_column(pc_scores_daily))
+pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
+
+pc_scores_clmn<-inner_join(last_days,pc_scores_daily_clmn, by = "DATE")
+pc_scores<-column_to_rownames(pc_scores_clmn,var = "DATE")
+
+pc5_ini<-as.matrix(pc_scores[1:198,1:5])
+
+lm_rxs_pc5<-lm(as.matrix(r_xs) ~ as.matrix(pc5_ini))
+
+lm_rxs_pc5_alpha_hat <- t(lm_rxs_pc5$coefficients[1, ])
+lm_rxs_pc5_beta_hat <- lm_rxs_pc5$coefficients[2:6, ]
+
+i_198 <- matrix(rep(1, 198))
+
+E_rxs_pc5 <- as.data.frame(t(crossprod(lm_rxs_pc5_alpha_hat, t(i_198))) + t(crossprod(lm_rxs_pc5_beta_hat, t(pc5_ini))))
+
+
+
+
