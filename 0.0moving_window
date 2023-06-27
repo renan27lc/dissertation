@@ -200,100 +200,757 @@ print(matrix_positions)
 
 
 
-I want to get the prediction errors of a model using a moving window. 
-### When using the "yields_daily" database, this window should move according to a 200x1 list called "positions", starting from its 1st to 100th value, and moving the window 1 step at a time). 
-This "yields_daily" database will be used to calculate its principal components (PCA) for each window position. Some of its values will be regressed against another database called "r_xs". 
-
-
-
-yields_daily:
 
 head(yields_daily)
 typeof(yields_daily[1,1])
 typeof(yields_daily[2,2])
 typeof(yields_daily)
+dim(yields_daily)
 
 head(dates_daily)
 typeof(dates_daily[1,1])
 typeof(dates_daily[2,2])
 typeof(dates_daily)
+dim(dates_daily)
 
 head(last_days)
 typeof(last_days[1,1])
 typeof(last_days[2,2])
 typeof(last_days)
+dim(last_days)
 
 head(r_xs)
 typeof(r_xs[1,1])
 typeof(r_xs[2,2])
 typeof(r_xs)
+dim(r_xs)
+
+#=== I'm using R
+#=== I have these 4 databases: yields_daily, dates_daily, last_days and r_xs.
+#=== I'm using them to generate a model to predict the r_xs of one period ahead.
+#=== I want to get the MSPE (mean squared prediction error) of my model using a moving window approach.
+#=== Then, I want to use these prediction errors to evaluate the quality of my prediction using the giacomini and white test.
+
+head(yields_daily)
+                   M1         M2         M3         M4         M5         M6         M7         M8         M9
+2006-01-02 0.01265651 0.01565510 0.01446462 0.01437027 0.01446941 0.01429106 0.01416363 0.01408198 0.01400754
+2006-01-03 0.01603918 0.01470582 0.01457713 0.01446563 0.01439118 0.01428984 0.01414971 0.01406612 0.01399448
+2006-01-04 0.01550792 0.01467560 0.01456158 0.01443500 0.01439393 0.01426732 0.01414182 0.01404979 0.01397662
+2006-01-05 0.01498377 0.01467060 0.01455760 0.01444359 0.01436956 0.01426589 0.01413759 0.01404532 0.01397252
+2006-01-06 0.01507278 0.01468408 0.01452948 0.01442654 0.01433593 0.01424202 0.01410778 0.01401627 0.01394257
+2006-01-09 0.01478348 0.01463863 0.01449985 0.01441244 0.01432339 0.01421593 0.01408256 0.01399353 0.01392096
+> typeof(yields_daily[1,1])
+[1] "double"
+> typeof(yields_daily[2,2])
+[1] "double"
+> typeof(yields_daily)
+[1] "list"
+> dim(yields_daily)
+[1] 4104  121
+
+> head(dates_daily)
+        DATE
+1 2006-01-02
+2 2006-01-03
+3 2006-01-04
+4 2006-01-05
+5 2006-01-06
+6 2006-01-09
+> typeof(dates_daily[1,1])
+[1] "double"
+> typeof(dates_daily[2,2])
+[1] "NULL"
+> typeof(dates_daily)
+[1] "list"
+> dim(dates_daily)
+[1] 4104    1
+
+> head(last_days)
+        DATE
+1 2006-01-31
+2 2006-02-24
+3 2006-03-31
+4 2006-04-28
+5 2006-05-31
+6 2006-06-30
+> typeof(last_days[1,1])
+[1] "double"
+> typeof(last_days[2,2])
+[1] "NULL"
+> typeof(last_days)
+[1] "list"
+>  dim(last_days)
+[1] 199   1
+
+> head(r_xs)
+M1           M2           M3           M4            M5            M6            M7
+2006-02-24 0.0019753528 1.679308e-03 0.0019024582 0.0019111496  0.0020719340  0.0024798862  0.0029844029
+2006-03-31 0.0005400497 1.187653e-03 0.0012682833 0.0014881178  0.0017183126  0.0020507207  0.0022119227
+2006-04-28 0.0008875551 8.410972e-05 0.0001310603 0.0001588871  0.0000441739  0.0001586514  0.0003276478
+2006-05-31 0.0013592249 1.046730e-03 0.0007494424 0.0002670848 -0.0001930792 -0.0004380033 -0.0010905229
+2006-06-30 0.0003381849 7.569079e-04 0.0012738688 0.0017456730  0.0020780902  0.0026745057  0.0033135186
+2006-07-31 0.0012442526 3.633123e-04 0.0004416791 0.0005665241  0.0006665946  0.0009603347  0.0012091820
+> typeof(r_xs[1,1])
+[1] "double"
+> typeof(r_xs[2,2])
+[1] "double"
+> typeof(r_xs)
+[1] "list"
+> dim(r_xs)
+[1] 198 120
 
 
 
-pca_yields<-princomp(yields_daily)
-f_draw_factor_loading(pca_yields$loadings[,1:5],
-                      round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
-                      "Yields level PCA - princomp()")
-        
-pc_scores_daily<-as.data.frame(pca_yields$scores)
+#=== I will give you an example of what I want by getting the results from the first window
 
-pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
+#=== first, I select the dates that will be used in the window and slice that window's database
 
-# ===================== LM() EXCESS RETURN ~ PC OF YIELDS ==========================
+start_date_w1 = last_days[1,]
+end_date_w1 = last_days[99,]
 
-pc_scores_daily_clmn<-cbind(dates_daily,rownames_to_column(pc_scores_daily))
-pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
+position_start_date_w1 <- match(last_days[1,], dates_daily$DATE)
+position_end_date_w1 <- match(last_days[99,], dates_daily$DATE)
+dates_daily_w1 <- as.data.frame(dates_daily[position_start_date_w1:position_end_date_w1,])
+colnames(dates_daily_w1)<-"DATE"
 
-pc_scores_clmn<-inner_join(last_days,pc_scores_daily_clmn, by = "DATE")
-pc_scores<-column_to_rownames(pc_scores_clmn,var = "DATE")
+yields_daily_w1 <- as.data.frame(yields_daily[position_start_date_w1:position_end_date_w1,])
 
-pc5_ini<-as.matrix(pc_scores[1:198,1:5])
-
-
-
+#=== then, I extract the principal components of the sliced "yields_daily_w1" database, the first window I'm using of the yields_daily database
 # ===================== PCA ==========================
 
-f_draw_factor_loading<-function(m.loadings,var,title){
-    
-    x11(width=16/3,height=5);
-	    matplot(mat,m.loadings,type="l",xaxt="n",lwd=5,lty=1,
-            ,col=rainbow(5),ylim=c(-0.3,0.5),
-            xlab="Maturidade (meses)",ylab="Peso dos Fatores")
-    legend('topright',max(m.loadings),col=rainbow(5),lty=1,lwd=3,
-           legend=paste0(c("PC1","PC2","PC3","PC4","PC5"),var))
-    axis(1,mat,mat)
-}
 
-mat<-Maturities
-
-pca_yields<-princomp(yields_daily)
-f_draw_factor_loading(pca_yields$loadings[,1:5],
-                      round(100*pca_yields$dev[1:5]^2/sum(pca_yields$dev^2),2),
+pca_yields_w1<-princomp(yields_daily_w1)
+f_draw_factor_loading(pca_yields_w1$loadings[,1:5],
+                      round(100*pca_yields_w1$dev[1:5]^2/sum(pca_yields_w1$dev^2),2),
                       "Yields level PCA - princomp()")
-        
-pc_scores_daily<-as.data.frame(pca_yields$scores)
+      
+pc_scores_daily_w1<-as.data.frame(pca_yields_w1$scores)
+pc_loadings_daily_w1<-as.data.frame(unclass(pca_yields_w1$loadings))
 
-pc_loadings_daily<-as.data.frame(unclass(pca_yields$loadings))
-
+#=== Now I will regress the scores obtained for the 5 principal components obtained from yields_daily_w1 against the sliced "r_xs_w1" database. 
 # ===================== LM() EXCESS RETURN ~ PC OF YIELDS ==========================
 
-pc_scores_daily_clmn<-cbind(dates_daily,rownames_to_column(pc_scores_daily))
-pc_scores_daily_clmn<-pc_scores_daily_clmn[,-2]
+pc_scores_daily_clmn_w1<-cbind(dates_daily_w1,rownames_to_column(pc_scores_daily_w1))
+pc_scores_daily_clmn_w1<-pc_scores_daily_clmn_w1[,-2]
+last_days_w1 <-as.data.frame(last_days[1:99,])
+colnames(last_days_w1)<-"DATE"
+pc_scores_clmn_w1<-inner_join(last_days_w1,pc_scores_daily_clmn_w1, by = "DATE")
+pc_scores_w1<-column_to_rownames(pc_scores_clmn_w1,var = "DATE")
 
-pc_scores_clmn<-inner_join(last_days,pc_scores_daily_clmn, by = "DATE")
-pc_scores<-column_to_rownames(pc_scores_clmn,var = "DATE")
+pc5_ini_w1<-as.matrix(pc_scores_w1[,1:5])
 
-pc5_ini<-as.matrix(pc_scores[1:198,1:5])
+lm_rxs_pc5_w1<-lm(as.matrix(r_xs[1:99,]) ~ as.matrix(pc5_ini_w1))
 
-lm_rxs_pc5<-lm(as.matrix(r_xs) ~ as.matrix(pc5_ini))
+#=== Now I will use the coefficients obtained from this regression to forecast the r_xs of the next period. As I used data until r_xs[1:99,], the first r_xs I will be able to forecast is r_xs[100,]
 
-lm_rxs_pc5_alpha_hat <- t(lm_rxs_pc5$coefficients[1, ])
-lm_rxs_pc5_beta_hat <- lm_rxs_pc5$coefficients[2:6, ]
+lm_rxs_pc5_alpha_hat_w1 <- t(lm_rxs_pc5_w1$coefficients[1, ])
+lm_rxs_pc5_beta_hat_w1 <- lm_rxs_pc5_w1$coefficients[2:6, ]
 
-i_198 <- matrix(rep(1, 198))
+i_99 <- matrix(rep(1, 99))
 
-E_rxs_pc5 <- as.data.frame(t(crossprod(lm_rxs_pc5_alpha_hat, t(i_198))) + t(crossprod(lm_rxs_pc5_beta_hat, t(pc5_ini))))
+E_rxs_pc5_w1 <- t(as.data.frame(t(lm_rxs_pc5_alpha_hat_w1)) + t(crossprod(lm_rxs_pc5_beta_hat_w1, as.matrix(pc5_ini_w1[99,]))))
+
+#=== Finally, i get the prediction error from this forecast:
+
+PE_pc5_w1 <- as.matrix(r_xs[100, ] - E_rxs_pc5_w1)
+
+#=== I will show you what the 2nd window would look like:
+
+start_date_w2 = last_days[2,]
+end_date_w2 = last_days[100,]
+
+position_start_date_w2 <- match(last_days[2,], dates_daily$DATE)
+position_end_date_w2 <- match(last_days[100,], dates_daily$DATE)
+dates_daily_w2 <- as.data.frame(dates_daily[position_start_date_w2:position_end_date_w2,])
+colnames(dates_daily_w2)<-"DATE"
+
+yields_daily_w2 <- as.data.frame(yields_daily[position_start_date_w2:position_end_date_w2,])
+
+#=== then, I extract the principal components of the sliced "yields_daily_w2" database, the first window I'm using of the yields_daily database
+# ===================== PCA ==========================
+
+
+pca_yields_w2<-princomp(yields_daily_w2)
+f_draw_factor_loading(pca_yields_w2$loadings[,1:5],
+                      round(100*pca_yields_w2$dev[1:5]^2/sum(pca_yields_w2$dev^2),2),
+                      "Yields level PCA - princomp()")
+      
+pc_scores_daily_w2<-as.data.frame(pca_yields_w2$scores)
+pc_loadings_daily_w2<-as.data.frame(unclass(pca_yields_w2$loadings))
+
+#=== Now I will regress the scores obtained for the 5 principal components obtained from yields_daily_w2 against the sliced "r_xs_w2" database. 
+# ===================== LM() EXCESS RETURN ~ PC OF YIELDS ==========================
+
+pc_scores_daily_clmn_w2<-cbind(dates_daily_w2,rownames_to_column(pc_scores_daily_w2))
+pc_scores_daily_clmn_w2<-pc_scores_daily_clmn_w2[,-2]
+last_days_w2 <-as.data.frame(last_days[2:100,])
+colnames(last_days_w2)<-"DATE"
+pc_scores_clmn_w2<-inner_join(last_days_w2,pc_scores_daily_clmn_w2, by = "DATE")
+pc_scores_w2<-column_to_rownames(pc_scores_clmn_w2,var = "DATE")
+
+pc5_ini_w2<-as.matrix(pc_scores_w2[,1:5])
+
+lm_rxs_pc5_w2<-lm(as.matrix(r_xs[2:100,]) ~ as.matrix(pc5_ini_w2))
+
+#=== Now I will use the coefficients obtained from this regression to forecast the r_xs of the next period. As I used data until r_xs[2:100,], the first r_xs I will be able to forecast is r_xs[101,]
+
+lm_rxs_pc5_alpha_hat_w2 <- t(lm_rxs_pc5_w2$coefficients[1, ])
+lm_rxs_pc5_beta_hat_w2 <- lm_rxs_pc5_w2$coefficients[2:6, ]
+
+i_99 <- matrix(rep(1, 99))
+
+E_rxs_pc5_w2 <- t(as.data.frame(t(lm_rxs_pc5_alpha_hat_w2)) + t(crossprod(lm_rxs_pc5_beta_hat_w2, as.matrix(pc5_ini_w2[99,]))))
+
+#=== Finally, i get the prediction error from this forecast:
+
+PE_pc5_w2 <- as.matrix(r_xs[101, ] - E_rxs_pc5_w2)
+
+
+#=== this process should go on until the last possible window, which I guess would be window 99 
+
+start_date_w99 = last_days[99,]
+end_date_w99 = last_days[197,]
+
+position_start_date_w99 <- match(last_days[99,], dates_daily$DATE)
+position_end_date_w99 <- match(last_days[197,], dates_daily$DATE)
+dates_daily_w99 <- as.data.frame(dates_daily[position_start_date_w99:position_end_date_w99,])
+colnames(dates_daily_w99)<-"DATE"
+
+yields_daily_w99 <- as.data.frame(yields_daily[position_start_date_w99:position_end_date_w99,])
+
+#=== then, I extract the principal components of the sliced "yields_daily_w99" database, the first window I'm using of the yields_daily database
+# ===================== PCA ==========================
+
+
+pca_yields_w99<-princomp(yields_daily_w99)
+f_draw_factor_loading(pca_yields_w99$loadings[,1:5],
+                      round(100*pca_yields_w99$dev[1:5]^2/sum(pca_yields_w99$dev^2),2),
+                      "Yields level PCA - princomp()")
+      
+pc_scores_daily_w99<-as.data.frame(pca_yields_w99$scores)
+pc_loadings_daily_w99<-as.data.frame(unclass(pca_yields_w99$loadings))
+
+#=== Now I will regress the scores obtained for the 5 principal components obtained from yields_daily_w99 against the sliced "r_xs_w99" database. 
+# ===================== LM() EXCESS RETURN ~ PC OF YIELDS ==========================
+
+pc_scores_daily_clmn_w99<-cbind(dates_daily_w99,rownames_to_column(pc_scores_daily_w99))
+pc_scores_daily_clmn_w99<-pc_scores_daily_clmn_w99[,-2]
+last_days_w99 <-as.data.frame(last_days[99:197,])
+colnames(last_days_w99)<-"DATE"
+pc_scores_clmn_w99<-inner_join(last_days_w99,pc_scores_daily_clmn_w99, by = "DATE")
+pc_scores_w99<-column_to_rownames(pc_scores_clmn_w99,var = "DATE")
+
+pc5_ini_w99<-as.matrix(pc_scores_w99[,1:5])
+
+lm_rxs_pc5_w99<-lm(as.matrix(r_xs[99:197,]) ~ as.matrix(pc5_ini_w99))
+
+#=== Now I will use the coefficients obtained from this regression to forecast the r_xs of the next period. As I used data until r_xs[99:197,], the first r_xs I will be able to forecast is r_xs[198,]
+
+lm_rxs_pc5_alpha_hat_w99 <- t(lm_rxs_pc5_w99$coefficients[1, ])
+lm_rxs_pc5_beta_hat_w99 <- lm_rxs_pc5_w99$coefficients[2:6, ]
+
+i_99 <- matrix(rep(1, 99))
+
+E_rxs_pc5_w99 <- t(as.data.frame(t(lm_rxs_pc5_alpha_hat_w99)) + t(crossprod(lm_rxs_pc5_beta_hat_w99, as.matrix(pc5_ini_w99[99,]))))
+
+#=== Finally, i get the prediction error from this forecast:
+
+PE_pc5_w99 <- as.matrix(r_xs[198, ] - E_rxs_pc5_w99)
+
+#=== As I said before, after all these iterations, I want to get the MSPE (mean squared prediction error) of my model. I also want to use the prediction errors to evaluate the quality of my prediction using the giacomini and white test.
 
 
 
 
+
+
+
+# Set the window size and the number of windows
+window_size <- 99
+num_windows <- nrow(last_days) - window_size + 1
+
+# Initialize vectors to store the prediction errors
+prediction_errors <- matrix(0, nrow = num_windows, ncol = ncol(r_xs))
+mspe <- rep(0, ncol(r_xs))
+
+# Iterate over each window
+for (i in 1:num_windows) {
+  start_date <- as.Date(last_days[i, ])
+  end_date <- as.Date(last_days[i + window_size - 1, ])
+  
+  # Subset the data within the window
+  dates_window <- dates_daily$DATE[dates_daily$DATE >= start_date & dates_daily$DATE <= end_date]
+  yields_window <- yields_daily[row.names(yields_daily) %in% dates_window, ]
+  r_xs_window <- r_xs[r_xs$DATE >= start_date & r_xs$DATE <= end_date, ]
+  
+  # Perform PCA on yields data
+  pca_yields <- princomp(yields_window)
+  pc_scores <- as.data.frame(pca_yields$scores)
+  pc_loadings <- as.data.frame(unclass(pca_yields$loadings))
+  
+  # Perform linear regression
+  lm_rxs_pc <- lm(as.matrix(r_xs_window) ~ as.matrix(pc_scores))
+  
+  # Forecast the next period's r_xs
+  pc_last <- as.matrix(pc_scores[nrow(pc_scores), ])
+  forecasted_rxs <- predict(lm_rxs_pc, newdata = pc_last)
+  
+  # Calculate prediction error
+  prediction_errors[i, ] <- as.matrix(r_xs[(i + window_size), ]) - forecasted_rxs
+  
+  # Calculate MSPE for each variable
+  mspe <- mspe + (prediction_errors[i, ])^2
+}
+
+# Calculate the average MSPE
+mspe <- mspe / num_windows
+
+# Perform the Giacomini and White test
+gw_test <- function(errors) {
+  n <- length(errors)
+  sq_errors <- errors^2
+  
+  # Calculate Q statistics
+  Q1 <- sum(sq_errors)
+  Q2 <- sum(sq_errors^2 - (1/n)*Q1^2)
+  
+  # Calculate p-value
+  p_value <- 1 - pchisq(Q2, df = 1)
+  
+  return(list(Q1 = Q1, Q2 = Q2, p_value = p_value))
+}
+
+# Perform the test for each variable
+gw_results <- lapply(prediction_errors, gw_test)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#=== I'm using R
+#=== I have these 4 databases: yields_daily, dates_daily, last_days and r_xs.
+#=== I'm using them to generate a model that i'll later use to predict the r_xs of one period ahead.
+
+head(yields_daily)
+                   M1         M2         M3         M4         M5         M6         M7         M8         M9
+2006-01-02 0.01265651 0.01565510 0.01446462 0.01437027 0.01446941 0.01429106 0.01416363 0.01408198 0.01400754
+2006-01-03 0.01603918 0.01470582 0.01457713 0.01446563 0.01439118 0.01428984 0.01414971 0.01406612 0.01399448
+2006-01-04 0.01550792 0.01467560 0.01456158 0.01443500 0.01439393 0.01426732 0.01414182 0.01404979 0.01397662
+2006-01-05 0.01498377 0.01467060 0.01455760 0.01444359 0.01436956 0.01426589 0.01413759 0.01404532 0.01397252
+2006-01-06 0.01507278 0.01468408 0.01452948 0.01442654 0.01433593 0.01424202 0.01410778 0.01401627 0.01394257
+2006-01-09 0.01478348 0.01463863 0.01449985 0.01441244 0.01432339 0.01421593 0.01408256 0.01399353 0.01392096
+> typeof(yields_daily[1,1])
+[1] "double"
+> typeof(yields_daily[2,2])
+[1] "double"
+> typeof(yields_daily)
+[1] "list"
+> dim(yields_daily)
+[1] 4104  121
+
+> head(dates_daily)
+        DATE
+1 2006-01-02
+2 2006-01-03
+3 2006-01-04
+4 2006-01-05
+5 2006-01-06
+6 2006-01-09
+> typeof(dates_daily[1,1])
+[1] "double"
+> typeof(dates_daily[2,2])
+[1] "NULL"
+> typeof(dates_daily)
+[1] "list"
+> dim(dates_daily)
+[1] 4104    1
+
+> head(last_days)
+        DATE
+1 2006-01-31
+2 2006-02-24
+3 2006-03-31
+4 2006-04-28
+5 2006-05-31
+6 2006-06-30
+> typeof(last_days[1,1])
+[1] "double"
+> typeof(last_days[2,2])
+[1] "NULL"
+> typeof(last_days)
+[1] "list"
+>  dim(last_days)
+[1] 199   1
+
+> head(r_xs)
+M1           M2           M3           M4            M5            M6            M7
+2006-02-24 0.0019753528 1.679308e-03 0.0019024582 0.0019111496  0.0020719340  0.0024798862  0.0029844029
+2006-03-31 0.0005400497 1.187653e-03 0.0012682833 0.0014881178  0.0017183126  0.0020507207  0.0022119227
+2006-04-28 0.0008875551 8.410972e-05 0.0001310603 0.0001588871  0.0000441739  0.0001586514  0.0003276478
+2006-05-31 0.0013592249 1.046730e-03 0.0007494424 0.0002670848 -0.0001930792 -0.0004380033 -0.0010905229
+2006-06-30 0.0003381849 7.569079e-04 0.0012738688 0.0017456730  0.0020780902  0.0026745057  0.0033135186
+2006-07-31 0.0012442526 3.633123e-04 0.0004416791 0.0005665241  0.0006665946  0.0009603347  0.0012091820
+> typeof(r_xs[1,1])
+[1] "double"
+> typeof(r_xs[2,2])
+[1] "double"
+> typeof(r_xs)
+[1] "list"
+> dim(r_xs)
+[1] 198 120
+
+
+
+#=== I will give you an example of what I want by getting the results from the first window
+
+#=== first, I select the dates that will be used in the window and slice that window's database
+
+start_date_w1 = last_days[1,]
+end_date_w1 = last_days[99,]
+
+position_start_date_w1 <- match(last_days[1,], dates_daily$DATE)
+position_end_date_w1 <- match(last_days[99,], dates_daily$DATE)
+dates_daily_w1 <- as.data.frame(dates_daily[position_start_date_w1:position_end_date_w1,])
+colnames(dates_daily_w1)<-"DATE"
+
+yields_daily_w1 <- as.data.frame(yields_daily[position_start_date_w1:position_end_date_w1,])
+
+#=== then, I extract the principal components of the sliced "yields_daily_w1" database, the first window I'm using of the yields_daily database
+# ===================== PCA ==========================
+
+
+pca_yields_w1<-princomp(yields_daily_w1)
+pc_scores_daily_w1<-as.data.frame(pca_yields_w1$scores)
+pc_loadings_daily_w1<-as.data.frame(unclass(pca_yields_w1$loadings))
+
+#=== Now I will regress the scores obtained for the 5 principal components obtained from yields_daily_w1 against the sliced "r_xs_w1" database. 
+
+pc_scores_daily_clmn_w1<-cbind(dates_daily_w1,rownames_to_column(pc_scores_daily_w1))
+pc_scores_daily_clmn_w1<-pc_scores_daily_clmn_w1[,-2]
+last_days_w1 <-as.data.frame(last_days[1:99,])
+colnames(last_days_w1)<-"DATE"
+pc_scores_clmn_w1<-inner_join(last_days_w1,pc_scores_daily_clmn_w1, by = "DATE")
+pc_scores_w1<-column_to_rownames(pc_scores_clmn_w1,var = "DATE")
+
+#=== notice that i used the dataset yields_daily, that contains data for all 4104 dates to do the pca. but after that's done, I need to use only the PCA results associated to the subset of 199 dates contained in last_days to go on with the exercise
+
+pc5_ini_w1<-as.matrix(pc_scores_w1[,1:5])
+#== this should be a 99x5 matrix
+
+lm_rxs_pc5_w1<-lm(as.matrix(r_xs[1:99,]) ~ as.matrix(pc5_ini_w1))
+
+#=== Later I will use the coefficients obtained from this regression to forecast the r_xs of the next period.
+
+lm_rxs_pc5_alpha_hat_w1 <- t(lm_rxs_pc5_w1$coefficients[1, ])
+lm_rxs_pc5_beta_hat_w1 <- lm_rxs_pc5_w1$coefficients[2:6, ]
+
+
+#=== I will show you what the 2nd window would look like:
+
+start_date_w2 = last_days[2,]
+end_date_w2 = last_days[100,]
+
+position_start_date_w2 <- match(last_days[2,], dates_daily$DATE)
+position_end_date_w2 <- match(last_days[100,], dates_daily$DATE)
+dates_daily_w2 <- as.data.frame(dates_daily[position_start_date_w2:position_end_date_w2,])
+colnames(dates_daily_w2)<-"DATE"
+
+yields_daily_w2 <- as.data.frame(yields_daily[position_start_date_w2:position_end_date_w2,])
+
+
+pca_yields_w2<-princomp(yields_daily_w2)
+pc_scores_daily_w2<-as.data.frame(pca_yields_w2$scores)
+pc_loadings_daily_w2<-as.data.frame(unclass(pca_yields_w2$loadings))
+
+pc_scores_daily_clmn_w2<-cbind(dates_daily_w2,rownames_to_column(pc_scores_daily_w2))
+pc_scores_daily_clmn_w2<-pc_scores_daily_clmn_w2[,-2]
+last_days_w2 <-as.data.frame(last_days[2:100,])
+colnames(last_days_w2)<-"DATE"
+pc_scores_clmn_w2<-inner_join(last_days_w2,pc_scores_daily_clmn_w2, by = "DATE")
+pc_scores_w2<-column_to_rownames(pc_scores_clmn_w2,var = "DATE")
+
+pc5_ini_w2<-as.matrix(pc_scores_w2[,1:5])
+
+lm_rxs_pc5_w2<-lm(as.matrix(r_xs[2:100,]) ~ as.matrix(pc5_ini_w2))
+
+lm_rxs_pc5_alpha_hat_w2 <- t(lm_rxs_pc5_w2$coefficients[1, ])
+lm_rxs_pc5_beta_hat_w2 <- lm_rxs_pc5_w2$coefficients[2:6, ]
+
+#=== this process should go on until the last possible window, which I guess would be window 99 
+
+start_date_w99 = last_days[99,]
+end_date_w99 = last_days[197,]
+
+position_start_date_w99 <- match(last_days[99,], dates_daily$DATE)
+position_end_date_w99 <- match(last_days[197,], dates_daily$DATE)
+dates_daily_w99 <- as.data.frame(dates_daily[position_start_date_w99:position_end_date_w99,])
+colnames(dates_daily_w99)<-"DATE"
+
+yields_daily_w99 <- as.data.frame(yields_daily[position_start_date_w99:position_end_date_w99,])
+
+
+
+pca_yields_w99<-princomp(yields_daily_w99)
+
+pc_scores_daily_w99<-as.data.frame(pca_yields_w99$scores)
+pc_loadings_daily_w99<-as.data.frame(unclass(pca_yields_w99$loadings))
+
+pc_scores_daily_clmn_w99<-cbind(dates_daily_w99,rownames_to_column(pc_scores_daily_w99))
+pc_scores_daily_clmn_w99<-pc_scores_daily_clmn_w99[,-2]
+last_days_w99 <-as.data.frame(last_days[99:197,])
+colnames(last_days_w99)<-"DATE"
+pc_scores_clmn_w99<-inner_join(last_days_w99,pc_scores_daily_clmn_w99, by = "DATE")
+pc_scores_w99<-column_to_rownames(pc_scores_clmn_w99,var = "DATE")
+
+pc5_ini_w99<-as.matrix(pc_scores_w99[,1:5])
+
+lm_rxs_pc5_w99<-lm(as.matrix(r_xs[99:197,]) ~ as.matrix(pc5_ini_w99))
+
+lm_rxs_pc5_alpha_hat_w99 <- t(lm_rxs_pc5_w99$coefficients[1, ])
+lm_rxs_pc5_beta_hat_w99 <- lm_rxs_pc5_w99$coefficients[2:6, ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+#=== I'm using R
+#=== I have these 4 databases: yields_daily, dates_daily, last_days and r_xs.
+#=== I'm using them to generate a model that i'll later use to predict the r_xs of one period ahead.
+#=== I need help automatizing the iteration for all the windows I'm using
+
+head(yields_daily)
+                   M1         M2         M3         M4         M5         M6         M7         M8         M9
+2006-01-02 0.01265651 0.01565510 0.01446462 0.01437027 0.01446941 0.01429106 0.01416363 0.01408198 0.01400754
+2006-01-03 0.01603918 0.01470582 0.01457713 0.01446563 0.01439118 0.01428984 0.01414971 0.01406612 0.01399448
+2006-01-04 0.01550792 0.01467560 0.01456158 0.01443500 0.01439393 0.01426732 0.01414182 0.01404979 0.01397662
+2006-01-05 0.01498377 0.01467060 0.01455760 0.01444359 0.01436956 0.01426589 0.01413759 0.01404532 0.01397252
+2006-01-06 0.01507278 0.01468408 0.01452948 0.01442654 0.01433593 0.01424202 0.01410778 0.01401627 0.01394257
+2006-01-09 0.01478348 0.01463863 0.01449985 0.01441244 0.01432339 0.01421593 0.01408256 0.01399353 0.01392096
+> typeof(yields_daily[1,1])
+[1] "double"
+> typeof(yields_daily[2,2])
+[1] "double"
+> typeof(yields_daily)
+[1] "list"
+> dim(yields_daily)
+[1] 4104  121
+
+> head(dates_daily)
+        DATE
+1 2006-01-02
+2 2006-01-03
+3 2006-01-04
+4 2006-01-05
+5 2006-01-06
+6 2006-01-09
+> typeof(dates_daily[1,1])
+[1] "double"
+> typeof(dates_daily[2,2])
+[1] "NULL"
+> typeof(dates_daily)
+[1] "list"
+> dim(dates_daily)
+[1] 4104    1
+
+> head(last_days)
+        DATE
+1 2006-01-31
+2 2006-02-24
+3 2006-03-31
+4 2006-04-28
+5 2006-05-31
+6 2006-06-30
+> typeof(last_days[1,1])
+[1] "double"
+> typeof(last_days[2,2])
+[1] "NULL"
+> typeof(last_days)
+[1] "list"
+>  dim(last_days)
+[1] 199   1
+
+> head(r_xs)
+M1           M2           M3           M4            M5            M6            M7
+2006-02-24 0.0019753528 1.679308e-03 0.0019024582 0.0019111496  0.0020719340  0.0024798862  0.0029844029
+2006-03-31 0.0005400497 1.187653e-03 0.0012682833 0.0014881178  0.0017183126  0.0020507207  0.0022119227
+2006-04-28 0.0008875551 8.410972e-05 0.0001310603 0.0001588871  0.0000441739  0.0001586514  0.0003276478
+2006-05-31 0.0013592249 1.046730e-03 0.0007494424 0.0002670848 -0.0001930792 -0.0004380033 -0.0010905229
+2006-06-30 0.0003381849 7.569079e-04 0.0012738688 0.0017456730  0.0020780902  0.0026745057  0.0033135186
+2006-07-31 0.0012442526 3.633123e-04 0.0004416791 0.0005665241  0.0006665946  0.0009603347  0.0012091820
+> typeof(r_xs[1,1])
+[1] "double"
+> typeof(r_xs[2,2])
+[1] "double"
+> typeof(r_xs)
+[1] "list"
+> dim(r_xs)
+[1] 198 120
+
+
+
+#=== I will give you an example of what I want by getting the results from the first window
+
+#=== first, I select the dates that will be used in the window and slice that window's database
+
+start_date_w1 = last_days[1,]
+end_date_w1 = last_days[99,]
+
+position_start_date_w1 <- match(last_days[1,], dates_daily$DATE)
+position_end_date_w1 <- match(last_days[99,], dates_daily$DATE)
+dates_daily_w1 <- as.data.frame(dates_daily[position_start_date_w1:position_end_date_w1,])
+colnames(dates_daily_w1)<-"DATE"
+
+yields_daily_w1 <- as.data.frame(yields_daily[position_start_date_w1:position_end_date_w1,])
+
+#=== then, I extract the principal components of the sliced "yields_daily_w1" database, the first window I'm using of the yields_daily database
+
+pca_yields_w1<-princomp(yields_daily_w1)
+pc_scores_daily_w1<-as.data.frame(pca_yields_w1$scores)
+pc_loadings_daily_w1<-as.data.frame(unclass(pca_yields_w1$loadings))
+
+#=== Now I will regress the scores obtained for the 5 principal components obtained from yields_daily_w1 against the sliced "r_xs_w1" database. 
+
+pc_scores_daily_clmn_w1<-cbind(dates_daily_w1,rownames_to_column(pc_scores_daily_w1))
+pc_scores_daily_clmn_w1<-pc_scores_daily_clmn_w1[,-2]
+last_days_w1 <-as.data.frame(last_days[1:99,])
+colnames(last_days_w1)<-"DATE"
+pc_scores_clmn_w1<-inner_join(last_days_w1,pc_scores_daily_clmn_w1, by = "DATE")
+pc_scores_w1<-column_to_rownames(pc_scores_clmn_w1,var = "DATE")
+
+#=== notice that i used the dataset yields_daily, that contains data for all 4104 dates to do the pca. but after that's done, I need to use only the PCA results associated to the subset of 199 dates contained in last_days to go on with the exercise
+
+#=== I will show you what the 2nd window would look like:
+
+start_date_w2 = last_days[2,]
+end_date_w2 = last_days[100,]
+
+position_start_date_w2 <- match(last_days[2,], dates_daily$DATE)
+position_end_date_w2 <- match(last_days[100,], dates_daily$DATE)
+dates_daily_w2 <- as.data.frame(dates_daily[position_start_date_w2:position_end_date_w2,])
+colnames(dates_daily_w2)<-"DATE"
+
+yields_daily_w2 <- as.data.frame(yields_daily[position_start_date_w2:position_end_date_w2,])
+
+
+pca_yields_w2<-princomp(yields_daily_w2)
+pc_scores_daily_w2<-as.data.frame(pca_yields_w2$scores)
+pc_loadings_daily_w2<-as.data.frame(unclass(pca_yields_w2$loadings))
+
+pc_scores_daily_clmn_w2<-cbind(dates_daily_w2,rownames_to_column(pc_scores_daily_w2))
+pc_scores_daily_clmn_w2<-pc_scores_daily_clmn_w2[,-2]
+last_days_w2 <-as.data.frame(last_days[2:100,])
+colnames(last_days_w2)<-"DATE"
+pc_scores_clmn_w2<-inner_join(last_days_w2,pc_scores_daily_clmn_w2, by = "DATE")
+pc_scores_w2<-column_to_rownames(pc_scores_clmn_w2,var = "DATE")
+
+
+#=== this process should go on until the last possible window, which I guess would be window 99 
+
+start_date_w99 = last_days[99,]
+end_date_w99 = last_days[197,]
+
+position_start_date_w99 <- match(last_days[99,], dates_daily$DATE)
+position_end_date_w99 <- match(last_days[197,], dates_daily$DATE)
+dates_daily_w99 <- as.data.frame(dates_daily[position_start_date_w99:position_end_date_w99,])
+colnames(dates_daily_w99)<-"DATE"
+
+yields_daily_w99 <- as.data.frame(yields_daily[position_start_date_w99:position_end_date_w99,])
+
+pca_yields_w99<-princomp(yields_daily_w99)
+
+pc_scores_daily_w99<-as.data.frame(pca_yields_w99$scores)
+pc_loadings_daily_w99<-as.data.frame(unclass(pca_yields_w99$loadings))
+
+pc_scores_daily_clmn_w99<-cbind(dates_daily_w99,rownames_to_column(pc_scores_daily_w99))
+pc_scores_daily_clmn_w99<-pc_scores_daily_clmn_w99[,-2]
+last_days_w99 <-as.data.frame(last_days[99:197,])
+colnames(last_days_w99)<-"DATE"
+pc_scores_clmn_w99<-inner_join(last_days_w99,pc_scores_daily_clmn_w99, by = "DATE")
+pc_scores_w99<-column_to_rownames(pc_scores_clmn_w99,var = "DATE")
+
+
+
+
+
+
+#=== I'm using R
+#=== I have these 4 databases: yields_daily, dates_daily, last_days and r_xs.
+#=== I'm using them to generate a model that i'll later use to predict the r_xs of one period ahead.
+#=== I need help automatizing the iteration for all the windows I'm using
+
+#========== ESSE CÓDIGO ABAIXO SUBSTITUI O LOGO ACIMA ====================
+
+yields_daily <- as.matrix(yields_daily)
+dates_daily <- as.Date(dates_daily$DATE)
+last_days <- as.Date(last_days$DATE)
+r_xs <- as.matrix(r_xs)
+
+# Set the window size and step size
+window_size <- 100  # Set your desired window size
+step_size <- 1      # Set your desired step size
+
+# Calculate the number of iterations
+num_iterations <- floor((length(last_days) - window_size) / step_size) + 1
+
+# Initialize a list to store the results
+results <- list()
+
+# Perform the iteration
+for (i in 1:num_iterations) {
+  # Define the start and end indices of the current window
+  start_index <- (i - 1) * step_size + 1
+  end_index <- start_index + window_size - 1
+  
+  # Extract the dates for the current window
+  start_date <- last_days[start_index]
+  end_date <- last_days[end_index]
+
+  # Find the corresponding positions in the dates_daily database
+ start_position <- match(start_date, dates_daily)
+  end_position <- match(end_date, dates_daily)
+  
+  # Slice the yields_daily and dates_daily databases for the current window
+  yields_daily_window <- yields_daily[start_position:end_position]
+  dates_daily_window <- dates_daily[start_position:end_position]
+  
+  # Perform PCA on the yields_daily_window
+  pca_yields_window <- princomp(yields_daily_window)
+  pc_scores_daily_window <- rownames_to_column(as.data.frame(pca_yields_window$scores))
+colnames(pc_scores_daily_window)[1] <- "DATE"
+  
+  # Regress PC scores against the corresponding subset of r_xs
+  r_xs_window <- rownames_to_column(as.data.frame(r_xs[start_index:end_index]))
+  colnames(r_xs_window)[1] <- "DATE"
+
+  pc_scores_rxs <- inner_join(r_xs_window, pc_scores_daily_window, by = "DATE")
+  
+  # Store the results for the current window
+  results[[i]] <- list(yields = yields_daily_window,
+                       dates = dates_daily_window,
+                       pc_scores = pc_scores_daily_window,
+                       pc_loadings = pca_yields_window$loadings,
+                       pc_scores_rxs = pc_scores_rxs
+                       # Add any other relevant information you want to store
+                       )
+}
+
+# Access the results for a specific window
+window_index <- 1  # Specify the window index you want to access
+window_results <- results[[window_index]]
