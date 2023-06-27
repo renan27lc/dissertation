@@ -173,7 +173,7 @@ U_hat_ini <-as.matrix(lm_yields_pc5$residuals[1:198,2:121])
 U_hat_fin <-as.matrix(lm_yields_pc5$residuals[2:199,1:120])
 
 # y(t+1) ~ pc(t)
-lm_yfin_pc5<-lm(as.matrix(yields_fin) ~ as.matrix(pc5_ini))
+#lm_yfin_pc5<-lm(as.matrix(yields_fin) ~ as.matrix(pc5_ini))
 
 
 # ===================== ADRIAN 3 STEPS ==========================
