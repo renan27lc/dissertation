@@ -822,6 +822,77 @@ legend("topleft",
        lty = 1,
        col = 2:4)
 
+
+#====== 2014 - M3
+
+
+plot(yields_clmn$DATE[103:115],                          
+     abs(PE_xphyp[102:114,3]),
+     type = "l",
+     col = 2,
+     ylim = c(0, 0.001),
+     xlab = "Mês (2014-15)",
+     ylab = "Erro de previsão (módulo)")
+lines(yields_clmn$DATE[103:115],                          
+     abs(PE_pc5[102:114,3]),
+     type = "l",
+     col = 3)    
+lines(yields_clmn$DATE[103:115],                          
+     abs(PE_adrian[102:114,3]),
+     type = "l",
+     col = 4)     
+legend("topleft",                          
+       c("Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:4)
+
+
+#====== 2014 - M12
+
+
+plot(yields_clmn$DATE[103:115],                          
+     abs(PE_xphyp[102:114,12]),
+     type = "l",
+     col = 2,
+     ylim = c(0, 0.006),
+   xlab = "Mês (2014-15)",
+     ylab = "Erro de previsão (módulo)")
+lines(yields_clmn$DATE[103:115],                          
+     abs(PE_pc5[102:114,12]),
+     type = "l",
+     col = 3)    
+lines(yields_clmn$DATE[103:115],                          
+     abs(PE_adrian[102:114,12]),
+     type = "l",
+     col = 4)     
+legend("topleft",                          
+       c("Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:4)
+
+#====== 2014 - M48
+
+
+plot(yields_clmn$DATE[103:115],                          
+     abs(PE_xphyp[102:114,48]),
+     type = "l",
+     col = 2,
+     ylim = c(0, 0.06),
+   xlab = "Mês (2014-15)",
+     ylab = "Erro de previsão (módulo)")
+lines(yields_clmn$DATE[103:115],                          
+     abs(PE_pc5[102:114,48]),
+     type = "l",
+     col = 3)    
+lines(yields_clmn$DATE[103:115],                          
+     abs(PE_adrian[102:114,48]),
+     type = "l",
+     col = 4)     
+legend("topleft",                          
+       c("Hipótese das Expectativas","Irrestrito","Restrito à arbitragem"),
+       lty = 1,
+       col = 2:4)
+
 #====== 2021 - M3
 
 
