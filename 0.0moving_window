@@ -196,120 +196,19 @@ matrix_positions <- rbind(1, matrix_positions)
 # Print the matrix
 print(matrix_positions)
 
+
+
+
+
 # ===================== GPT ==========================
 
 
 
-
-head(yields_daily)
-typeof(yields_daily[1,1])
-typeof(yields_daily[2,2])
-typeof(yields_daily)
-dim(yields_daily)
-
-head(dates_daily)
-typeof(dates_daily[1,1])
-typeof(dates_daily[2,2])
-typeof(dates_daily)
-dim(dates_daily)
-
-head(last_days)
-typeof(last_days[1,1])
-typeof(last_days[2,2])
-typeof(last_days)
-dim(last_days)
-
-head(r_xs)
-typeof(r_xs[1,1])
-typeof(r_xs[2,2])
-typeof(r_xs)
-dim(r_xs)
-
-#=== I'm using R
-#=== I have these 4 databases: yields_daily, dates_daily, last_days and r_xs.
-#=== I'm using them to generate a model to predict the r_xs of one period ahead.
-#=== I want to get the MSPE (mean squared prediction error) of my model using a moving window approach.
-#=== Then, I want to use these prediction errors to evaluate the quality of my prediction using the giacomini and white test.
-
-head(yields_daily)
-                   M1         M2         M3         M4         M5         M6         M7         M8         M9
-2006-01-02 0.01265651 0.01565510 0.01446462 0.01437027 0.01446941 0.01429106 0.01416363 0.01408198 0.01400754
-2006-01-03 0.01603918 0.01470582 0.01457713 0.01446563 0.01439118 0.01428984 0.01414971 0.01406612 0.01399448
-2006-01-04 0.01550792 0.01467560 0.01456158 0.01443500 0.01439393 0.01426732 0.01414182 0.01404979 0.01397662
-2006-01-05 0.01498377 0.01467060 0.01455760 0.01444359 0.01436956 0.01426589 0.01413759 0.01404532 0.01397252
-2006-01-06 0.01507278 0.01468408 0.01452948 0.01442654 0.01433593 0.01424202 0.01410778 0.01401627 0.01394257
-2006-01-09 0.01478348 0.01463863 0.01449985 0.01441244 0.01432339 0.01421593 0.01408256 0.01399353 0.01392096
-> typeof(yields_daily[1,1])
-[1] "double"
-> typeof(yields_daily[2,2])
-[1] "double"
-> typeof(yields_daily)
-[1] "list"
-> dim(yields_daily)
-[1] 4104  121
-
-> head(dates_daily)
-        DATE
-1 2006-01-02
-2 2006-01-03
-3 2006-01-04
-4 2006-01-05
-5 2006-01-06
-6 2006-01-09
-> typeof(dates_daily[1,1])
-[1] "double"
-> typeof(dates_daily[2,2])
-[1] "NULL"
-> typeof(dates_daily)
-[1] "list"
-> dim(dates_daily)
-[1] 4104    1
-
-> head(last_days)
-        DATE
-1 2006-01-31
-2 2006-02-24
-3 2006-03-31
-4 2006-04-28
-5 2006-05-31
-6 2006-06-30
-> typeof(last_days[1,1])
-[1] "double"
-> typeof(last_days[2,2])
-[1] "NULL"
-> typeof(last_days)
-[1] "list"
->  dim(last_days)
-[1] 199   1
-
-> head(r_xs)
-M1           M2           M3           M4            M5            M6            M7
-2006-02-24 0.0019753528 1.679308e-03 0.0019024582 0.0019111496  0.0020719340  0.0024798862  0.0029844029
-2006-03-31 0.0005400497 1.187653e-03 0.0012682833 0.0014881178  0.0017183126  0.0020507207  0.0022119227
-2006-04-28 0.0008875551 8.410972e-05 0.0001310603 0.0001588871  0.0000441739  0.0001586514  0.0003276478
-2006-05-31 0.0013592249 1.046730e-03 0.0007494424 0.0002670848 -0.0001930792 -0.0004380033 -0.0010905229
-2006-06-30 0.0003381849 7.569079e-04 0.0012738688 0.0017456730  0.0020780902  0.0026745057  0.0033135186
-2006-07-31 0.0012442526 3.633123e-04 0.0004416791 0.0005665241  0.0006665946  0.0009603347  0.0012091820
-> typeof(r_xs[1,1])
-[1] "double"
-> typeof(r_xs[2,2])
-[1] "double"
-> typeof(r_xs)
-[1] "list"
-> dim(r_xs)
-[1] 198 120
-
-
-
-#=== I will give you an example of what I want by getting the results from the first window
-
-#=== first, I select the dates that will be used in the window and slice that window's database
-
 start_date_w1 = last_days[1,]
-end_date_w1 = last_days[99,]
+end_date_w1 = last_days[100,]
 
 position_start_date_w1 <- match(last_days[1,], dates_daily$DATE)
-position_end_date_w1 <- match(last_days[99,], dates_daily$DATE)
+position_end_date_w1 <- match(last_days[100,], dates_daily$DATE)
 dates_daily_w1 <- as.data.frame(dates_daily[position_start_date_w1:position_end_date_w1,])
 colnames(dates_daily_w1)<-"DATE"
 
@@ -332,35 +231,36 @@ pc_loadings_daily_w1<-as.data.frame(unclass(pca_yields_w1$loadings))
 
 pc_scores_daily_clmn_w1<-cbind(dates_daily_w1,rownames_to_column(pc_scores_daily_w1))
 pc_scores_daily_clmn_w1<-pc_scores_daily_clmn_w1[,-2]
-last_days_w1 <-as.data.frame(last_days[1:99,])
+last_days_w1 <-as.data.frame(last_days[1:100,])
 colnames(last_days_w1)<-"DATE"
 pc_scores_clmn_w1<-inner_join(last_days_w1,pc_scores_daily_clmn_w1, by = "DATE")
 pc_scores_w1<-column_to_rownames(pc_scores_clmn_w1,var = "DATE")
 
 pc5_ini_w1<-as.matrix(pc_scores_w1[,1:5])
 
-lm_rxs_pc5_w1<-lm(as.matrix(r_xs[1:99,]) ~ as.matrix(pc5_ini_w1))
+lm_rxs_pc5_w1<-lm(as.matrix(r_xs[1:100,]) ~ as.matrix(pc5_ini_w1))
 
 #=== Now I will use the coefficients obtained from this regression to forecast the r_xs of the next period. As I used data until r_xs[1:99,], the first r_xs I will be able to forecast is r_xs[100,]
 
 lm_rxs_pc5_alpha_hat_w1 <- t(lm_rxs_pc5_w1$coefficients[1, ])
 lm_rxs_pc5_beta_hat_w1 <- lm_rxs_pc5_w1$coefficients[2:6, ]
 
-i_99 <- matrix(rep(1, 99))
+i_100 <- matrix(rep(1, 100))
 
-E_rxs_pc5_w1 <- t(as.data.frame(t(lm_rxs_pc5_alpha_hat_w1)) + t(crossprod(lm_rxs_pc5_beta_hat_w1, as.matrix(pc5_ini_w1[99,]))))
+#E_rxs_pc5_w1 <- t(as.data.frame(t(lm_rxs_pc5_alpha_hat_w1)) + t(crossprod(lm_rxs_pc5_beta_hat_w1, as.matrix(pc5_ini_w1[100,]))))
+#!!!!CHECAR SE O ALPHA ESTÁ SENDO SOMADO A TODAS AS MATURIDADES E NÃO SÓ À PRIMEIRA, I.E., EU DEVERIA FAZER rep(120)!!!!
 
 #=== Finally, i get the prediction error from this forecast:
 
-PE_pc5_w1 <- as.matrix(r_xs[100, ] - E_rxs_pc5_w1)
+PE_pc5_w1 <- as.matrix(r_xs[101, ] - E_rxs_pc5_w1)
 
 #=== I will show you what the 2nd window would look like:
 
 start_date_w2 = last_days[2,]
-end_date_w2 = last_days[100,]
+end_date_w2 = last_days[101,]
 
 position_start_date_w2 <- match(last_days[2,], dates_daily$DATE)
-position_end_date_w2 <- match(last_days[100,], dates_daily$DATE)
+position_end_date_w2 <- match(last_days[101,], dates_daily$DATE)
 dates_daily_w2 <- as.data.frame(dates_daily[position_start_date_w2:position_end_date_w2,])
 colnames(dates_daily_w2)<-"DATE"
 
@@ -383,21 +283,21 @@ pc_loadings_daily_w2<-as.data.frame(unclass(pca_yields_w2$loadings))
 
 pc_scores_daily_clmn_w2<-cbind(dates_daily_w2,rownames_to_column(pc_scores_daily_w2))
 pc_scores_daily_clmn_w2<-pc_scores_daily_clmn_w2[,-2]
-last_days_w2 <-as.data.frame(last_days[2:100,])
+last_days_w2 <-as.data.frame(last_days[2:101,])
 colnames(last_days_w2)<-"DATE"
 pc_scores_clmn_w2<-inner_join(last_days_w2,pc_scores_daily_clmn_w2, by = "DATE")
 pc_scores_w2<-column_to_rownames(pc_scores_clmn_w2,var = "DATE")
 
 pc5_ini_w2<-as.matrix(pc_scores_w2[,1:5])
 
-lm_rxs_pc5_w2<-lm(as.matrix(r_xs[2:100,]) ~ as.matrix(pc5_ini_w2))
+lm_rxs_pc5_w2<-lm(as.matrix(r_xs[2:101,]) ~ as.matrix(pc5_ini_w2))
 
 #=== Now I will use the coefficients obtained from this regression to forecast the r_xs of the next period. As I used data until r_xs[2:100,], the first r_xs I will be able to forecast is r_xs[101,]
 
 lm_rxs_pc5_alpha_hat_w2 <- t(lm_rxs_pc5_w2$coefficients[1, ])
 lm_rxs_pc5_beta_hat_w2 <- lm_rxs_pc5_w2$coefficients[2:6, ]
 
-i_99 <- matrix(rep(1, 99))
+i_99 <- matrix(rep(1, 100))
 
 E_rxs_pc5_w2 <- t(as.data.frame(t(lm_rxs_pc5_alpha_hat_w2)) + t(crossprod(lm_rxs_pc5_beta_hat_w2, as.matrix(pc5_ini_w2[99,]))))
 
@@ -463,14 +363,28 @@ PE_pc5_w99 <- as.matrix(r_xs[198, ] - E_rxs_pc5_w99)
 
 
 
+#====================================================================================================================================================================================
+
+# THE DIFFERENCE BETWEEN THESE TWO IS THE ONE BELOW ONLY COVERS UNTIL pc_scores_w1<-column_to_rownames(pc_scores_clmn_w1,var = "DATE")
+# so i need to change the window above to 100 before testing the rest of gpt
+I'LL USE THE ONE ABOVE TO CODE THE COMPARISONS AND THE ONE BELOW TO TALK TO GPT
+
+#====================================================================================================================================================================================
 
 
 
 
 
 
+#=== I'm using R
+#=== I have these 4 databases: yields_daily, dates_daily, last_days and r_xs.
+#=== I'm using them to generate a model to predict the r_xs of one period ahead.
+#=== I want to get the MSPE (mean squared prediction error) of my model using a moving window approach.
+#=== Then, I want to use these prediction errors to evaluate the quality of my prediction using the giacomini and white test.
 
+#=== I will give you an example of what I want by getting the results from the first window
 
+#=== first, I select the dates that will be used in the window and slice that window's database
 
 #=== I'm using R
 #=== I have these 4 databases: yields_daily, dates_daily, last_days and r_xs.
@@ -552,10 +466,10 @@ M1           M2           M3           M4            M5            M6           
 #=== first, I select the dates that will be used in the window and slice that window's database
 
 start_date_w1 = last_days[1,]
-end_date_w1 = last_days[99,]
+end_date_w1 = last_days[100,]
 
 position_start_date_w1 <- match(last_days[1,], dates_daily$DATE)
-position_end_date_w1 <- match(last_days[99,], dates_daily$DATE)
+position_end_date_w1 <- match(last_days[100,], dates_daily$DATE)
 dates_daily_w1 <- as.data.frame(dates_daily[position_start_date_w1:position_end_date_w1,])
 colnames(dates_daily_w1)<-"DATE"
 
@@ -571,7 +485,7 @@ pc_loadings_daily_w1<-as.data.frame(unclass(pca_yields_w1$loadings))
 
 pc_scores_daily_clmn_w1<-cbind(dates_daily_w1,rownames_to_column(pc_scores_daily_w1))
 pc_scores_daily_clmn_w1<-pc_scores_daily_clmn_w1[,-2]
-last_days_w1 <-as.data.frame(last_days[1:99,])
+last_days_w1 <-as.data.frame(last_days[1:100,])
 colnames(last_days_w1)<-"DATE"
 pc_scores_clmn_w1<-inner_join(last_days_w1,pc_scores_daily_clmn_w1, by = "DATE")
 pc_scores_w1<-column_to_rownames(pc_scores_clmn_w1,var = "DATE")
@@ -700,3 +614,16 @@ colnames(pc_scores_daily_window)[1] <- "DATE"
 # Access the results for a specific window
 window_index <- 1  # Specify the window index you want to access
 window_results <- results[[window_index]]
+
+
+
+
+
+gpt_pc5_loadings_daily_w1 <- temp_gpt_pc5_loadings_daily
+gpt_dates_daily_w1 <- temp_gpt_dates_daily
+gpt_yields_daily_w1 <- temp_gpt_yields_daily
+gpt_pc5_scores_daily_w1 <- temp_gpt_pc5_scores_daily
+gpt_pc5_scores_w1 <- temp_gpt_pc5_scores
+
+
+yields_daily_100_yr <- temp_yields_daily_100_yr
