@@ -3,128 +3,683 @@
 
 #(depois de baixados os dados. estão no drive de renan.lessa.bndes@gmail.com: /content/drive/MyDrive/Colab artigo EctrII2025/yields_daily_100_yr_2006-01-01_2025-12-12_M1-M121.parquet
 
-# ============================================
-# 1) MONTAR DRIVE E CARREGAR BASE (APENAS UMA VEZ)
-# ============================================
+# ============================================================
+# DISSERTAÇÃO (R -> Python/Colab) | CÓDIGO ÚNICO E AUTOMÁTICO (LIMPO)
+# - Lê parquet do Drive (daily yields M1..M121, % a.a.)
+# - Constrói amostra mensal (último dia disponível no mês)
+# - Constrói yields_ini/yields_fin, rf, r_1mo, r_xs (sem tamanhos "na mão")
+# - PCA (mensal e diária), loadings e gráficos
+# - Hipótese das Expectativas (EH): r_1mo ~ rf e testes beta=1 / alpha=0,beta=1
+# - Regressão r_xs ~ PC1..PC5 (Irrestrito)
+# - Modelo Adrian (VAR(1) + 3 passos) + previsões
+# - MSPE ratios vs RW e testes DM (p-valores)
+# - Tabelas Diebold (1.1, 1.2, 1.r_1mo, 1.rxs, 1.3) e Table1_bmstr_r1mo_complete
+# - Gráficos principais + superfície 3D
+#
+# OBS: Assume colunas "M1".."M121" (ou similar). Se a data estiver em coluna, detecta.
+# ============================================================
 
+# ============================================
+# 0) DRIVE + IMPORTS + CARREGAR PARQUET
+# ============================================
 from google.colab import drive
 drive.mount('/content/drive')
 
-import pandas as pd
-import numpy as np
 import os
+import numpy as np
+import pandas as pd
 
-cache_path = "/content/drive/MyDrive/Colab artigo EctrII2025/yields_daily_100_yr_2006-01-01_2025-12-12_M1-M121.parquet"
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
-assert os.path.exists(cache_path), "Arquivo parquet não encontrado no Drive."
-
-print("Arquivo encontrado! Carregando...")
-
-yields_daily = pd.read_parquet(cache_path)
-
-print("Dados carregados com sucesso.")
-print("Shape:", yields_daily.shape)
-print("Primeiras colunas:")
-print(yields_daily.columns[:10])
-
-
-# ============================================
-# 2) ORGANIZAR ÍNDICE DE DATA
-# ============================================
-
-yields_daily.index = pd.to_datetime(yields_daily.index)
-yields_daily.index = yields_daily.index.normalize()
-yields_daily = yields_daily.sort_index()
-yields_daily = yields_daily.dropna(how="all")
-
-print("Período coberto:")
-print(yields_daily.index.min(), "até", yields_daily.index.max())
-
-
-# ============================================
-# 3) ÚLTIMO DIA ÚTIL DO MÊS
-# ============================================
-
-monthly_last = yields_daily.groupby(
-    [yields_daily.index.year, yields_daily.index.month]
-).tail(1)
-
-monthly_last.index.name = "DATE"
-
-print("Número de observações mensais:", len(monthly_last))
-
-yields_curve = monthly_last.astype(float)
-
-print("Dimensão da curva de juros:")
-print(yields_curve.shape)
-
-
-# ============================================
-# 4) PCA (FATORES LEVEL SLOPE CURVATURE)
-# ============================================
-
+import statsmodels.api as sm
+from statsmodels.tsa.api import VAR
+from scipy import stats
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
+cache_path = "/content/drive/MyDrive/Colab artigo EctrII2025/yields_daily_100_yr_2006-01-01_2025-12-12_M1-M121.parquet"
+assert os.path.exists(cache_path), "Arquivo parquet não encontrado no Drive."
+
+print("Carregando parquet...")
+yields_daily = pd.read_parquet(cache_path)
+
+# Se a data não vier como index, tente detectar coluna de data:
+if not isinstance(yields_daily.index, pd.DatetimeIndex):
+    date_cols = [c for c in yields_daily.columns if "date" in str(c).lower()]
+    if date_cols:
+        yields_daily[date_cols[0]] = pd.to_datetime(yields_daily[date_cols[0]])
+        yields_daily = yields_daily.set_index(date_cols[0])
+    else:
+        raise ValueError("Não encontrei data no index nem coluna contendo 'date'.")
+
+# ============================================
+# 1) LIMPEZA E ORDENAÇÃO DAS COLUNAS (M1..)
+# ============================================
+def _mnum(c):
+    try:
+        return int(str(c).replace("M",""))
+    except:
+        return 10**9
+
+yields_daily = yields_daily.copy()
+yields_daily.index = pd.to_datetime(yields_daily.index).normalize()
+yields_daily = yields_daily.sort_index()
+yields_daily = yields_daily.dropna(how="all")
+yields_daily = yields_daily.loc[:, sorted(yields_daily.columns, key=_mnum)]
+
+H_full = yields_daily.shape[1]
+print("Daily shape:", yields_daily.shape, "| H_full:", H_full)
+print("Daily dates:", yields_daily.index.min(), "->", yields_daily.index.max())
+
+# ============================================
+# 2) AMOSTRA MENSAL: ÚLTIMO DIA DISPONÍVEL NO MÊS
+# ============================================
+monthly_last = yields_daily.groupby([yields_daily.index.year, yields_daily.index.month]).tail(1)
+monthly_last.index.name = "DATE"
+yields_monthly = monthly_last.astype(float)  # % a.a.
+
+print("Monthly shape:", yields_monthly.shape)
+print("Monthly dates:", yields_monthly.index.min(), "->", yields_monthly.index.max())
+
+# ============================================
+# 3) CONVERTER PARA TAXA MENSAL DECIMAL (/(100*12))
+# ============================================
+yields_m = yields_monthly / (100.0 * 12.0)  # mensal decimal
+assert yields_m.shape[0] >= 2 and yields_m.shape[1] >= 2, "Amostra mensal ou maturidades insuficientes."
+
+# maturities inferidos das colunas
+maturity_nums = np.array([_mnum(c) for c in yields_m.columns], dtype=int)
+
+# ============================================
+# 4) HELPERS
+# ============================================
+def add_const(X):
+    return sm.add_constant(X, has_constant="add")
+
+def ols_ar_coef(series: pd.Series, lag_k: int) -> float:
+    s = series.astype(float)
+    df = pd.concat([s, s.shift(lag_k)], axis=1).dropna()
+    y = df.iloc[:, 0].values
+    x = df.iloc[:, 1].values
+    res = sm.OLS(y, add_const(x)).fit()
+    return float(res.params[1])
+
+def dm_test(e1, e2, h=1, alternative="less"):
+    e1 = np.asarray(e1).astype(float)
+    e2 = np.asarray(e2).astype(float)
+    m = np.isfinite(e1) & np.isfinite(e2)
+    e1, e2 = e1[m], e2[m]
+    d = e1**2 - e2**2
+    Tn = d.shape[0]
+    if Tn < 8:
+        return np.nan
+    lag = max(h-1, 0)
+    res = sm.OLS(d, np.ones((Tn, 1))).fit()
+    cov = sm.stats.sandwich_covariance.cov_hac(res, nlags=lag)
+    var_mean = cov[0, 0] / Tn
+    if var_mean <= 0:
+        return np.nan
+    dm_stat = d.mean() / np.sqrt(var_mean)
+    if alternative == "less":
+        return float(stats.norm.cdf(dm_stat))
+    if alternative == "greater":
+        return float(1 - stats.norm.cdf(dm_stat))
+    return float(2 * (1 - stats.norm.cdf(abs(dm_stat))))
+
+def build_core_from_monthly(yields_m: pd.DataFrame):
+    """Reconstroi yields_fin/yields_ini/rf/r_1mo/r_xs de forma automática."""
+    T, H = yields_m.shape
+
+    maturities = np.array([_mnum(c) for c in yields_m.columns], dtype=int)
+
+    yields_fin = yields_m.iloc[1:T, 0:H-1].copy()  # t=2..T, M1..M(H-1)
+    yields_ini = yields_m.iloc[0:T-1, 1:H].copy()  # t=1..T-1, M2..MH
+
+    mat_fin = maturities[0:H-1]
+    mat_ini = maturities[1:H]
+
+    mat_fin_rep = pd.DataFrame(np.tile(mat_fin, (T-1, 1)), index=yields_fin.index, columns=yields_fin.columns)
+    mat_ini_rep = pd.DataFrame(np.tile(mat_ini, (T-1, 1)), index=yields_ini.index, columns=yields_ini.columns)
+
+    rf_t = yields_m.iloc[0:T-1, 0].copy()
+    rf_t.index = yields_ini.index
+    rf = rf_t.rename("risk_free")
+
+    rf_for_returns = rf_t.copy()
+    rf_for_returns.index = yields_fin.index
+    rf_rep_for_returns = pd.DataFrame(
+        np.tile(rf_for_returns.values.reshape(-1, 1), (1, H-1)),
+        index=yields_fin.index,
+        columns=yields_fin.columns
+    )
+
+    mns_lnP_fin = yields_fin * mat_fin_rep
+    mns_lnP_ini = yields_ini * mat_ini_rep
+
+    prices = pd.concat([np.exp(-rf).to_frame("P_rf"), np.exp(-mns_lnP_ini)], axis=1)
+
+    r_1mo = pd.DataFrame(
+        (mns_lnP_ini.values - mns_lnP_fin.values),
+        index=yields_fin.index,
+        columns=yields_fin.columns
+    )
+    r_xs = r_1mo - rf_rep_for_returns
+
+    return {
+        "T": T, "H": H,
+        "yields_fin": yields_fin, "yields_ini": yields_ini,
+        "rf": rf, "rf_for_returns": rf_for_returns, "rf_rep_for_returns": rf_rep_for_returns,
+        "mns_lnP_fin": mns_lnP_fin, "mns_lnP_ini": mns_lnP_ini,
+        "prices": prices,
+        "r_1mo": r_1mo, "r_xs": r_xs
+    }
+
+# ============================================
+# 5) CORE (mensal) e depois realinhamento com PCA diária
+# ============================================
+core = build_core_from_monthly(yields_m)
+T, H = core["T"], core["H"]
+yields_fin, yields_ini = core["yields_fin"], core["yields_ini"]
+rf, rf_for_returns, rf_rep_for_returns = core["rf"], core["rf_for_returns"], core["rf_rep_for_returns"]
+mns_lnP_fin, mns_lnP_ini = core["mns_lnP_fin"], core["mns_lnP_ini"]
+prices = core["prices"]
+r_1mo, r_xs = core["r_1mo"], core["r_xs"]
+
+print("\nCore shapes (before daily-PCA alignment):")
+print("yields_fin:", yields_fin.shape, "| yields_ini:", yields_ini.shape)
+print("r_1mo:", r_1mo.shape, "| r_xs:", r_xs.shape, "| rf:", rf.shape)
+
+# ============================================
+# 6) SELEÇÕES DE MATURIDADE (M2..M96 etc.)
+# ============================================
+mats_8 = [2, 3, 9, 12, 24, 48, 72, 96]
+idx0_sel = [m-1 for m in mats_8 if (m-1) < (H-1)]  # 0-based para colunas M1..M(H-1)
+
+# ============================================
+# 7) PCA MENSAL (3 PCs e 5 PCs) - mantém (opcional)
+# ============================================
 scaler = StandardScaler()
-Y_std = scaler.fit_transform(yields_curve)
+Y_std = scaler.fit_transform(yields_monthly.values)
 
-pca = PCA(n_components=3)
-factors = pca.fit_transform(Y_std)
-
-factors = pd.DataFrame(
-    factors,
-    index=yields_curve.index,
+pca3 = PCA(n_components=3)
+factors_3 = pd.DataFrame(
+    pca3.fit_transform(Y_std),
+    index=yields_monthly.index,
     columns=["Level", "Slope", "Curvature"]
 )
+print("\nExplained variance (3 PCs):", pca3.explained_variance_ratio_)
 
-print("Variância explicada:")
-print(pca.explained_variance_ratio_)
-
-
-# ============================================
-# 5) CONSTRUIR r_1mo E rf
-# ============================================
-
-# transformar para taxa mensal decimal (igual ao R)
-yields_m = yields_curve / (100*12)
-
-yields_fin = yields_m.iloc[1:199, 0:120]
-yields_ini = yields_m.iloc[0:198, 1:121]
-
-maturities = np.arange(1,121)
-
-mat_fin = pd.DataFrame(np.tile(maturities, (198,1)), index=yields_fin.index)
-mat_ini = pd.DataFrame(np.tile(maturities+1, (198,1)), index=yields_ini.index)
-
-rf = yields_m.iloc[0:198,0]
-
-mns_lnp_fin = yields_fin.values * mat_fin.values
-mns_lnp_ini = yields_ini.values * mat_ini.values
-
-r_1mo = pd.DataFrame(
-    mns_lnp_ini - mns_lnp_fin,
-    index=yields_fin.index,
-    columns=yields_fin.columns
+pca5_m = PCA(n_components=5)
+pc_scores_m = pd.DataFrame(
+    pca5_m.fit_transform(Y_std),
+    index=yields_monthly.index,
+    columns=[f"PC{i}" for i in range(1, 6)]
 )
 
-print("r_1mo criado:", r_1mo.shape)
+# ============================================
+# 8) PCA DIÁRIA (princomp-like) + alinhar nos last days mensais
+# ============================================
+Yd = yields_daily.astype(float).dropna()
+Yd_centered = Yd - Yd.mean(axis=0)
 
+pca_daily = PCA(n_components=5)
+pc_scores_daily = pd.DataFrame(
+    pca_daily.fit_transform(Yd_centered.values),
+    index=Yd_centered.index,
+    columns=[f"PC{i}" for i in range(1, 6)]
+)
+pc_loadings_daily = pd.DataFrame(
+    pca_daily.components_.T,
+    index=Yd_centered.columns,
+    columns=[f"PC{i}" for i in range(1, 6)]
+)
+var_exp_daily = 100 * pca_daily.explained_variance_ratio_
+
+pc_scores_monthly_from_daily = pc_scores_daily.reindex(yields_monthly.index).dropna()
+
+common_months = yields_monthly.index.intersection(pc_scores_monthly_from_daily.index)
+yields_monthly = yields_monthly.loc[common_months]
+yields_m = (yields_monthly / (100.0 * 12.0)).loc[common_months]
+pc_scores_monthly_from_daily = pc_scores_monthly_from_daily.loc[common_months]
+
+# Reconstruir core após alinhamento
+core = build_core_from_monthly(yields_m)
+T, H = core["T"], core["H"]
+yields_fin, yields_ini = core["yields_fin"], core["yields_ini"]
+rf, rf_for_returns, rf_rep_for_returns = core["rf"], core["rf_for_returns"], core["rf_rep_for_returns"]
+prices = core["prices"]
+r_1mo, r_xs = core["r_1mo"], core["r_xs"]
+
+pc5_monthly = pc_scores_monthly_from_daily.iloc[:, 0:5].copy()
+pc5_ini = pc5_monthly.iloc[0:T-1, :].copy()
+
+print("\nAfter alignment with daily-PCA monthly dates:")
+print("Monthly T:", len(common_months), "| T-1:", (T-1), "| r_xs:", r_xs.shape, "| pc5_ini:", pc5_ini.shape)
 
 # ============================================
-# 6) TABELA — MÉDIA E DESVIO
+# 9) FIG: PCA LOADINGS DIÁRIA (5 PCs)
 # ============================================
+plt.figure()
+x_axis = np.arange(1, pc_loadings_daily.shape[0] + 1)
+for i in range(1, 6):
+    plt.plot(x_axis, pc_loadings_daily[f"PC{i}"].values, label=f"PC{i} ({var_exp_daily[i-1]:.2f}%)")
+plt.ylim(-0.3, 0.5)
+plt.xlabel("Maturidade (meses)")
+plt.ylabel("Peso dos Fatores")
+plt.title("PCA loadings (daily yields) - 5 PCs")
+plt.legend(loc="upper right")
+plt.show()
 
-maturities = [2,3,8,12,24,48,72,96]
+# ============================================
+# 10) HIPÓTESE DAS EXPECTATIVAS (EH): r_1mo ~ rf
+# ============================================
+X_rf = pd.DataFrame({"rf": rf_for_returns.values}, index=r_1mo.index)
 
-selected_yields = yields_curve[[f"M{m}" for m in maturities]]
+res_xphyp = {}
+res_xphyp_ab1 = {}
+res_xphyp_a0b1 = {}
 
-table_yields = pd.DataFrame({
-    "Maturity (months)": maturities,
-    "Mean (%)": selected_yields.mean().values,
-    "Std. Dev. (%)": selected_yields.std().values,
-    "Min (%)": selected_yields.min().values,
-    "Max (%)": selected_yields.max().values
-}).round(3)
+D_ab1 = r_1mo.sub(rf_for_returns.values, axis=0)  # r_1mo - rf(t)
 
-print(table_yields)
+for col in r_1mo.columns:
+    y = r_1mo[col].values.astype(float)
+    x = X_rf["rf"].values.astype(float)
+    m = np.isfinite(y) & np.isfinite(x)
+    res_xphyp[col] = sm.OLS(y[m], add_const(x[m])).fit()
+
+    y2 = D_ab1[col].values.astype(float)
+    m2 = np.isfinite(y2) & np.isfinite(x)
+    res_xphyp_ab1[col] = sm.OLS(y2[m2], add_const(x[m2])).fit()
+
+    res_xphyp_a0b1[col] = sm.OLS(y2[m2], x[m2].reshape(-1, 1)).fit()  # sem intercept
+
+# ============================================
+# 11) TABLE1_bmstr_r1mo_complete (M2,M3,M9,M12,M24,M48,M72,M96)
+# ============================================
+rows = []
+index_rows = []
+for m in mats_8:
+    c = f"M{m}"
+    if c not in r_1mo.columns:
+        continue
+
+    r = res_xphyp[c]
+    alpha_hat = float(r.params[0])
+    beta_hat  = float(r.params[1])
+    se_beta   = float(r.bse[1])
+    p_beta0   = float(r.pvalues[1])        # H0: beta=0
+    adjr2     = float(r.rsquared_adj)
+
+    r_ab1 = res_xphyp_ab1[c]
+    p_beta1 = float(r_ab1.pvalues[1])      # H0: beta=1
+
+    r_a0b1 = res_xphyp_a0b1[c]
+    p_a0b1 = float(r_a0b1.pvalues[0])      # H0: alpha=0,beta=1
+
+    rows.append([alpha_hat, beta_hat, se_beta, p_beta0, p_beta1, p_a0b1, adjr2])
+    index_rows.append(c)
+
+Table1_bmstr_r1mo_complete = pd.DataFrame(
+    rows,
+    index=index_rows,
+    columns=[
+        "alpha_hat", "beta_hat", "betahat_StdError",
+        "H0: beta=0 P_value",
+        "H0: beta=1 P_value",
+        "H0: alpha=0,beta=1 P_value",
+        "Adj R2"
+    ]
+)
+print("\nTable1_bmstr_r1mo_complete:")
+display(Table1_bmstr_r1mo_complete)
+
+# ============================================
+# 12) DIEBOLD TABLES (1.1, 1.2, 1.r_1mo, 1.rxs, 1.3)
+# ============================================
+yields_M2M96_y100 = (yields_m[[f"M{m}" for m in mats_8 if f"M{m}" in yields_m.columns]] * 1200).copy()
+rf_1200 = rf * 1200
+
+series_11 = {"r*": rf_1200.dropna()}
+for m in mats_8:
+    cm = f"M{m}"
+    if cm in yields_M2M96_y100.columns:
+        series_11[cm] = yields_M2M96_y100[cm].dropna()
+
+rows_11 = []
+for name, s in series_11.items():
+    rows_11.append({
+        "overline{y}": float(s.mean()),
+        "hat{sigma}_y": float(s.std(ddof=1)),
+        "hat{rho}_y(1)": ols_ar_coef(s, 1),
+        "hat{rho}_y(12)": ols_ar_coef(s, 12),
+    })
+Table1_1_diebold = pd.DataFrame(rows_11, index=list(series_11.keys()))
+print("\nTable 1.1 (Diebold-like):")
+display(Table1_1_diebold)
+
+if "M96" in yields_M2M96_y100.columns:
+    spread_base = yields_M2M96_y100["M96"]
+    yield_spread_y100 = yields_M2M96_y100.sub(spread_base, axis=0).drop(columns=["M96"])
+else:
+    base_col = yields_M2M96_y100.columns[-1]
+    spread_base = yields_M2M96_y100[base_col]
+    yield_spread_y100 = yields_M2M96_y100.sub(spread_base, axis=0).drop(columns=[base_col])
+
+rows_12 = []
+for col in yield_spread_y100.columns:
+    s = yield_spread_y100[col].dropna()
+    rows_12.append({
+        "overline{s}": float(s.mean()),
+        "hat{sigma}_s": float(s.std(ddof=1)),
+        "hat{rho}_s(1)": ols_ar_coef(s, 1),
+        "hat{rho}_s(12)": ols_ar_coef(s, 12),
+    })
+Table1_2_diebold = pd.DataFrame(rows_12, index=list(yield_spread_y100.columns))
+print("\nTable 1.2 (Spreads vs long):")
+display(Table1_2_diebold)
+
+r1mo_1200 = (r_1mo[[f"M{m}" for m in mats_8 if f"M{m}" in r_1mo.columns]] * 1200).copy()
+rxs_1200  = (r_xs[[f"M{m}" for m in mats_8 if f"M{m}" in r_xs.columns]] * 1200).copy()
+
+def make_table_ar(Y, prefix_mean, prefix_sd, prefix_rho):
+    rows = []
+    for col in Y.columns:
+        s = Y[col].dropna()
+        rows.append({
+            prefix_mean: float(s.mean()),
+            prefix_sd: float(s.std(ddof=1)),
+            f"{prefix_rho}(1)": ols_ar_coef(s, 1),
+            f"{prefix_rho}(12)": ols_ar_coef(s, 12),
+        })
+    return pd.DataFrame(rows, index=list(Y.columns))
+
+Table1_r1mo_diebold = make_table_ar(r1mo_1200, "overline{r}", "hat{sigma}_r", "hat{rho}_r")
+print("\nTable 1.r_1mo:")
+display(Table1_r1mo_diebold)
+
+Table1_rxs_diebold = make_table_ar(rxs_1200, "overline{rx}", "hat{sigma}_{rx}", "hat{rho}_{rx}")
+print("\nTable 1.rxs:")
+display(Table1_rxs_diebold)
+
+rows_13 = []
+for c in pc5_monthly.columns:
+    s = pc5_monthly[c].dropna()
+    df = pd.concat([s, s.shift(1)], axis=1).dropna()
+    y = df.iloc[:, 0].values
+    x = df.iloc[:, 1].values
+    res_ar1 = sm.OLS(y, add_const(x)).fit()
+    rows_13.append({
+        "hat{sigma}": float((s*100).std(ddof=1)),
+        "hat{rho}(1)": float(res_ar1.params[1]),
+        "hat{rho}(12)": ols_ar_coef(s, 12),
+        "R2": float(res_ar1.rsquared),
+    })
+Table1_3_diebold = pd.DataFrame(rows_13, index=list(pc5_monthly.columns))
+print("\nTable 1.3 (PCs):")
+display(Table1_3_diebold)
+
+# ============================================
+# 13) lm_rxs_pc5: r_xs ~ PC1..PC5 (Irrestrito) col-by-col
+# ============================================
+alpha_hat = np.zeros(r_xs.shape[1])
+beta_hat = np.zeros((5, r_xs.shape[1]))
+
+X_pc = pc5_ini.values.astype(float)  # (T-1) x 5
+X_pc_c = add_const(X_pc)
+
+for j, col in enumerate(r_xs.columns):
+    y = r_xs[col].values.astype(float)
+    m = np.isfinite(y) & np.all(np.isfinite(X_pc_c), axis=1)
+    res = sm.OLS(y[m], X_pc_c[m, :]).fit()
+    alpha_hat[j] = res.params[0]
+    beta_hat[:, j] = res.params[1:6]
+
+E_rxs_pc5 = (np.ones((X_pc.shape[0], 1)) @ alpha_hat.reshape(1, -1)) + (X_pc @ beta_hat)
+
+# ============================================
+# 14) ADRIAN 3 STEPS (mensal) AUTOMÁTICO
+# ============================================
+var_model = VAR(pc5_monthly.values.astype(float))
+var1_pc5 = var_model.fit(1, trend="c")
+V_hat = var1_pc5.resid
+V_hat = V_hat[-(T-1):, :]  # (T-1)x5
+
+Sigma_hat = (V_hat.T @ V_hat) / max((V_hat.shape[0] - 6), 1)  # espírito do R
+
+X_ = X_pc  # (T-1)x5
+
+# U_hat: yields_m (T x H) ~ pc5_monthly (T x 5)
+Y_month = yields_m.iloc[:, :H].values.astype(float)
+X_month = pc5_monthly.values.astype(float)
+
+U_hat = np.zeros_like(Y_month)
+for j in range(H):
+    res = sm.OLS(Y_month[:, j], add_const(X_month)).fit()
+    U_hat[:, j] = res.resid
+
+U_hat_ini = U_hat[0:T-1, 1:H]
+U_hat_fin = U_hat[1:T,   0:H-1]
+
+# lm_A14: r_xs ~ [V_hat, X_]
+Z = np.hstack([V_hat, X_])
+Zc = add_const(Z)
+
+a_hat_A = np.zeros(H-1)
+beta_hat_A = np.zeros((5, H-1))
+c_hat_A = np.zeros((5, H-1))
+E_hat = np.zeros((T-1, H-1))
+
+for j in range(H-1):
+    y = r_xs.iloc[:, j].values.astype(float)
+    m = np.isfinite(y) & np.all(np.isfinite(Zc), axis=1)
+    res = sm.OLS(y[m], Zc[m, :]).fit()
+    a_hat_A[j] = res.params[0]
+    beta_hat_A[:, j] = res.params[1:6]
+    c_hat_A[:, j] = res.params[6:11]
+    E_hat[:, j] = np.nan
+    E_hat[m, j] = res.resid
+
+sig2_hat = np.nanmean(E_hat**2)
+
+def vec_outer(b):
+    return np.outer(b, b).reshape(-1, order="F")
+
+B_ast = np.column_stack([vec_outer(beta_hat_A[:, i]) for i in range(H-1)])  # 25 x (H-1)
+vec_Sigma = Sigma_hat.reshape(-1, order="F").reshape(-1, 1)
+B_ast_vecSigma = (B_ast.T @ vec_Sigma).reshape(-1)
+
+idx0_sel_adrian = [m-1 for m in mats_8 if (m-1) < (H-1)]
+if len(idx0_sel_adrian) >= 6:
+    B = beta_hat_A[:, idx0_sel_adrian].T
+    C = c_hat_A[:, idx0_sel_adrian].T
+    Lambda_hat = np.linalg.solve(B.T @ B, B.T @ C)
+else:
+    Lambda_hat = np.zeros((5, 5))
+
+# lambda_hat (corrigido)
+term = a_hat_A + (B_ast_vecSigma + sig2_hat) / 2.0
+term_vec = term.reshape(-1, 1)
+
+betabeta_inv = np.linalg.inv(beta_hat_A @ beta_hat_A.T)     # 5x5
+lambda_hat = betabeta_inv @ (beta_hat_A @ term_vec)         # 5x1
+
+t_beta_lambda = (beta_hat_A.T @ lambda_hat).reshape(1, -1)  # 1 x (H-1)
+kappa_hat = t_beta_lambda - ((B_ast_vecSigma + sig2_hat) / 2.0).reshape(1, -1)
+
+Kappa_hat_T = (Lambda_hat.T @ beta_hat_A)                   # 5 x (H-1)
+
+E_rxs_adrian = (np.ones((T-1, 1)) @ kappa_hat) + (X_ @ Kappa_hat_T) + U_hat_ini
+
+# ============================================
+# 15) MSPE (RW, EH, PC5, Adrian) + ratios vs RW
+# ============================================
+E_rxs_rw = r_xs.iloc[0:T-2, :].values
+rxs_rw   = r_xs.iloc[1:T-1, :].values
+PE_rw    = rxs_rw - E_rxs_rw
+
+PE_xphyp  = r_xs.iloc[1:T-1, :].values
+PE_pc5    = (r_xs.values - E_rxs_pc5)[1:T-1, :]
+PE_adrian = (r_xs.values - E_rxs_adrian)[1:T-1, :]
+
+def mspe(mat_err, idx0):
+    return np.mean(mat_err[:, idx0]**2, axis=0)
+
+idx0_sel = idx0_sel_adrian
+mspe_rw     = mspe(PE_rw, idx0_sel)
+mspe_eh     = mspe(PE_xphyp, idx0_sel)
+mspe_pc5    = mspe(PE_pc5, idx0_sel)
+mspe_adrian = mspe(PE_adrian, idx0_sel)
+
+MSPE_ratio = pd.DataFrame(
+    np.column_stack([mspe_eh / mspe_rw, mspe_pc5 / mspe_rw, mspe_adrian / mspe_rw]),
+    index=[f"M{m}" for m in mats_8 if (m-1) < (H-1)],
+    columns=["xp-hyp", "pc5", "adrian"]
+)
+print("\nMSPE_ratio (vs RW):")
+display(MSPE_ratio)
+
+idx_pe = r_xs.index[1:T-1]
+PE_rw_df     = pd.DataFrame(PE_rw,     index=idx_pe, columns=r_xs.columns)
+PE_xphyp_df  = pd.DataFrame(PE_xphyp,  index=idx_pe, columns=r_xs.columns)
+PE_pc5_df    = pd.DataFrame(PE_pc5,    index=idx_pe, columns=r_xs.columns)
+PE_adrian_df = pd.DataFrame(PE_adrian, index=idx_pe, columns=r_xs.columns)
+
+# ============================================
+# 16) DIEBOLD-MARIANO p-values (vs RW e vs EH)
+# ============================================
+dm_xphyp_rw, dm_pc5_rw, dm_adrian_rw = [], [], []
+for m in mats_8:
+    if (m-1) >= (H-1):
+        continue
+    dm_xphyp_rw.append(dm_test(PE_xphyp_df.iloc[:, m-1],  PE_rw_df.iloc[:, m-1], h=1, alternative="less"))
+    dm_pc5_rw.append(dm_test(PE_pc5_df.iloc[:, m-1],      PE_rw_df.iloc[:, m-1], h=1, alternative="less"))
+    dm_adrian_rw.append(dm_test(PE_adrian_df.iloc[:, m-1], PE_rw_df.iloc[:, m-1], h=1, alternative="less"))
+
+dm_pv_rw_296M = pd.DataFrame(
+    np.column_stack([dm_xphyp_rw, dm_pc5_rw, dm_adrian_rw]),
+    index=[f"M{m}" for m in mats_8 if (m-1) < (H-1)],
+    columns=["xp-hyp", "pc5", "adrian"]
+)
+print("\nDM p-values vs RW (H1: model < RW):")
+display(dm_pv_rw_296M)
+
+dm_pc5_EH, dm_adrian_EH = [], []
+for m in mats_8:
+    if (m-1) >= (H-1):
+        continue
+    dm_pc5_EH.append(dm_test(PE_pc5_df.iloc[:, m-1],     PE_xphyp_df.iloc[:, m-1], h=1, alternative="less"))
+    dm_adrian_EH.append(dm_test(PE_adrian_df.iloc[:, m-1], PE_xphyp_df.iloc[:, m-1], h=1, alternative="less"))
+
+dm_pv_EH_296M = pd.DataFrame(
+    np.column_stack([dm_pc5_EH, dm_adrian_EH]),
+    index=[f"M{m}" for m in mats_8 if (m-1) < (H-1)],
+    columns=["pc5", "adrian"]
+)
+print("\nDM p-values vs EH (H1: model < EH):")
+display(dm_pv_EH_296M)
+
+# ============================================
+# 17) GRÁFICOS PRINCIPAIS (Diebold figs)
+# ============================================
+plt.figure()
+for m in mats_8:
+    cm = f"M{m}"
+    if cm in yields_m.columns:
+        plt.plot(yields_m.index, (yields_m[cm] * 1200).values, label=cm)
+plt.ylim(0, 18)
+plt.xlabel("Ano")
+plt.ylabel("YTM (x1200)")
+plt.title("Selected yields (monthly) - Diebold Fig 1.2")
+plt.legend(loc="lower left")
+plt.show()
+
+plt.figure()
+for m in mats_8:
+    cm = f"M{m}"
+    if cm in r_1mo.columns:
+        plt.plot(r_1mo.index, (r_1mo[cm] * 100).values, label=cm)
+plt.ylim(-30, 30)
+plt.xlabel("Ano")
+plt.ylabel("Retorno 1 mês (% a.m.)")
+plt.title("r_1mo (monthly) - Diebold Fig 1.2")
+plt.legend(loc="upper right")
+plt.show()
+
+plt.figure()
+for m in mats_8:
+    cm = f"M{m}"
+    if cm in r_xs.columns:
+        plt.plot(r_xs.index, (r_xs[cm] * 100).values, label=cm)
+plt.ylim(-30, 30)
+plt.xlabel("Ano")
+plt.ylabel("Retorno em excesso (p.p.)")
+plt.title("r_xs (monthly) - Diebold Fig 1.2")
+plt.legend(loc="upper right")
+plt.show()
+
+plt.figure()
+for c in pc5_monthly.columns:
+    plt.plot(pc5_monthly.index, (pc5_monthly[c] * 100).values, label=c)
+plt.ylim(-6, 6)
+plt.xlabel("Ano")
+plt.ylabel("Componentes Principais")
+plt.title("PC scores (monthly from daily PCA) - Diebold Fig 1.3")
+plt.legend(loc="upper right")
+plt.show()
+
+# ============================================
+# 18) SUPERFÍCIE 3D (daily)
+# ============================================
+Z = yields_daily.astype(float).values.T
+x_dates = yields_daily.index
+y_mats = np.arange(1, yields_daily.shape[1] + 1)
+
+fig = go.Figure(data=[go.Surface(x=x_dates, y=y_mats, z=Z)])
+fig.update_layout(
+    title="Yields surface (daily)",
+    scene=dict(
+        xaxis_title="Data",
+        yaxis_title="Termo (meses)",
+        zaxis_title="Taxa (% a.a.)"
+    )
+)
+fig.show()
+
+# ============================================
+# 19) PLOTS DE ERRO DE PREVISÃO (janelas aproximadas)
+# ============================================
+def plot_pe_window(i0, i1, m, ylim, title):
+    if i1 > len(idx_pe):
+        return
+    if (m-1) >= (H-1):
+        return
+    dates = idx_pe[i0:i1]
+    plt.figure()
+    plt.plot(dates, np.abs(PE_xphyp_df.iloc[i0:i1, m-1].values),  label="Hipótese das Expectativas")
+    plt.plot(dates, np.abs(PE_pc5_df.iloc[i0:i1, m-1].values),    label="Irrestrito")
+    plt.plot(dates, np.abs(PE_adrian_df.iloc[i0:i1, m-1].values), label="Restrito à arbitragem")
+    plt.ylim(*ylim)
+    plt.xlabel("Mês")
+    plt.ylabel("Erro de previsão (módulo)")
+    plt.title(title)
+    plt.legend(loc="upper left")
+    plt.show()
+
+plot_pe_window(28, 41, 3,   (0, 0.002),   "2008-09 | M3")
+plot_pe_window(28, 41, 12,  (0, 0.018),   "2008-09 | M12")
+plot_pe_window(28, 41, 48,  (0, 0.075),   "2008-09 | M48")
+
+plot_pe_window(101, 114, 3,  (0, 0.001),  "2014-15 | M3")
+plot_pe_window(101, 114, 12, (0, 0.006),  "2014-15 | M12")
+plot_pe_window(101, 114, 48, (0, 0.06),   "2014-15 | M48")
+
+plot_pe_window(180, 193, 3,   (0, 0.0025), "2021-22 | M3")
+plot_pe_window(180, 193, 12,  (0.001, 0.022), "2021-22 | M12")
+plot_pe_window(180, 193, 48,  (0, 0.05),   "2021-22 | M48")
+
+print("\n==== FIM: objetos principais disponíveis ====")
+print("yields_daily, yields_monthly, yields_m, r_1mo, r_xs, rf, pc_scores_daily, pc_loadings_daily, pc5_monthly")
+print("Table1_bmstr_r1mo_complete, Table1_1_diebold, Table1_2_diebold, Table1_r1mo_diebold, Table1_rxs_diebold, Table1_3_diebold")
+print("MSPE_ratio, dm_pv_rw_296M, dm_pv_EH_296M")
+
