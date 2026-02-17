@@ -1,0 +1,130 @@
+
+
+
+(depois de baixados os dados. estão no drive de renan.lessa.bndes@gmail.com: /content/drive/MyDrive/Colab artigo EctrII2025/yields_daily_100_yr_2006-01-01_2025-12-12_M1-M121.parquet
+
+# ============================================
+# 1) MONTAR DRIVE E CARREGAR BASE (APENAS UMA VEZ)
+# ============================================
+
+from google.colab import drive
+drive.mount('/content/drive')
+
+import pandas as pd
+import numpy as np
+import os
+
+cache_path = "/content/drive/MyDrive/Colab artigo EctrII2025/yields_daily_100_yr_2006-01-01_2025-12-12_M1-M121.parquet"
+
+assert os.path.exists(cache_path), "Arquivo parquet não encontrado no Drive."
+
+print("Arquivo encontrado! Carregando...")
+
+yields_daily = pd.read_parquet(cache_path)
+
+print("Dados carregados com sucesso.")
+print("Shape:", yields_daily.shape)
+print("Primeiras colunas:")
+print(yields_daily.columns[:10])
+
+
+# ============================================
+# 2) ORGANIZAR ÍNDICE DE DATA
+# ============================================
+
+yields_daily.index = pd.to_datetime(yields_daily.index)
+yields_daily.index = yields_daily.index.normalize()
+yields_daily = yields_daily.sort_index()
+yields_daily = yields_daily.dropna(how="all")
+
+print("Período coberto:")
+print(yields_daily.index.min(), "até", yields_daily.index.max())
+
+
+# ============================================
+# 3) ÚLTIMO DIA ÚTIL DO MÊS
+# ============================================
+
+monthly_last = yields_daily.groupby(
+    [yields_daily.index.year, yields_daily.index.month]
+).tail(1)
+
+monthly_last.index.name = "DATE"
+
+print("Número de observações mensais:", len(monthly_last))
+
+yields_curve = monthly_last.astype(float)
+
+print("Dimensão da curva de juros:")
+print(yields_curve.shape)
+
+
+# ============================================
+# 4) PCA (FATORES LEVEL SLOPE CURVATURE)
+# ============================================
+
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+Y_std = scaler.fit_transform(yields_curve)
+
+pca = PCA(n_components=3)
+factors = pca.fit_transform(Y_std)
+
+factors = pd.DataFrame(
+    factors,
+    index=yields_curve.index,
+    columns=["Level", "Slope", "Curvature"]
+)
+
+print("Variância explicada:")
+print(pca.explained_variance_ratio_)
+
+
+# ============================================
+# 5) CONSTRUIR r_1mo E rf
+# ============================================
+
+# transformar para taxa mensal decimal (igual ao R)
+yields_m = yields_curve / (100*12)
+
+yields_fin = yields_m.iloc[1:199, 0:120]
+yields_ini = yields_m.iloc[0:198, 1:121]
+
+maturities = np.arange(1,121)
+
+mat_fin = pd.DataFrame(np.tile(maturities, (198,1)), index=yields_fin.index)
+mat_ini = pd.DataFrame(np.tile(maturities+1, (198,1)), index=yields_ini.index)
+
+rf = yields_m.iloc[0:198,0]
+
+mns_lnp_fin = yields_fin.values * mat_fin.values
+mns_lnp_ini = yields_ini.values * mat_ini.values
+
+r_1mo = pd.DataFrame(
+    mns_lnp_ini - mns_lnp_fin,
+    index=yields_fin.index,
+    columns=yields_fin.columns
+)
+
+print("r_1mo criado:", r_1mo.shape)
+
+
+# ============================================
+# 6) TABELA — MÉDIA E DESVIO
+# ============================================
+
+maturities = [2,3,8,12,24,48,72,96]
+
+selected_yields = yields_curve[[f"M{m}" for m in maturities]]
+
+table_yields = pd.DataFrame({
+    "Maturity (months)": maturities,
+    "Mean (%)": selected_yields.mean().values,
+    "Std. Dev. (%)": selected_yields.std().values,
+    "Min (%)": selected_yields.min().values,
+    "Max (%)": selected_yields.max().values
+}).round(3)
+
+print(table_yields)
