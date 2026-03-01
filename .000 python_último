@@ -47,7 +47,6 @@ os.makedirs(TAB_DIR, exist_ok=True)
 
 # -------- Parquet --------
 cache_path = "/content/drive/MyDrive/Colab artigo EctrII2025/yields_daily_100_yr_2006-01-01_2025-12-12_M1-M121.parquet"
-assert os.path.exists(cache_path), "Arquivo parquet não encontrado no Drive."
 
 print("Carregando parquet...")
 yields_daily = pd.read_parquet(cache_path)
@@ -488,6 +487,47 @@ Table1_bmstr_r1mo_complete = pd.DataFrame(
         "Adj R2"
     ]
 )
+
+# ============================================
+# 9) AVALIAÇÃO FORA-DA-AMOSTRA (SPLIT 50/50)
+# ============================================
+SPLIT_FRAC = 0.5
+DEC = DECIMALS_TABLES
+
+Y_full = yields_monthly.astype(float).copy()
+Y_full = Y_full.loc[yields_m.index]  # garante alinhamento
+
+T_full = len(Y_full.index)
+split_idx = int(np.floor(SPLIT_FRAC * T_full))
+split_idx = max(split_idx, 24)
+split_idx = min(split_idx, T_full - 12)
+
+train_month_idx = Y_full.index[:split_idx]
+test_month_idx  = Y_full.index[split_idx:]
+
+test_start = test_month_idx[0]
+train_fx_idx = r_xs.index[r_xs.index < test_start]
+test_fx_idx  = r_xs.index[r_xs.index >= test_start]
+N_test = len(test_fx_idx)
+if N_test < 24:
+    raise ValueError("Teste OOS ficou curto demais. Ajuste SPLIT_FRAC ou verifique amostra.")
+
+# -------- PCA OOS: estima na 1ª metade e aplica na 2ª --------
+Y_train = Y_full.loc[train_month_idx].values
+Y_mean = Y_train.mean(axis=0)
+
+pca_oos = PCA(n_components=5)
+pca_oos.fit(Y_train - Y_mean)
+
+PC_full = pd.DataFrame(
+    pca_oos.transform(Y_full.values - Y_mean),
+    index=Y_full.index,
+    columns=[f"PC{i}" for i in range(1, 6)]
+)
+
+# PCs alinhados ao índice de r_xs (T-1)
+PC_ini = PC_full.loc[r_xs.index].copy()  # (T-1) x 5
+
 
 # ============================================
 # 12) DIEBOLD TABLES (1.1, 1.2, 1.r_1mo, 1.rxs, 1.3) (COM mats_tables)
@@ -1008,45 +1048,6 @@ ax.legend(labels_legenda, frameon=False, loc="best")
 ax.set_xlim(m.min(), m.max())
 save_fig_pdf(fig, "plot_6_yield_curves.pdf")
 
-# ============================================
-# 9) AVALIAÇÃO FORA-DA-AMOSTRA (SPLIT 50/50)
-# ============================================
-SPLIT_FRAC = 0.5
-DEC = DECIMALS_TABLES
-
-Y_full = yields_monthly.astype(float).copy()
-Y_full = Y_full.loc[yields_m.index]  # garante alinhamento
-
-T_full = len(Y_full.index)
-split_idx = int(np.floor(SPLIT_FRAC * T_full))
-split_idx = max(split_idx, 24)
-split_idx = min(split_idx, T_full - 12)
-
-train_month_idx = Y_full.index[:split_idx]
-test_month_idx  = Y_full.index[split_idx:]
-
-test_start = test_month_idx[0]
-train_fx_idx = r_xs.index[r_xs.index < test_start]
-test_fx_idx  = r_xs.index[r_xs.index >= test_start]
-N_test = len(test_fx_idx)
-if N_test < 24:
-    raise ValueError("Teste OOS ficou curto demais. Ajuste SPLIT_FRAC ou verifique amostra.")
-
-# -------- PCA OOS: estima na 1ª metade e aplica na 2ª --------
-Y_train = Y_full.loc[train_month_idx].values
-Y_mean = Y_train.mean(axis=0)
-
-pca_oos = PCA(n_components=5)
-pca_oos.fit(Y_train - Y_mean)
-
-PC_full = pd.DataFrame(
-    pca_oos.transform(Y_full.values - Y_mean),
-    index=Y_full.index,
-    columns=[f"PC{i}" for i in range(1, 6)]
-)
-
-# PCs alinhados ao índice de r_xs (T-1)
-PC_ini = PC_full.loc[r_xs.index].copy()  # (T-1) x 5
 
 # ============================================
 # 12) GRÁFICOS (mensais) no PERÍODO DE TESTE:
