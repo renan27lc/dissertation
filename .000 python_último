@@ -29,13 +29,6 @@ cache_path = "/content/drive/MyDrive/Colab artigo EctrII2025/yields_daily_100_yr
 
 yields_daily = pd.read_parquet(cache_path)
 
-# Se a data não vier como index, tenta detectar coluna de data:
-#if not isinstance(yields_daily.index, pd.DatetimeIndex):
- #   date_cols = [c for c in yields_daily.columns if "date" in str(c).lower()]
-  #  if date_cols:
-   #     yields_daily[date_cols[0]] = pd.to_datetime(yields_daily[date_cols[0]])
-    #    yields_daily = yields_daily.set_index(date_cols[0])
-
 
 # ============================================
 # 1) LIMPEZA E ORDENAÇÃO DAS COLUNAS (M1..)
@@ -53,9 +46,13 @@ yields_daily = yields_daily.dropna(how="all")
 yields_daily = yields_daily.loc[:, sorted(yields_daily.columns, key=_mnum)]
 
 H_full = yields_daily.shape[1]
-print("Dimensões da tabela de yield diária:", yields_daily.shape, "| H_full:", H_full)
-print("Período:", yields_daily.index.min(), "->", yields_daily.index.max())
-
+print("Yield diária:", yields_daily.shape)
+print(
+    "Período:",
+    yields_daily.index.min().strftime("%d/%m/%Y"),
+    "->",
+    yields_daily.index[-2].strftime("%d/%m/%Y")
+)
 # ============================================
 # 2) AMOSTRA MENSAL: ÚLTIMO DIA DISPONÍVEL NO MÊS
 # ============================================
@@ -63,8 +60,18 @@ monthly_last = yields_daily.groupby([yields_daily.index.year, yields_daily.index
 monthly_last.index.name = "DATE"
 yields_monthly = monthly_last.astype(float)  # % a.a.
 
-print("Dimensões da tabela de yield mensal:", yields_monthly.shape)
-print("Período:", yields_monthly.index.min(), "->", yields_monthly.index.max())
+print("Yield mensal:", yields_monthly.shape)
+
+print(
+    "Período:",
+    yields_monthly.index.min().strftime("%m-%Y"),
+    "->",
+    yields_monthly.index[-2].strftime("%m-%Y")
+)
+
+
+
+
 
 # ============================================
 # 3) CONVERTER PARA TAXA MENSAL DECIMAL (/(100*12))
@@ -946,15 +953,9 @@ save_fig_pdf(fig, "plot_6_yield_curves.pdf")
 # 2) r_xs prevista vs realizada
 # ============================================
 
-# escolha do vencimento
 MAT_YIELD_PLOT = "M2"
 MAT_RXS_PLOT   = "M2"
 MODEL_RXS = "pc5"  # "pc5", "adrian" ou "he"
-
-if MAT_YIELD_PLOT not in yields_monthly.columns:
-    raise ValueError(f"{MAT_YIELD_PLOT} não está em yields_monthly.columns")
-if MAT_RXS_PLOT not in r_xs.columns:
-    raise ValueError(f"{MAT_RXS_PLOT} não está em r_xs.columns")
 
 # índices de teste
 test_month_idx = yields_monthly.index[yields_monthly.index >= test_start]
@@ -981,14 +982,15 @@ ax.legend(loc="upper left", frameon=False)
 save_fig_pdf(fig, f"yield_prevista_vs_realizada_{MAT_YIELD_PLOT}.pdf")
 
 # ----------------------------
-# 12.2 (SUBSTITUIR) r_xs: Realizado vs Previsto (Irrestrito e Adrian no mesmo gráfico)
+# 12.2 r_xs: Realizado vs Previsto
 # ----------------------------
 
-if MAT_RXS_PLOT not in r_xs.columns:
-    raise ValueError(f"{MAT_RXS_PLOT} não está em r_xs.columns")
+MAT_YIELD_PLOT = "M2"
+MAT_RXS_PLOT   = "M2"
 
-# índices já existem no seu script:
-# train_fx_idx, test_fx_idx, PC_ini, err_adrian_all_df
+# índices de teste
+test_month_idx = yields_monthly.index[yields_monthly.index >= test_start]
+train_month_idx = yields_monthly.index[yields_monthly.index < test_start]
 
 # ----- Previsto Irrestrito (PC5) -----
 PC_fx = PC_ini.copy()
@@ -999,10 +1001,6 @@ ytr = r_xs.loc[train_fx_idx, MAT_RXS_PLOT].values.astype(float)
 msk = np.isfinite(ytr) & np.all(np.isfinite(Xr_train), axis=1)
 res_pc5 = sm.OLS(ytr[msk], Xr_train[msk, :]).fit()
 rhat_pc5_test = Xr_test @ res_pc5.params  # previsão irrestrita
-
-# ----- Previsto Adrian -----
-if "err_adrian_all_df" not in globals():
-    raise ValueError("Não encontrei err_adrian_all_df. Cole este bloco após rodar o Adrian OOS (onde ele é criado).")
 
 # previsão adrian = realizado - erro_adrian
 rhat_adrian_test = (
@@ -1024,10 +1022,8 @@ ax.legend(loc="upper left", frameon=False)
 
 save_fig_pdf(fig, f"rxs_real_vs_prev_pc5_vs_adrian_{MAT_RXS_PLOT}.pdf")
 
-print("OK: tabelas e gráficos gerados.")
-
 # ============================================
-# 21) EXPORTAR TODAS AS TABELAS PARA LATEX (.tex)
+# 21) EXPORTAR TABELAS (.tex)
 # ============================================
 save_latex_table(
     Table1_bmstr_r1mo_complete,
@@ -1101,13 +1097,10 @@ save_latex_table(
     decimals=DECIMALS_TABLES
 )
 
-
 # ============================================
 # 22) RESUMO DOS ARQUIVOS GERADOS
 # ============================================
 print("\n==== SAÍDAS GERADAS ====")
 print("Figuras (PDF):", FIG_DIR)
 print("Tabelas (LaTeX .tex):", TAB_DIR)
-print("\nDica Overleaf:")
-print(r"- Coloque os PDFs em figuras/ e use \includegraphics{figuras/plot_6_yield_curves.pdf}")
-print(r"- Coloque os .tex em tabelas/ e use \input{tabelas/Table1_1_diebold.tex}")
+
